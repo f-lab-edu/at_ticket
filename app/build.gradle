@@ -1,13 +1,13 @@
-group = 'at_ticket.app'
-version = '1.0.0-SNAPSHOT'
-sourceCompatibility = '11'
-
 plugins {
     id 'java'
     id 'application'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.springframework.boot' version '2.7.10'
 }
+
+group = 'at_ticket.app'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
