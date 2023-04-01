@@ -4,7 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.10'
 }
 
-group = 'at_ticket.app'
+group = 'com.atticket.app'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -18,6 +18,6 @@ dependencies {
 
 bootRun {
     // gradlew bootRun -Dprofile={프로필} = java -jar -Dspring.profiles.active={프로필} 빌드파일.jar
-    String activeProfile = System.properties['profile']
-    if(activeProfile!=null) systemProperty "spring.profiles.active", activeProfile
+    String activeProfile = System.properties.getProperty('profile')
+    if (activeProfile != null) systemProperty "spring.profiles.active", activeProfile
 }
