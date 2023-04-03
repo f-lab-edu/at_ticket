@@ -4,7 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.10'
 }
 
-group = 'com.atticket.app'
+group = 'com.atticket'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '11'
 
