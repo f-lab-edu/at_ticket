@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '2.7.10'
+}
+
+group = 'com.atticket'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+bootRun {
+    // gradlew bootRun -Dprofile={프로필} = java -jar -Dspring.profiles.active={프로필} 빌드파일.jar
+    String activeProfile = System.properties.getProperty('profile')
+    if (activeProfile != null) systemProperty "spring.profiles.active", activeProfile
+}
