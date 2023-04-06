@@ -15,9 +15,7 @@ public class ReservationController {
 	 * */
 	@GetMapping("")
 	public SampleDto getReservation() {
-		SampleDto sampleDto = new SampleDto();
-		sampleDto.setContent("hi");
-		return sampleDto;
+		return SampleDto.builder().content("hi").build();
 	}
 
 	/**
@@ -25,8 +23,6 @@ public class ReservationController {
 	 */
 	@PostMapping("")
 	public SampleDto postReservation() {
-		SampleDto sampleDto = new SampleDto();
-		sampleDto.setContent("hi");
-		return sampleDto;
+		return SampleDto.builder().content("hi").build();
 	}
 }

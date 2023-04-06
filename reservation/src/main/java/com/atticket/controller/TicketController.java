@@ -15,9 +15,7 @@ public class TicketController {
 	 * */
 	@GetMapping("")
 	public SampleDto getTicket() {
-		SampleDto sampleDto = new SampleDto();
-		sampleDto.setContent("hi");
-		return sampleDto;
+		return SampleDto.builder().content("hi").build();
 	}
 
 	/**
@@ -25,8 +23,6 @@ public class TicketController {
 	 */
 	@GetMapping("/{id}")
 	public SampleDto getTicketInfo(@PathVariable("id") String id) {
-		SampleDto sampleDto = new SampleDto();
-		sampleDto.setContent(id);
-		return sampleDto;
+		return SampleDto.builder().content(id).build();
 	}
 }
