@@ -17,10 +17,6 @@ public class ProductDetail {
 	//공연 날짜/회차별 좌석 정보
 	private List<SeatInfo> seatInfo;
 
-	public ProductDetail() {
-
-	}
-
 	@Builder
 	public ProductDetail(String name, Contents contents, List<SeatInfo> seatInfo) {
 		this.name = name;

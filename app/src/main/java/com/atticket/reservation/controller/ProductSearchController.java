@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.atticket.reservation.dto.DetailSearch;
+import com.atticket.reservation.dto.ProductDetailSearch;
 import com.atticket.reservation.dto.ProductDetail;
 
 @Controller
@@ -16,7 +16,7 @@ public class ProductSearchController {
 	//공연 상세 조회
 	@GetMapping("/products/detailSearch")
 	@ResponseBody
-	public ProductDetail productDetail(@ModelAttribute DetailSearch detailSearch) {
+	public ProductDetail productDetail(@ModelAttribute ProductDetailSearch productDetailSearch) {
 
 		//공연 내용
 		ProductDetail.Contents contents = ProductDetail.Contents.builder()
@@ -33,18 +33,21 @@ public class ProductSearchController {
 					.type("A")
 					.count(10)
 					.build()
+				,
+				ProductDetail.RemainSeat.builder()
+					.type("B")
+					.count(8)
+					.build()
 
 			))
 			.build();
 
 		//공연 상세
-		ProductDetail pd =
-			ProductDetail.builder()
+		return ProductDetail.builder()
 				.name("캣츠")
 				.contents(contents)
 				.seatInfo(List.of(seatInfo))
 				.build();
 
-		return pd;
 	}
 }

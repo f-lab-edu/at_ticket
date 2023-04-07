@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class DetailSearch {
+public class ProductDetailSearch {
 
 	//공연 이름
 	private String name;
