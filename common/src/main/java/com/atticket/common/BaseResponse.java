@@ -1,13 +1,13 @@
 package com.atticket.common;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@JsonPropertyOrder({"code", "message", "data"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
 	private final int code;
 	private final String message;
@@ -18,4 +18,8 @@ public class BaseResponse<T> {
 		this(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), data);
 	}
 
+	// error response
+	public BaseResponse(BaseStatus status) {
+		this(status.getCode(), status.getMessage(), null);
+	}
 }
