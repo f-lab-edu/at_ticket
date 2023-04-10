@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'at_ticket'
-include ':reservation', ':payment', ':common'
+include ':reservation', ':payment', ':common', ':product'
