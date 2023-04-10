@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'org.springframework.boot' version '2.7.10'
+    id 'io.spring.dependency-management'
+    id 'org.springframework.boot'
 }
 
 group = 'com.atticket'
@@ -19,7 +19,10 @@ dependencies {
 }
 
 bootRun {
-    // gradlew bootRun -Dprofile={프로필} = java -jar -Dspring.profiles.active={프로필} 빌드파일.jar
+    /**
+     * gradlew :{모듈명}:bootRun -Dprofile={프로파일} = java -jar -Dspring.profiles.active={프로파일} 빌드파일명.jar
+     * e.g.) gradlew :reservation:bootRun -Dprofile=dev = java -jar -Dspring.profiles.active=dev reservation-1.0.0-SNAPSHOT.jar
+     * */
     String activeProfile = System.properties.getProperty('profile')
     if (activeProfile != null) systemProperty "spring.profiles.active", activeProfile
 }
