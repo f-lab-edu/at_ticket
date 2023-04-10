@@ -1,4 +1,4 @@
-package com.atticket.reservation.dto;
+package com.atticket.dto;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProductDetail {
+public class GetProductDetailResponse {
 
 	//공연 이름
 	private String name;
@@ -18,7 +18,7 @@ public class ProductDetail {
 	private List<SeatInfo> seatInfo;
 
 	@Builder
-	public ProductDetail(String name, Contents contents, List<SeatInfo> seatInfo) {
+	public GetProductDetailResponse(String name, Contents contents, List<SeatInfo> seatInfo) {
 		this.name = name;
 		this.contents = contents;
 		this.seatInfo = seatInfo;

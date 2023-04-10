@@ -1,4 +1,4 @@
-package com.atticket.reservation.dto;
+package com.atticket.dto;
 
 import java.util.Date;
 
