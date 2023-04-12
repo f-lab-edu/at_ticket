@@ -4,46 +4,56 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.dto.GetProductDetailResponse;
+import com.atticket.dto.response.ProductDetailResponseDto;
+import com.atticket.dto.response.SeatsResponseDto;
 
+//공연 조회
 @RestController
+@RequestMapping("/products")
 public class ProductSearchController {
 
 	//공연 상세 조회
-	@GetMapping("/products/{productId}")
-	public GetProductDetailResponse productDetail(@PathVariable String productId) {
+	@GetMapping("/{productId}")
+	public ProductDetailResponseDto getProductDetail(@PathVariable String productId) {
+		/**
+		 * 공연 Id를 입력받아
+		 * 공연의 상세 내용을 리턴해줍니다
+		 * */
 
 		//공연 내용
-		GetProductDetailResponse.Contents contents = GetProductDetailResponse.Contents.builder()
+		ProductDetailResponseDto.Contents contents = ProductDetailResponseDto.Contents.builder()
 			.showExplain("공연설명")
 			.showTime("1시간")
 			.build();
 
 		//공연 날짜/회차별 좌석 정보
-		GetProductDetailResponse.SeatInfo seatInfo = GetProductDetailResponse.SeatInfo.builder()
+		SeatsResponseDto seatInfo = SeatsResponseDto.builder()
 			.showDate("20230407")
+			.showTime("1800")
 			.session("1회차")
 			.remainSeatList(List.of(
-				GetProductDetailResponse.RemainSeat.builder()
-					.type("A")
-					.count(10)
-					.build()
-				,
-				GetProductDetailResponse.RemainSeat.builder()
-					.type("B")
-					.count(8)
-					.build()
-
-			))
+					SeatsResponseDto.RemainSeat.builder()
+						.type("A")
+						.count(10)
+						.price(1000)
+						.build(),
+					SeatsResponseDto.RemainSeat.builder()
+						.type("B")
+						.count(8)
+						.price(5000)
+						.build()
+				)
+			)
 			.build();
 
 		//공연 상세
-		return GetProductDetailResponse.builder()
+		return ProductDetailResponseDto.builder()
 			.name("캣츠")
 			.contents(contents)
-			.seatInfo(List.of(seatInfo))
+			.seatInfo(seatInfo)
 			.build();
 
 	}
