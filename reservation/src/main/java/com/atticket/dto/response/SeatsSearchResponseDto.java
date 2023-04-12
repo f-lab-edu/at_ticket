@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class SeatsResponseDto {
+public class SeatsSearchResponseDto {
 	//좌석 조회시 사용하는 ResponseDTO입니다
 
 	//공연 날짜
@@ -22,7 +22,7 @@ public class SeatsResponseDto {
 	private List<RemainSeat> remainSeatList;
 
 	@Builder
-	public SeatsResponseDto(String showDate, String showTime, String session, List<RemainSeat> remainSeatList) {
+	public SeatsSearchResponseDto(String showDate, String showTime, String session, List<RemainSeat> remainSeatList) {
 		this.showDate = showDate;
 		this.showTime = showTime;
 		this.session = session;

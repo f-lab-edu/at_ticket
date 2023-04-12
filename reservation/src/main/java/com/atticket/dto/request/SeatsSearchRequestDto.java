@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SeatsRequestDto {
+public class SeatsSearchRequestDto {
 	//좌석 조회 요청시 사용하는 RequestDTO입니다
 
 	//공연 Id

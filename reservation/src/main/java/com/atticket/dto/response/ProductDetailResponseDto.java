@@ -13,10 +13,10 @@ public class ProductDetailResponseDto {
 	private Contents contents;
 
 	//공연 날짜/회차별 좌석 정보
-	private SeatsResponseDto seatInfo;
+	private SeatsSearchResponseDto seatInfo;
 
 	@Builder
-	public ProductDetailResponseDto(String name, Contents contents, SeatsResponseDto seatInfo) {
+	public ProductDetailResponseDto(String name, Contents contents, SeatsSearchResponseDto seatInfo) {
 		this.name = name;
 		this.contents = contents;
 		this.seatInfo = seatInfo;
