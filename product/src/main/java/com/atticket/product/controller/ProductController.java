@@ -1,14 +1,16 @@
-package com.atticket.controller;
+package com.atticket.product.controller;
+
+import static com.atticket.common.response.BaseResponse.ok;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.common.BaseException;
-import com.atticket.common.BaseResponse;
-import com.atticket.common.BaseStatus;
-import com.atticket.common.SampleDto;
+import com.atticket.common.response.BaseException;
+import com.atticket.common.response.BaseResponse;
+import com.atticket.common.response.BaseStatus;
+import com.atticket.common.response.SampleDto;
 
 @RestController
 @RequestMapping("/products")
@@ -19,7 +21,7 @@ public class ProductController {
 	 * */
 	@GetMapping("")
 	public BaseResponse<SampleDto> getProducts() {
-		return new BaseResponse<>(SampleDto.builder().content("hi").build());
+		return ok(SampleDto.builder().content("hi").build());
 	}
 
 	/**
@@ -28,11 +30,11 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public BaseResponse<SampleDto> getTicketInfo(@PathVariable("id") String id) throws Exception {
 		if (id.equals("error")) {
-			throw new Exception("unexpected error occur");
+			throw new Exception("unexpected error our");
 		}
 		if (id.equals("test-error")) {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		}
-		return new BaseResponse<>(SampleDto.builder().content(id).build());
+		return ok(SampleDto.builder().content(id).build());
 	}
 }

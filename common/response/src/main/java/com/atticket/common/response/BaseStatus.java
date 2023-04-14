@@ -1,4 +1,4 @@
-package com.atticket.common;
+package com.atticket.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

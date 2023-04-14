@@ -1,4 +1,6 @@
-package com.atticket.common;
+package com.atticket.common.response;
+
+import static com.atticket.common.response.BaseResponse.fail;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,13 +15,13 @@ public class BaseExceptionHandler {
 	@ExceptionHandler(BaseException.class)
 	public BaseResponse<BaseStatus> handleBaseException(BaseException baseException) {
 		log.error(baseException.getBaseStatus().getMessage(), baseException);
-		return new BaseResponse<>(baseException.getBaseStatus());
+		return fail(baseException.getBaseStatus());
 	}
 
 	// Exception 발생시 핸들러
 	@ExceptionHandler(Exception.class)
 	public BaseResponse<BaseStatus> handleException(Exception exception) {
 		log.error(BaseStatus.UNEXPECTED_ERROR.getMessage(), exception);
-		return new BaseResponse<>(BaseStatus.UNEXPECTED_ERROR);
+		return fail(BaseStatus.UNEXPECTED_ERROR);
 	}
 }

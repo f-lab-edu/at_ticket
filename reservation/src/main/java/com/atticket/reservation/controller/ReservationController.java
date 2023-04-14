@@ -1,12 +1,14 @@
-package com.atticket.controller;
+package com.atticket.reservation.controller;
+
+import static com.atticket.common.response.BaseResponse.ok;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.common.BaseResponse;
-import com.atticket.common.SampleDto;
+import com.atticket.common.response.BaseResponse;
+import com.atticket.common.response.SampleDto;
 
 @RestController
 @RequestMapping("/reservations")
@@ -16,7 +18,7 @@ public class ReservationController {
 	 * */
 	@GetMapping("")
 	public BaseResponse<SampleDto> getReservations() {
-		return new BaseResponse<>(SampleDto.builder().content("hi").build());
+		return ok(SampleDto.builder().content("hi").build());
 	}
 
 	/**
@@ -24,6 +26,6 @@ public class ReservationController {
 	 */
 	@PostMapping("")
 	public BaseResponse<SampleDto> postReservation() {
-		return new BaseResponse<>(SampleDto.builder().content("hi").build());
+		return ok(SampleDto.builder().content("hi").build());
 	}
 }
