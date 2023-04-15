@@ -1,4 +1,4 @@
-package com.atticket.dto;
+package com.atticket.common.response;
 
 import lombok.Builder;
 import lombok.Getter;
