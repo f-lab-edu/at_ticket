@@ -1,4 +1,4 @@
-package com.atticket.controller;
+package com.atticket.product.controller;
 
 import java.util.List;
 
@@ -6,33 +6,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.dto.request.SeatsSearchRequestDto;
-import com.atticket.dto.response.SeatsSearchResponseDto;
+import com.atticket.product.dto.request.SeatsSearchReqDto;
+import com.atticket.product.dto.response.SeatsSearchResDto;
 
 //좌석 조회
 @RestController
 @RequestMapping("/seats")
-public class SeatSearchController {
+public class SeatsSearchController {
 
 	//좌석 조회
 	@GetMapping("")
-	public SeatsSearchResponseDto getSeats(SeatsSearchRequestDto seatsRequest) {
+	public SeatsSearchResDto getSeats(SeatsSearchReqDto seatsRequest) {
 		/** 공연의 날짜 시간별
 		 *  좌석 등급과 잔여 좌석을 리턴해줍니다.
 		 */
 
 		//공연 날짜/회차별 좌석 정보
-		return SeatsSearchResponseDto.builder()
+		return SeatsSearchResDto.builder()
 			.showDate("20230407")
 			.showTime("1800")
 			.session("1회차")
 			.remainSeatList(List.of(
-					SeatsSearchResponseDto.RemainSeat.builder()
+					SeatsSearchResDto.RemainSeat.builder()
 						.type("A")
 						.count(10)
 						.price(1000)
 						.build(),
-					SeatsSearchResponseDto.RemainSeat.builder()
+					SeatsSearchResDto.RemainSeat.builder()
 						.type("B")
 						.count(8)
 						.price(5000)

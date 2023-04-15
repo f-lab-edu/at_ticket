@@ -1,11 +1,11 @@
-package com.atticket.dto.request;
+package com.atticket.product.dto.request;
 
 import java.util.List;
 
 import lombok.Getter;
 
 @Getter
-public class ProductRegisterRequestDto {
+public class ProductRegisterReqDto {
 
 	//공연 ID
 	private String showId;
