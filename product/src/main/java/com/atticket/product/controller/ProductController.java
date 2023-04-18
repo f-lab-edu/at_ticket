@@ -29,7 +29,7 @@ public class ProductController {
 	 * 상품 검색
 	 */
 	@GetMapping("")
-	public BaseResponse<SampleDto> getProducts() {
+	public BaseResponse<SampleDto> searchProductList() {
 		return ok(SampleDto.builder().content("hi").build());
 	}
 
@@ -67,14 +67,14 @@ public class ProductController {
 					.build()
 			)
 			.seatTypesList(List.of(
-					GetProductDetailResDto.SeatType.builder()
-						.seatGrade("A")
-						.seatPrice("5000")
-						.build(),
-					GetProductDetailResDto.SeatType.builder()
-						.seatGrade("B")
-						.seatPrice("10000")
-						.build()
+				GetProductDetailResDto.SeatType.builder()
+					.seatGrade("A")
+					.seatPrice("5000")
+					.build(),
+				GetProductDetailResDto.SeatType.builder()
+					.seatGrade("B")
+					.seatPrice("10000")
+					.build()
 				)
 			)
 			.showDateList(
@@ -88,10 +88,12 @@ public class ProductController {
 			.build());
 	}
 
-	//일자별 공연 조회
+	/**
+	 * 일자별 공연 조회
+	 */
 	@GetMapping("/{productId}/shows")
 	public BaseResponse<GetShowListResDto> getShowList(@PathVariable("productId") String id,
-		@RequestParam("date") String date) throws Exception {
+		@RequestParam("date") String date) {
 
 		log.info("getShowList - productId : " + id);
 		log.info("getShowList - date : " + date);
@@ -113,12 +115,12 @@ public class ProductController {
 		);
 	}
 
-	//상품 내용 삭제
+	/**
+	 * 상품 내용 삭제
+	 * */
 	@DeleteMapping("/{productId}")
-	public BaseResponse deleteProductContenet(@PathVariable("productId") String id) {
-
-		return ok("삭제 완료");
-
+	public BaseResponse deleteProductContent(@PathVariable("productId") String id) {
+		return ok();
 	}
 
 }

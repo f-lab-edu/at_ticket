@@ -1,4 +1,4 @@
-package com.atticket.product.dto.request;
+package com.atticket.show.dto.request;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class RegistProductReqDto {
+public class RegisterShowReqDto {
 
 	//상품 Id
 	private String productId;
@@ -29,7 +29,7 @@ public class RegistProductReqDto {
 		//공연 홀 id
 		private String showHallId;
 
-		//좌석 정보 (좌석ID, 등급)
+		//좌석 정보 (좌석 ID, 등급)
 		private List<SeatInfo> seatList;
 
 	}

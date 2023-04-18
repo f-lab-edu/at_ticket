@@ -1,4 +1,4 @@
-package com.atticket.product.dto.response;
+package com.atticket.show.dto.response;
 
 import java.util.List;
 
