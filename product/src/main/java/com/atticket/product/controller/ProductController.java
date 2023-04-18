@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
-import com.atticket.common.response.SampleDto;
+import com.atticket.product.dto.request.SearchProductListReqDto;
 import com.atticket.product.dto.response.GetProductDetailResDto;
 import com.atticket.product.dto.response.GetShowListResDto;
+import com.atticket.product.dto.response.SearchProductListResDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,8 +31,60 @@ public class ProductController {
 	 * 상품 검색
 	 */
 	@GetMapping("")
-	public BaseResponse<SampleDto> searchProductList() {
-		return ok(SampleDto.builder().content("hi").build());
+	public BaseResponse<SearchProductListResDto> searchProductList(@ModelAttribute SearchProductListReqDto req) {
+
+		log.info("searchProductList - request : " + req);
+
+		SearchProductListResDto.Product.ProductBuilder productBuilder = SearchProductListResDto.Product.builder();
+		SearchProductListResDto.Place.PlaceBuilder placeBuilder = SearchProductListResDto.Place.builder();
+
+		return ok(SearchProductListResDto.builder().productList(List.of(
+			productBuilder
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-1")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－성남（Musical CATS）")
+				.place(placeBuilder
+					.id("place-1")
+					.name("성남아트센터")
+					.build()
+				)
+				.periodStr("20230505")
+				.periodEnd("20230507")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build(),
+			productBuilder
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-2")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－대전（Musical CATS）")
+				.place(placeBuilder
+					.id("place-2")
+					.name("대전예술의전당")
+					.build()
+				)
+				.periodStr("20230519")
+				.periodEnd("20230521")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build(),
+			productBuilder
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-3")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－수원（Musical CATS）")
+				.place(placeBuilder
+					.id("place-3")
+					.name("경기아트센터")
+					.build()
+				)
+				.periodStr("20230512")
+				.periodEnd("20230514")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build())
+		).build());
 	}
 
 	/**
