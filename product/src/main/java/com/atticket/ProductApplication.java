@@ -1,4 +1,4 @@
-package com.atticket.product;
+package com.atticket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

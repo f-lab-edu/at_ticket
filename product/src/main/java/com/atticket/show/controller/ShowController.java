@@ -1,4 +1,4 @@
-package com.atticket.product.controller;
+package com.atticket.show.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
-import com.atticket.product.dto.request.RegistProductReqDto;
-import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
+import com.atticket.show.dto.request.RegisterShowReqDto;
+import com.atticket.show.dto.response.GetRemainSeatsCntResDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,17 +30,17 @@ public class ShowController {
 		log.info("getRemainSeatsCnt - showId : " + id);
 
 		return ok(GetRemainSeatsCntResDto.builder()
-			.remainSeatList(
+			.remainSeats(
 				List.of(
 					GetRemainSeatsCntResDto.RemainSeat.builder()
-						.showId("1")
-						.seatGrade("S")
-						.remainSeatCnt(40)
+						.id("1")
+						.grade("S")
+						.cnt(40)
 						.build(),
 					GetRemainSeatsCntResDto.RemainSeat.builder()
-						.showId("1")
-						.seatGrade("A")
-						.remainSeatCnt(30)
+						.id("1")
+						.grade("A")
+						.cnt(30)
 						.build()
 
 				)
@@ -49,11 +49,15 @@ public class ShowController {
 			.build());
 	}
 
-	//공연 등록
+	/**
+	 *공연 등록
+	 * @param registerShowReqDto
+	 * @return
+	 */
 	@PostMapping("")
-	public BaseResponse registProduct(@RequestBody RegistProductReqDto registproductRequest) {
+	public BaseResponse registerShow(@RequestBody RegisterShowReqDto registerShowReqDto) {
 
-		log.info("registProduct - registproductRequest : " + registproductRequest);
+		log.debug("registerShow - registproductRequest : " + registerShowReqDto);
 
 		return ok("등록 성공");
 
