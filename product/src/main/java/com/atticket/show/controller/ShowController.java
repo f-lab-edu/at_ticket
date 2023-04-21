@@ -28,34 +28,32 @@ public class ShowController {
 	@GetMapping("/{showId}/seats")
 	public BaseResponse<GetRemainSeatsResDto> getRemainSeats(@PathVariable("showId") String id) {
 
-		GetRemainSeatsResDto.ShowSeat.ShowSeatBuilder showSeatBuilder = GetRemainSeatsResDto.ShowSeat.builder();
-
 		return ok(GetRemainSeatsResDto.builder().showSeats(List.of(
-			showSeatBuilder
+			GetRemainSeatsResDto.ShowSeat.builder()
 				.id("showSeat-1")
 				.space("1층")
-				.positionX("12")
-				.positionY("22")
+				.locX("12")
+				.locY("22")
 				.row("T열")
 				.rowNum(1)
 				.grade("VIP")
 				.price(120000)
 				.build(),
-			showSeatBuilder
+			GetRemainSeatsResDto.ShowSeat.builder()
 				.id("showSeat-2")
 				.space("1층")
-				.positionX("15")
-				.positionY("25")
+				.locX("15")
+				.locY("25")
 				.row("T열")
 				.rowNum(2)
 				.grade("VIP")
 				.price(120000)
 				.build(),
-			showSeatBuilder
+			GetRemainSeatsResDto.ShowSeat.builder()
 				.id("showSeat-3")
 				.space("1층")
-				.positionX("18")
-				.positionY("28")
+				.locX("18")
+				.locY("28")
 				.row("T열")
 				.rowNum(3)
 				.grade("VIP")

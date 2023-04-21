@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class SearchProductListResDto {
+public class GetProductsResDto {
 
 	private final List<Product> productList;
 
@@ -25,9 +25,9 @@ public class SearchProductListResDto {
 
 		private final Place place;
 
-		private final String periodStr;
+		private final String startDate;
 
-		private final String periodEnd;
+		private final String endDate;
 
 		private final String runningTime;
 

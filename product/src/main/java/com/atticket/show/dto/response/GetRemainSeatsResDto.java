@@ -21,10 +21,10 @@ public class GetRemainSeatsResDto {
 		private final String space;
 
 		// 좌석 x 좌표
-		private final String positionX;
+		private final String locX;
 
 		// 좌석 y 좌표
-		private final String positionY;
+		private final String locY;
 
 		private final String row;
 

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public class SearchProductListReqDto {
+public class GetProductsReqDto {
 
 	// 페이지
 	private final String page;
