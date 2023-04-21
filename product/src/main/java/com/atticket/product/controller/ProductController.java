@@ -2,6 +2,9 @@ package com.atticket.product.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,6 +12,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +28,10 @@ import com.atticket.commonEnum.Region;
 import com.atticket.commonEnum.SubCategory;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.show.dto.response.GetShowsResDto;
+import com.atticket.product.dto.request.GetProductsReqDto;
+import com.atticket.product.dto.response.GetProductDetailResDto;
+import com.atticket.product.dto.response.GetProductsResDto;
+import com.atticket.product.dto.response.GetShowListResDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,8 +44,57 @@ public class ProductController {
 	 * 상품 검색
 	 */
 	@GetMapping("")
-	public BaseResponse<SampleDto> getProducts() {
-		return ok(SampleDto.builder().content("hi").build());
+	public BaseResponse<GetProductsResDto> getProducts(@ModelAttribute GetProductsReqDto req) {
+
+		log.info("searchProductList - request : " + req);
+
+		return ok(GetProductsResDto.builder().productList(List.of(
+			GetProductsResDto.Product.builder()
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-1")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－성남（Musical CATS）")
+				.place(GetProductsResDto.Place.builder()
+					.id("place-1")
+					.name("성남아트센터")
+					.build()
+				)
+				.startDate("20230505")
+				.endDate("20230507")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build(),
+			GetProductsResDto.Product.builder()
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-2")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－대전（Musical CATS）")
+				.place(GetProductsResDto.Place.builder()
+					.id("place-2")
+					.name("대전예술의전당")
+					.build()
+				)
+				.startDate("20230519")
+				.endDate("20230521")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build(),
+			GetProductsResDto.Product.builder()
+				.image("https://s3.atticket.com/products/images/cats")
+				.id("product-3")
+				.name("뮤지컬 〈캣츠〉 오리지널 내한－수원（Musical CATS）")
+				.place(GetProductsResDto.Place.builder()
+					.id("place-3")
+					.name("경기아트센터")
+					.build()
+				)
+				.startDate("20230512")
+				.endDate("20230514")
+				.runningTime("160분(인터미션:20분)")
+				.ageLimit("8세이상 관람가능")
+				.category("뮤지컬")
+				.build())
+		).build());
 	}
 
 	/**
@@ -120,12 +177,12 @@ public class ProductController {
 		);
 	}
 
-	//상품 내용 삭제
+	/**
+	 * 상품 내용 삭제
+	 * */
 	@DeleteMapping("/{productId}")
-	public BaseResponse deleteProduct(@PathVariable("productId") String id) {
-
-		return ok("삭제 완료");
-
+	public BaseResponse deleteProductContent(@PathVariable("productId") String id) {
+		return ok();
 	}
 
 }

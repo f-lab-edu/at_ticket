@@ -17,7 +17,12 @@ public class BaseResponse<T> {
 		this.data = data;
 	}
 
-	// success response
+	// success response without data
+	public static <T> BaseResponse<T> ok() {
+		return new BaseResponse<>(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), null);
+	}
+
+	// success response with data
 	public static <T> BaseResponse<T> ok(T data) {
 		return new BaseResponse<>(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), data);
 	}
