@@ -1,4 +1,4 @@
-package com.atticket.commonEnum;
+package com.atticket.commonenum;
 
 import java.util.Arrays;
 import java.util.Collections;

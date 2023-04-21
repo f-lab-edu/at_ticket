@@ -1,4 +1,4 @@
-package com.atticket.commonEnum;
+package com.atticket.commonenum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,4 @@ public enum Region {
 	GWANJU("광주");
 
 	private final String region;
-
 }

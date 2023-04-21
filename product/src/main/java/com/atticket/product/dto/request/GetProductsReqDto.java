@@ -1,5 +1,9 @@
 package com.atticket.product.dto.request;
 
+import java.time.LocalDate;
+
+import com.atticket.commonenum.Region;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,13 +29,13 @@ public class GetProductsReqDto {
 	private final String subCategory;
 
 	// 지역 (e.g. 서울, 경기, 대전, 광주, ... )
-	private final String region;
+	private final Region region;
 
 	// 시작일
-	private final String startDate;
+	private final LocalDate startDate;
 
 	// 종료일
-	private final String endDate;
+	private final LocalDate endDate;
 
 	// 정렬 옵션 (e.g. 상품명순, 종료임박순, 판매량순, 최신순)
 	private final String sortOption;

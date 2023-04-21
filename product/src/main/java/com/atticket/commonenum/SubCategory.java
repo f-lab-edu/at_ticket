@@ -1,4 +1,4 @@
-package com.atticket.commonEnum;
+package com.atticket.commonenum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +14,4 @@ public enum SubCategory {
 	COMEDY("코미디");
 
 	private final String subCategory;
-
 }

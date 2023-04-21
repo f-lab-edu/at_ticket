@@ -22,7 +22,5 @@ public class GetShowsResDto {
 
 		//공연 시간
 		private final LocalDateTime time;
-
 	}
-
 }

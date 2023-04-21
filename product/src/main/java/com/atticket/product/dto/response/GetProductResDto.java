@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.atticket.commonEnum.AgeLimit;
-import com.atticket.commonEnum.Category;
-import com.atticket.commonEnum.Region;
-import com.atticket.commonEnum.SubCategory;
+import com.atticket.commonenum.AgeLimit;
+import com.atticket.commonenum.Category;
+import com.atticket.commonenum.Region;
+import com.atticket.commonenum.SubCategory;
 
 import lombok.Builder;
 import lombok.Getter;

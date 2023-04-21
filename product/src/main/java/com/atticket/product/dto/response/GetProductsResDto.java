@@ -1,6 +1,11 @@
 package com.atticket.product.dto.response;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+
+import com.atticket.commonenum.AgeLimit;
+import com.atticket.commonenum.Category;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +20,7 @@ public class GetProductsResDto {
 	@Getter
 	public static class Product {
 
-		private final String category;
+		private final Category category;
 
 		private final String id;
 
@@ -25,13 +30,15 @@ public class GetProductsResDto {
 
 		private final Place place;
 
-		private final String startDate;
+		private final LocalDate startDate;
 
-		private final String endDate;
+		private final LocalDate endDate;
 
-		private final String runningTime;
+		private final LocalTime runningTime;
 
-		private final String ageLimit;
+		private final LocalTime interMission;
+
+		private final AgeLimit ageLimit;
 	}
 
 	@Builder

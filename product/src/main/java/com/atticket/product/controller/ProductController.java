@@ -2,9 +2,6 @@ package com.atticket.product.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,17 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
-import com.atticket.common.response.SampleDto;
-import com.atticket.commonEnum.AgeLimit;
-import com.atticket.commonEnum.Category;
-import com.atticket.commonEnum.Region;
-import com.atticket.commonEnum.SubCategory;
-import com.atticket.product.dto.response.GetProductResDto;
-import com.atticket.show.dto.response.GetShowsResDto;
+import com.atticket.commonenum.AgeLimit;
+import com.atticket.commonenum.Category;
+import com.atticket.commonenum.Region;
+import com.atticket.commonenum.SubCategory;
 import com.atticket.product.dto.request.GetProductsReqDto;
-import com.atticket.product.dto.response.GetProductDetailResDto;
+import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
-import com.atticket.product.dto.response.GetShowListResDto;
+import com.atticket.show.dto.response.GetShowsResDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,11 +52,12 @@ public class ProductController {
 					.name("성남아트센터")
 					.build()
 				)
-				.startDate("20230505")
-				.endDate("20230507")
-				.runningTime("160분(인터미션:20분)")
-				.ageLimit("8세이상 관람가능")
-				.category("뮤지컬")
+				.startDate(LocalDate.of(2023, 05, 05))
+				.endDate(LocalDate.of(2023, 05, 07))
+				.runningTime(LocalTime.of(2, 40))
+				.interMission(LocalTime.of(0, 20))
+				.ageLimit(AgeLimit.EIGHT)
+				.category(Category.Musical)
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
@@ -73,11 +68,12 @@ public class ProductController {
 					.name("대전예술의전당")
 					.build()
 				)
-				.startDate("20230519")
-				.endDate("20230521")
-				.runningTime("160분(인터미션:20분)")
-				.ageLimit("8세이상 관람가능")
-				.category("뮤지컬")
+				.startDate(LocalDate.of(2023, 05, 19))
+				.endDate(LocalDate.of(2023, 05, 21))
+				.runningTime(LocalTime.of(2, 40))
+				.interMission(LocalTime.of(0, 20))
+				.ageLimit(AgeLimit.EIGHT)
+				.category(Category.Musical)
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
@@ -88,11 +84,12 @@ public class ProductController {
 					.name("경기아트센터")
 					.build()
 				)
-				.startDate("20230512")
-				.endDate("20230514")
-				.runningTime("160분(인터미션:20분)")
-				.ageLimit("8세이상 관람가능")
-				.category("뮤지컬")
+				.startDate(LocalDate.of(2023, 05, 12))
+				.endDate(LocalDate.of(2023, 05, 14))
+				.runningTime(LocalTime.of(2, 40))
+				.interMission(LocalTime.of(0, 20))
+				.ageLimit(AgeLimit.EIGHT)
+				.category(Category.Musical)
 				.build())
 		).build());
 	}
