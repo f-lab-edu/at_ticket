@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum AgeLimit {
 
-	All(1, "전체 이용가"),
+	ALL(1, "전체 이용가"),
 	EIGHT(8, "8세 이상 이용가"),
 	TWELVE(12, "12세 이상 이용가"),
 	FIFTEEN(15, "15세 이상 이용가"),

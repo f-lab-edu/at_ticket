@@ -15,7 +15,7 @@ public enum Category {
 	EMPTY("없음", Collections.EMPTY_LIST);
 
 	private final String category;
-	private final List<SubCategory> subCategorys;
+	private final List<SubCategory> subCategories;
 
 	/**
 	 *서브카테고리로 카테고리 찾기
@@ -30,7 +30,7 @@ public enum Category {
 	}
 
 	public boolean hasSub(SubCategory sub) {
-		return subCategorys.stream()
+		return subCategories.stream()
 			.anyMatch(s -> s == sub);
 
 	}
