@@ -1,5 +1,6 @@
 package com.atticket.product.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Builder;
@@ -7,21 +8,19 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class GetShowListResDto {
+public class GetShowsResDto {
 	//일자별 공연 조회 ResponseDto
 
-	private final List<ShowSeq> showSeq;
+	private final List<Session> session;
 
 	@Getter
 	@Builder
-	public static class ShowSeq {
+	public static class Session {
 
 		//공연 ID
-		private final String showId;
+		private final String id;
 
 		//공연 시간
-		private final String showTime;
-
+		private final LocalDateTime time;
 	}
-
 }
