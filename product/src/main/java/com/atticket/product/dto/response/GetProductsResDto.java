@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.atticket.commonenum.AgeLimit;
-import com.atticket.commonenum.Category;
+import com.atticket.product.type.AgeLimit;
+import com.atticket.product.type.Category;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.atticket.show.dto.request;
+package com.atticket.product.dto.request;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.atticket.show.controller;
+package com.atticket.product.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
-import com.atticket.show.dto.request.RegisterShowReqDto;
-import com.atticket.show.dto.response.GetRemainSeatsCntResDto;
-import com.atticket.show.dto.response.GetRemainSeatsResDto;
+import com.atticket.product.dto.request.RegisterShowReqDto;
+import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
+import com.atticket.product.dto.response.GetRemainSeatsResDto;
 
 import lombok.extern.slf4j.Slf4j;
 

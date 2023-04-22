@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
-import com.atticket.commonenum.AgeLimit;
-import com.atticket.commonenum.Category;
-import com.atticket.commonenum.Region;
-import com.atticket.commonenum.SubCategory;
 import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
-import com.atticket.show.dto.response.GetShowsResDto;
+import com.atticket.product.dto.response.GetShowsResDto;
+import com.atticket.product.type.AgeLimit;
+import com.atticket.product.type.Category;
+import com.atticket.product.type.Region;
+import com.atticket.product.type.SubCategory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +57,7 @@ public class ProductController {
 				.runningTime(LocalTime.of(2, 40))
 				.interMission(LocalTime.of(0, 20))
 				.ageLimit(AgeLimit.EIGHT)
-				.category(Category.Musical)
+				.category(Category.MUSICAL)
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
@@ -73,7 +73,7 @@ public class ProductController {
 				.runningTime(LocalTime.of(2, 40))
 				.interMission(LocalTime.of(0, 20))
 				.ageLimit(AgeLimit.EIGHT)
-				.category(Category.Musical)
+				.category(Category.MUSICAL)
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
@@ -89,7 +89,7 @@ public class ProductController {
 				.runningTime(LocalTime.of(2, 40))
 				.interMission(LocalTime.of(0, 20))
 				.ageLimit(AgeLimit.EIGHT)
-				.category(Category.Musical)
+				.category(Category.MUSICAL)
 				.build())
 		).build());
 	}

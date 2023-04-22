@@ -1,4 +1,4 @@
-package com.atticket.show.dto.response;
+package com.atticket.product.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;

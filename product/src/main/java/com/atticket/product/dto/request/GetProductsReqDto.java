@@ -2,7 +2,7 @@ package com.atticket.product.dto.request;
 
 import java.time.LocalDate;
 
-import com.atticket.commonenum.Region;
+import com.atticket.product.type.Region;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.atticket.commonenum;
+package com.atticket.product.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

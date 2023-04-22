@@ -1,4 +1,4 @@
-package com.atticket.commonenum;
+package com.atticket.product.type;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,8 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Category {
-	Musical("뮤지컬", Arrays.asList(SubCategory.ORIGINAL, SubCategory.CREATIVE)),
-	Movie("영화", Arrays.asList(SubCategory.HORROR, SubCategory.COMEDY, SubCategory.ROMANCE)),
+	MUSICAL("뮤지컬", Arrays.asList(SubCategory.ORIGINAL, SubCategory.CREATIVE)),
+	MOVIE("영화", Arrays.asList(SubCategory.HORROR, SubCategory.COMEDY, SubCategory.ROMANCE)),
 	EMPTY("없음", Collections.EMPTY_LIST);
 
 	private final String category;
