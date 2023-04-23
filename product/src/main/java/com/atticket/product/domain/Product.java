@@ -8,7 +8,7 @@ import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SubCategory;
 
-
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
