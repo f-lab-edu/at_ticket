@@ -18,7 +18,7 @@ public class GetShowsResDto {
 	public static class Session {
 
 		//공연 ID
-		private final String id;
+		private final Long id;
 
 		//공연 시간
 		private final LocalDateTime time;

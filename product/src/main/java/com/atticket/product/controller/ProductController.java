@@ -5,8 +5,11 @@ import static com.atticket.common.response.BaseResponse.ok;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,14 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
+import com.atticket.product.domain.Grade;
+import com.atticket.product.domain.Product;
+import com.atticket.product.domain.Show;
 import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
+import com.atticket.product.service.ProductService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
-import com.atticket.product.type.Region;
-import com.atticket.product.type.SubCategory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
+	@Autowired
+	private ProductService productService;
 
 	/**
 	 * 상품 검색
@@ -45,10 +53,10 @@ public class ProductController {
 		return ok(GetProductsResDto.builder().productList(List.of(
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
-				.id("product-1")
+				.id(1L)
 				.name("뮤지컬 〈캣츠〉 오리지널 내한－성남（Musical CATS）")
 				.place(GetProductsResDto.Place.builder()
-					.id("place-1")
+					.id(1L)
 					.name("성남아트센터")
 					.build()
 				)
@@ -61,10 +69,10 @@ public class ProductController {
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
-				.id("product-2")
+				.id(2L)
 				.name("뮤지컬 〈캣츠〉 오리지널 내한－대전（Musical CATS）")
 				.place(GetProductsResDto.Place.builder()
-					.id("place-2")
+					.id(2L)
 					.name("대전예술의전당")
 					.build()
 				)
@@ -77,10 +85,10 @@ public class ProductController {
 				.build(),
 			GetProductsResDto.Product.builder()
 				.image("https://s3.atticket.com/products/images/cats")
-				.id("product-3")
+				.id(3L)
 				.name("뮤지컬 〈캣츠〉 오리지널 내한－수원（Musical CATS）")
 				.place(GetProductsResDto.Place.builder()
-					.id("place-3")
+					.id(3L)
 					.name("경기아트센터")
 					.build()
 				)
@@ -95,13 +103,13 @@ public class ProductController {
 	}
 
 	/**
-	 * 상품 정보 조회
+	 * 상품 상세 조회
 	 */
 	@GetMapping("/{productId}")
-	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") String id) throws
+	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") Long id) throws
 		Exception {
 
-		log.debug("getProductDetail - productId : " + id);
+		log.debug("getProduct - id : " + id);
 
 		if (id.equals("error")) {
 			throw new Exception("unexpected error our");
@@ -110,43 +118,48 @@ public class ProductController {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		}
 
-		return ok(GetProductResDto.builder()
-			.region(Region.SEOUL)
-			.product(
-				GetProductResDto.Product.builder()
-					//.category(Category.Musical)
-					.category(Category.findBySubCategory(SubCategory.ORIGINAL))
-					.subCategory(SubCategory.ORIGINAL)
-					.name("캣츠")
-					.explain("설명")
-					.runningTime(LocalTime.of(2, 00))
-					.startDate(LocalDate.of(2023, 04, 21))
-					.endDate(LocalDate.of(2024, 04, 21))
-					.ageLimit(AgeLimit.FIFTEEN)
-					.image("http://이미지.jpg")
-					.build()
-			)
+		//상품 정보
+		Product product = productService.getProductByProductId(id);
 
-			.seatGrades(List.of(
-					GetProductResDto.Grade.builder()
-						.type("A")
-						.price("5000")
-						.build(),
-					GetProductResDto.Grade.builder()
-						.type("B")
-						.price("10000")
+		//공연 정보
+		List<Show> shows = productService.getShowsByProductId(id);
+		//공연 정보에서 Date정보만 뽑기
+		List<LocalDate> showDateList = shows.stream().map(Show::getDate).collect(Collectors.toList());
+
+		//등급 정보
+		List<Grade> grades = productService.getGradesByProductId(id);
+		List<GetProductResDto.Grade> gradeList = new ArrayList<>();
+
+		for (Grade grade : grades) {
+			gradeList.add(
+				GetProductResDto.Grade.builder()
+					.price(grade.getPrice())
+					.type(grade.getType())
+					.build()
+			);
+		}
+
+		return ok(
+			GetProductResDto.builder()
+				.product(
+					GetProductResDto.Product.builder()
+						.category(product.getCategory())
+						.subCategory(product.getSubCategory())
+						.name(product.getName())
+						.explain(product.getExplain())
+						.runningTime(product.getRunningTime())
+						.startDate(product.getStartDate())
+						.endDate(product.getEndDate())
+						.ageLimit(product.getAgeLimit())
+						.image(product.getImage())
+						.region(product.getRegion())
 						.build()
 				)
-			)
-			.showDates(
-				List.of(
-					LocalDate.of(2023, 03, 01),
-					LocalDate.of(2023, 03, 02),
-					LocalDate.of(2023, 04, 01)
-				)
-			)
-
-			.build());
+				.seatGrades(gradeList)
+				.showDates(
+					showDateList
+				).build()
+		);
 	}
 
 	//일자별 공연 조회
@@ -162,12 +175,12 @@ public class ProductController {
 				.session(
 					List.of(
 						GetShowsResDto.Session.builder()
-							.id("1")
-							.time(LocalDateTime.of(2023, 01, 12, 10, 00))
+							.id(1L)
+							.time(LocalDateTime.of(2023, 1, 12, 10, 0))
 							.build(),
 						GetShowsResDto.Session.builder()
-							.id("2")
-							.time(LocalDateTime.of(2023, 01, 13, 10, 00))
+							.id(2L)
+							.time(LocalDateTime.of(2023, 1, 13, 10, 0))
 							.build()
 					)
 				).build()

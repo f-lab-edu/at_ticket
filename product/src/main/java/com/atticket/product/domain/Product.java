@@ -3,19 +3,22 @@ package com.atticket.product.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SubCategory;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Builder
 @Setter
 public class Product {
 
 	//상품 Id
-	private String id;
+	private Long id;
 	//상품 이름
 	private String name;
 	//상품 설명
@@ -37,7 +40,7 @@ public class Product {
 	//이미지
 	private String image;
 	//나이 제한
-	private String ageLimit;
+	private AgeLimit ageLimit;
 	//장소 Id
-	private String placeId;
+	private Long placeId;
 }

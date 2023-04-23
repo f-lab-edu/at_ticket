@@ -22,7 +22,7 @@ public class GetProductsResDto {
 
 		private final Category category;
 
-		private final String id;
+		private final Long id;
 
 		private final String name;
 
@@ -45,7 +45,7 @@ public class GetProductsResDto {
 	@Getter
 	public static class Place {
 
-		private final String id;
+		private final Long id;
 
 		private final String name;
 	}

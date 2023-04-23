@@ -19,9 +19,6 @@ public class GetProductResDto {
 	//상품 세부 정보
 	private final Product product;
 
-	//장소 정보
-	private final Region region;
-
 	//좌석 Type List
 	private final List<Grade> seatGrades;
 
@@ -58,6 +55,9 @@ public class GetProductResDto {
 		//이미지
 		private final String image;
 
+		//장소 정보
+		private final Region region;
+
 	}
 
 	//좌석 등급
@@ -69,7 +69,7 @@ public class GetProductResDto {
 		private final String type;
 
 		//좌석 가격
-		private final String price;
+		private final int price;
 
 	}
 

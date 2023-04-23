@@ -5,13 +5,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class Grade {
+public class SeatGrade {
 
 	private Long id;
+	private String showId;
+	private String seatId;
+	private String gradeId;
 
-	private String type;
-
-	private int price;
-
-	private Long productId;
 }

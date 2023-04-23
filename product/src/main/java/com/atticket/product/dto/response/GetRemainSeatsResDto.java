@@ -15,7 +15,7 @@ public class GetRemainSeatsResDto {
 	@Builder
 	public static class ShowSeat {
 
-		private final String id;
+		private final Long id;
 
 		// 좌석 공간 (e.g. 1층, 2층, .../ A존, B존, ...)
 		private final String space;

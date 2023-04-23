@@ -1,12 +1,12 @@
 package com.atticket.product.domain;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class Hall {
-	private String id;
+	private Long id;
 	private String name;
-	private String hallId;
+	private Long hallId;
 }

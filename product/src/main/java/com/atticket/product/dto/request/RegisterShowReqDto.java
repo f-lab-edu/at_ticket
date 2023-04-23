@@ -10,7 +10,7 @@ import lombok.ToString;
 public class RegisterShowReqDto {
 
 	//상품 Id
-	private String productId;
+	private Long productId;
 
 	//공연 시간/좌석 정보 리스트
 	private List<ShowInfo> shows;
