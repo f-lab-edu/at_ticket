@@ -2,7 +2,6 @@ package com.atticket.product.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,6 +17,7 @@ public class Show {
 	private int session;
 	//공연 일자
 	private LocalDate date;
+
 	private Long productId;
 
 }

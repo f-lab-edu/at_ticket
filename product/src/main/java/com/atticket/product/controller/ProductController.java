@@ -5,6 +5,7 @@ import static com.atticket.common.response.BaseResponse.ok;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +29,13 @@ import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
+
 import com.atticket.product.service.ProductService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
+import com.atticket.product.type.Region;
+import com.atticket.product.type.SubCategory;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,6 +111,7 @@ public class ProductController {
 	 * 상품 상세 조회
 	 */
 	@GetMapping("/{productId}")
+
 	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") Long id) throws
 		Exception {
 
@@ -117,6 +123,7 @@ public class ProductController {
 		if (id.equals("test-error")) {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		}
+
 
 		//상품 정보
 		Product product = productService.getProductByProductId(id);
@@ -138,6 +145,7 @@ public class ProductController {
 					.build()
 			);
 		}
+
 
 		return ok(
 			GetProductResDto.builder()
@@ -181,6 +189,7 @@ public class ProductController {
 						GetShowsResDto.Session.builder()
 							.id(2L)
 							.time(LocalDateTime.of(2023, 1, 13, 10, 0))
+
 							.build()
 					)
 				).build()

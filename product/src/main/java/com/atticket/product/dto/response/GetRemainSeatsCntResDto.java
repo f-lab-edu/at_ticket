@@ -18,6 +18,7 @@ public class GetRemainSeatsCntResDto {
 	public static class RemainSeat {
 
 		//공연 Id
+    
 		private final Long id;
 
 		//좌석 등급

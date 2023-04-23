@@ -17,7 +17,6 @@ public class GetShowsResDto {
 	@Builder
 	public static class Session {
 
-		//공연 ID
 		private final Long id;
 
 		//공연 시간

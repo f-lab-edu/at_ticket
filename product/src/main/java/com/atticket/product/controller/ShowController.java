@@ -30,7 +30,9 @@ public class ShowController {
 
 		return ok(GetRemainSeatsResDto.builder().showSeats(List.of(
 			GetRemainSeatsResDto.ShowSeat.builder()
+
 				.id(1L)
+
 				.space("1층")
 				.locX("12")
 				.locY("22")
@@ -40,7 +42,10 @@ public class ShowController {
 				.price(120000)
 				.build(),
 			GetRemainSeatsResDto.ShowSeat.builder()
+
 				.id(2L)
+
+				.id("showSeat-2")
 				.space("1층")
 				.locX("15")
 				.locY("25")
@@ -77,6 +82,7 @@ public class ShowController {
 						.cnt(40)
 						.build(),
 					GetRemainSeatsCntResDto.RemainSeat.builder()
+
 						.id(2L)
 						.grade("A")
 						.cnt(30)
