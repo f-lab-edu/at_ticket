@@ -1,8 +1,8 @@
 package com.atticket.product.controller;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +37,27 @@ class ProductControllerTest {
 			)
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.data", notNullValue()))
+			.andDo(MockMvcResultHandlers.print());
+
+	}
+
+	@Test
+	@DisplayName("일자별 공연 조회 테스트")
+	void getShowsTest() throws Exception {
+
+		//given
+		String productId = "1";
+
+		//given
+		String date = "20230401";
+
+		//
+		mockMvc.perform(
+				get("/products/" + productId + "/shows?date=" + date)
+			)
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.data", notNullValue()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$..shows", notNullValue()))
 			.andDo(MockMvcResultHandlers.print());
 
 	}

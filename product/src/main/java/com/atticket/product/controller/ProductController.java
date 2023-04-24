@@ -3,9 +3,8 @@ package com.atticket.product.controller;
 import static com.atticket.common.response.BaseResponse.ok;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +28,9 @@ import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
-
 import com.atticket.product.service.ProductService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
-import com.atticket.product.type.Region;
-import com.atticket.product.type.SubCategory;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -124,7 +119,6 @@ public class ProductController {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		}
 
-
 		//상품 정보
 		Product product = productService.getProductByProductId(id);
 
@@ -145,7 +139,6 @@ public class ProductController {
 					.build()
 			);
 		}
-
 
 		return ok(
 			GetProductResDto.builder()
@@ -172,26 +165,41 @@ public class ProductController {
 
 	//일자별 공연 조회
 	@GetMapping("/{productId}/shows")
-	public BaseResponse<GetShowsResDto> getShows(@PathVariable("productId") String id,
-		@RequestParam("date") String date) throws Exception {
+	public BaseResponse<GetShowsResDto> getShows(@PathVariable("productId") Long productId,
+		@RequestParam("date") String inputDate) throws Exception {
 
-		log.debug("getShowList - productId : " + id);
-		log.debug("getShowList - date : " + date);
+		log.debug("getShowList - productId : " + productId);
+		log.debug("getShowList - date : " + inputDate);
+
+		//LocalDate로  입력 날짜 파싱
+		DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
+		LocalDate paredDate = LocalDate.parse(inputDate, formatter);
+
+		//공연 정보
+		List<Show> shows = productService.getShowsByProductId(productId);
+
+		//날짜로 필터링
+		shows = shows.stream().filter(
+			show -> show.getDate().equals(paredDate)
+		).collect(Collectors.toList());
+
+		List<GetShowsResDto.Show> showList = new ArrayList<>();
+
+		for (Show show : shows) {
+
+			showList.add(
+				GetShowsResDto.Show.builder()
+					.id(show.getId())
+					.session(show.getSession())
+					.time(show.getTime())
+					.build()
+			);
+		}
 
 		return ok(
 			GetShowsResDto.builder()
-				.session(
-					List.of(
-						GetShowsResDto.Session.builder()
-							.id(1L)
-							.time(LocalDateTime.of(2023, 1, 12, 10, 0))
-							.build(),
-						GetShowsResDto.Session.builder()
-							.id(2L)
-							.time(LocalDateTime.of(2023, 1, 13, 10, 0))
-
-							.build()
-					)
+				.shows(
+					showList
 				).build()
 		);
 	}
