@@ -10,16 +10,12 @@ import com.atticket.product.type.SubCategory;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Builder
-@Setter
 public class Product {
-
 	//상품 Id
 	private Long id;
-
 	//상품 이름
 	private String name;
 	//상품 설명
@@ -46,4 +42,7 @@ public class Product {
 	//장소 Id
 	private Long placeId;
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

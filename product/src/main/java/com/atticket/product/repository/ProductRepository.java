@@ -66,6 +66,10 @@ public class ProductRepository {
 			).findAny();
 	}
 
+	public void deleteById(Long id) {
+		productTestDatas.removeIf(product -> id.equals(product.getId()));
+	}
+
 	public List<Product> findAll() {
 		return productTestDatas;
 	}

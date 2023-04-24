@@ -120,15 +120,15 @@ public class ProductController {
 		}
 
 		//상품 정보
-		Product product = productService.getProductByProductId(id);
+		Product product = productService.getProductById(id);
 
 		//공연 정보
-		List<Show> shows = productService.getShowsByProductId(id);
+		List<Show> shows = productService.getShowsById(id);
 		//공연 정보에서 Date정보만 뽑기
 		List<LocalDate> showDateList = shows.stream().map(Show::getDate).collect(Collectors.toList());
 
 		//등급 정보
-		List<Grade> grades = productService.getGradesByProductId(id);
+		List<Grade> grades = productService.getGradesById(id);
 		List<GetProductResDto.Grade> gradeList = new ArrayList<>();
 
 		for (Grade grade : grades) {
@@ -176,7 +176,7 @@ public class ProductController {
 		LocalDate paredDate = LocalDate.parse(inputDate, formatter);
 
 		//공연 정보
-		List<Show> shows = productService.getShowsByProductId(productId);
+		List<Show> shows = productService.getShowsById(productId);
 
 		//날짜로 필터링
 		shows = shows.stream().filter(
@@ -205,10 +205,12 @@ public class ProductController {
 	}
 
 	/**
-	 * 상품 내용 삭제
+	 * 상품 삭제
 	 * */
 	@DeleteMapping("/{productId}")
-	public BaseResponse deleteProductContent(@PathVariable("productId") String id) {
+	public BaseResponse deleteProduct(@PathVariable("productId") Long id) {
+
+		productService.deleteProduct(id);
 		return ok();
 	}
 
