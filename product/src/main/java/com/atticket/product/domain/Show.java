@@ -2,6 +2,7 @@ package com.atticket.product.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 import lombok.Builder;
 import lombok.Getter;
 

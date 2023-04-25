@@ -15,46 +15,25 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class ProductControllerTest {
+class ShowControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Test
-	@DisplayName("mockMvc를 통한 상품 상세 조회 테스트")
-	void getProductTest() throws Exception {
-
-		//given
-		String productId = "1";
-		//
-		mockMvc.perform(
-				get("/products/" + productId)
-			)
-			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.data", notNullValue()))
-			.andDo(MockMvcResultHandlers.print());
-
-	}
-
-	@Test
-	@DisplayName("일자별 공연 조회 테스트")
+	@DisplayName("공연의 남은 좌석수 조회 테스트")
 	void getShowsTest() throws Exception {
 
 		//given
-		String productId = "1";
-
-		//given
-		String date = "20230401";
+		String showId = "1";
 
 		//
 		mockMvc.perform(
-				get("/products/" + productId + "/shows?date=" + date)
+				get("/shows/" + showId + "/seats/count")
 			)
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.data", notNullValue()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$..shows", notNullValue()))
 			.andDo(MockMvcResultHandlers.print());
 
 	}
-
 }

@@ -14,5 +14,4 @@ public class Grade {
 	private int price;
 
 	private Long productId;
-
 }

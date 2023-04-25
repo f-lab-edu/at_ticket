@@ -2,8 +2,10 @@ package com.atticket.product.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
+import com.atticket.product.domain.Grade;
+import com.atticket.product.domain.SeatGrade;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
+import com.atticket.product.service.ProductService;
+import com.atticket.product.service.ShowService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +29,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/shows")
 public class ShowController {
+
+	@Autowired
+	ShowService showService;
+
+	@Autowired
+	ProductService productService;
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")
@@ -65,29 +77,45 @@ public class ShowController {
 
 	//공연의 남은 좌석수 조회
 	@GetMapping("/{showId}/seats/count")
-	public BaseResponse<GetRemainSeatsCntResDto> getRemainSeatsCnt(@PathVariable("showId") String id) {
+	public BaseResponse<GetRemainSeatsCntResDto> getRemainSeatsCnt(@PathVariable("showId") Long showId) {
 
-		log.info("getRemainSeatsCnt - showId : " + id);
+		log.debug("getRemainSeatsCnt - showId : " + showId);
 
-		return ok(GetRemainSeatsCntResDto.builder()
-			.remainSeats(
-				List.of(
-					GetRemainSeatsCntResDto.RemainSeat.builder()
-						.id(1L)
-						.grade("S")
-						.cnt(40)
-						.build(),
-					GetRemainSeatsCntResDto.RemainSeat.builder()
+		//공연의 좌석 - 등급 매핑 정보 조회
+		List<SeatGrade> seatGrades = showService.getSeatGradeByShowId(showId);
 
-						.id(2L)
-						.grade("A")
-						.cnt(30)
-						.build()
+		List<GetRemainSeatsCntResDto.RemainSeat> remainSeats = new ArrayList<>();
 
-				)
+		//showId에 해당하는 좌석 없음.
+		if (seatGrades.size() == 0) {
 
-			)
-			.build());
+			return ok();
+
+		} else {
+
+			//productId로 Grade List 조회
+			Long productId = seatGrades.get(0).getProductId();
+			List<Grade> grades = productService.getGradesById(productId);
+
+			//Grade List의 Grade로 좌석 카운트하기
+			for (Grade grade : grades) {
+
+				GetRemainSeatsCntResDto.RemainSeat remainSeat
+					= GetRemainSeatsCntResDto.RemainSeat.builder()
+					.showId(showId)
+					.grade(grade.getType())
+					.cnt((int)seatGrades.stream().filter(s -> s.getGradeId().equals(grade.getId())).count())
+					.build();
+
+				remainSeats.add(remainSeat);
+			}
+		}
+
+		return ok(
+			GetRemainSeatsCntResDto.builder()
+				.remainSeats(remainSeats)
+				.build()
+		);
 	}
 
 	//공연 등록

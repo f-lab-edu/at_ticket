@@ -8,8 +8,9 @@ import lombok.Getter;
 public class SeatGrade {
 
 	private Long id;
-	private String showId;
-	private String seatId;
-	private String gradeId;
+	private Long showId;
+	private Long seatId;
+	private Long gradeId;
+	private Long productId;
 
 }

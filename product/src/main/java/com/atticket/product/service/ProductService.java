@@ -11,7 +11,6 @@ import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
 import com.atticket.product.repository.GradeRepository;
 import com.atticket.product.repository.ProductRepository;
-import com.atticket.product.repository.SeatRepository;
 import com.atticket.product.repository.ShowRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final ShowRepository showRepository;
 	private final GradeRepository gradeRepository;
-	private final SeatRepository seatRepository;
 
 	/**
 	 * 상품 삭제
