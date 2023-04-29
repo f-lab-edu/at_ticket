@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Seat {
-
+	
 	//좌석 id
 	private Long id;
 

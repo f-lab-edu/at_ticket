@@ -13,7 +13,7 @@ import com.atticket.product.domain.Grade;
 @Repository
 public class GradeRepository {
 
-	private static List<Grade> gradeTestDatas = new ArrayList<>(Arrays.asList(
+	private List<Grade> gradeTestDatas = new ArrayList<>(Arrays.asList(
 		Grade.builder()
 			.id(1L)
 			.type("A")

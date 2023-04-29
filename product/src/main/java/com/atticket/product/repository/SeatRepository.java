@@ -11,7 +11,7 @@ import com.atticket.product.domain.Seat;
 @Repository
 public class SeatRepository {
 
-	private static List<Seat> seatTestDatas = new ArrayList<>();
+	private List<Seat> seatTestDatas = new ArrayList<>();
 
 	public Optional<Seat> findById(Long seatId) {
 

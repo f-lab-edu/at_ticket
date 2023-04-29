@@ -19,7 +19,7 @@ import com.atticket.product.type.SubCategory;
 public class ProductRepository {
 
 	/// 테스트 데이타
-	private static List<Product> productTestDatas = new ArrayList<>(
+	private List<Product> productTestDatas = new ArrayList<>(
 		Arrays.asList(
 			Product.builder()
 				.id(1L)

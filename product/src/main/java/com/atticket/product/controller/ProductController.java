@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,19 +27,26 @@ import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
+import com.atticket.product.repository.GradeRepository;
+import com.atticket.product.repository.ProductRepository;
+import com.atticket.product.repository.ShowRepository;
 import com.atticket.product.service.ProductService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
 
-	@Autowired
-	private ProductService productService;
+	private final ProductService productService;
+	private final ProductRepository productRepository;
+	private final ShowRepository showRepository;
+	private final GradeRepository gradeRepository;
 
 	/**
 	 * 상품 검색
@@ -120,15 +126,15 @@ public class ProductController {
 		}
 
 		//상품 정보
-		Product product = productService.getProductById(id);
+		Product product = productRepository.findById(id).get();
 
 		//공연 정보
-		List<Show> shows = productService.getShowsById(id);
+		List<Show> shows = showRepository.findShowsByProductId(id);
 		//공연 정보에서 Date정보만 뽑기
 		List<LocalDate> showDateList = shows.stream().map(Show::getDate).collect(Collectors.toList());
 
 		//등급 정보
-		List<Grade> grades = productService.getGradesById(id);
+		List<Grade> grades = gradeRepository.findGradeByProductId(id);
 		List<GetProductResDto.Grade> gradeList = new ArrayList<>();
 
 		for (Grade grade : grades) {
@@ -176,7 +182,7 @@ public class ProductController {
 		LocalDate paredDate = LocalDate.parse(inputDate, formatter);
 
 		//공연 정보
-		List<Show> shows = productService.getShowsById(productId);
+		List<Show> shows = showRepository.findShowsByProductId(productId);
 
 		//날짜로 필터링
 		shows = shows.stream().filter(

@@ -14,7 +14,7 @@ import com.atticket.product.domain.Show;
 @Repository
 public class ShowRepository {
 
-	private static List<Show> showTestDatas = Arrays.asList(
+	private List<Show> showTestDatas = Arrays.asList(
 
 		Show.builder()
 			.id(1L)
