@@ -20,9 +20,7 @@ import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
 import com.atticket.product.repository.GradeRepository;
 import com.atticket.product.repository.ReservedSeatRepository;
-import com.atticket.product.repository.ShowRepository;
 import com.atticket.product.repository.ShowSeatRepository;
-import com.atticket.product.service.ShowService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/shows")
 public class ShowController {
 
-	private final ShowService showService;
 	private final GradeRepository gradeRepository;
 	private final ShowSeatRepository showSeatRepository;
-	private final ShowRepository showRepository;
 	private final ReservedSeatRepository reservedSeatRepository;
 
 	//공연의 남은 좌석 조회
