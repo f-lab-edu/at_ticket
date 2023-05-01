@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Seat {
-	
+
 	//좌석 id
-	private Long id;
+	// private Long id;
 
 	// 좌석 공간 (e.g. 1층, 2층, .../ A존, B존, ...)
 	private String space;

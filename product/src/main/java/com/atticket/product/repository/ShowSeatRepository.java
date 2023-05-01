@@ -18,7 +18,7 @@ public class ShowSeatRepository {
 	private List<Long> testSeatListData3 = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L);
 	private List<Long> testSeatListData4 = Arrays.asList(9L, 10L, 11L);
 
-	private List<ShowSeat> ShowSeatTestDatas = new ArrayList<>(Arrays.asList(
+	private List<ShowSeat> showSeatTestDatas = new ArrayList<>(Arrays.asList(
 		ShowSeat.builder()
 			.id(1L)
 			.showId(1L)
@@ -50,7 +50,7 @@ public class ShowSeatRepository {
 	));
 
 	public Optional<ShowSeat> findById(String id) {
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getId().equals(id)
 			).findAny();
@@ -58,7 +58,7 @@ public class ShowSeatRepository {
 
 	public List<ShowSeat> findShowSeatByProductId(Long productId) {
 
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getProductId().equals(productId)
 			).collect(Collectors.toList());
@@ -66,14 +66,14 @@ public class ShowSeatRepository {
 
 	public List<ShowSeat> findShowSeatByShowId(Long showId) {
 
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getShowId().equals(showId)
 			).collect(Collectors.toList());
 	}
 
 	public List<ShowSeat> findAll() {
-		return ShowSeatTestDatas;
+		return showSeatTestDatas;
 	}
 
 	/**
