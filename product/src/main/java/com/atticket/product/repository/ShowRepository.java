@@ -2,7 +2,9 @@ package com.atticket.product.repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,29 +16,30 @@ import com.atticket.product.domain.Show;
 @Repository
 public class ShowRepository {
 
-	private List<Show> showTestDatas = Arrays.asList(
+	private List<Show> showTestDatas = Collections.synchronizedList(new ArrayList<>(Arrays.asList(
 
-		Show.builder()
-			.id(1L)
-			.time(LocalTime.of(10, 0, 0))
-			.session(1)
-			.date(LocalDate.of(2023, 3, 1))
-			.productId(1L)
-			.build(),
-		Show.builder()
-			.id(2L)
-			.time(LocalTime.of(12, 0, 0))
-			.session(2)
-			.date(LocalDate.of(2023, 3, 1))
-			.productId(1L)
-			.build(),
-		Show.builder()
-			.id(3L)
-			.time(LocalTime.of(10, 0, 0))
-			.session(1)
-			.date(LocalDate.of(2023, 4, 1))
-			.productId(1L)
-			.build()
+			Show.builder()
+				.id(1L)
+				.time(LocalTime.of(10, 0, 0))
+				.session(1)
+				.date(LocalDate.of(2023, 3, 1))
+				.productId(1L)
+				.build(),
+			Show.builder()
+				.id(2L)
+				.time(LocalTime.of(12, 0, 0))
+				.session(2)
+				.date(LocalDate.of(2023, 3, 1))
+				.productId(1L)
+				.build(),
+			Show.builder()
+				.id(3L)
+				.time(LocalTime.of(10, 0, 0))
+				.session(1)
+				.date(LocalDate.of(2023, 4, 1))
+				.productId(1L)
+				.build()
+		))
 	);
 
 	public Optional<Show> findById(String id) {

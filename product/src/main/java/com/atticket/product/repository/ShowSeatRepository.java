@@ -68,7 +68,7 @@ public class ShowSeatRepository {
 
 		return ShowSeatTestDatas.stream()
 			.filter(
-				showSeat -> showSeat.getProductId().equals(showId)
+				showSeat -> showSeat.getShowId().equals(showId)
 			).collect(Collectors.toList());
 	}
 
@@ -85,7 +85,7 @@ public class ShowSeatRepository {
 
 		List<Long> seatList = new ArrayList<>();
 		if (!stringSeatList.isBlank()) {
-			String[] seatString = (stringSeatList).split("");
+			String[] seatString = (stringSeatList).split(",");
 			for (String seat : seatString) {
 				seatList.add(Long.parseLong(seat));
 			}

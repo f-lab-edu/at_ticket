@@ -4,9 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
-import com.atticket.product.repository.GradeRepository;
+import com.atticket.product.domain.Product;
 import com.atticket.product.repository.ProductRepository;
-import com.atticket.product.repository.ShowRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,8 +14,17 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
 	private final ProductRepository productRepository;
-	private final ShowRepository showRepository;
-	private final GradeRepository gradeRepository;
+
+	/**
+	 *상품id로 상품 조회
+	 * @param productId
+	 * @return
+	 */
+	public Product getProductById(Long productId) {
+
+		return productRepository.findById(productId).orElse(null);
+
+	}
 
 	/**
 	 * 상품 삭제

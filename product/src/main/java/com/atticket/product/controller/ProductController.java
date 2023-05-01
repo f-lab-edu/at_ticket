@@ -28,7 +28,6 @@ import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
 import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.repository.ShowRepository;
 import com.atticket.product.service.ProductService;
 import com.atticket.product.type.AgeLimit;
@@ -44,7 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 
 	private final ProductService productService;
-	private final ProductRepository productRepository;
 	private final ShowRepository showRepository;
 	private final GradeRepository gradeRepository;
 
@@ -126,7 +124,13 @@ public class ProductController {
 		}
 
 		//상품 정보
-		Product product = productRepository.findById(id).get();
+		Product product = productService.getProductById(id);
+
+		if (product == null) {
+			return ok(
+				GetProductResDto.builder().build()
+			);
+		}
 
 		//공연 정보
 		List<Show> shows = showRepository.findShowsByProductId(id);

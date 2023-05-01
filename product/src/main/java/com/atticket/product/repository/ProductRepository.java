@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ import com.atticket.product.type.SubCategory;
 public class ProductRepository {
 
 	/// 테스트 데이타
-	private List<Product> productTestDatas = new ArrayList<>(
+	private List<Product> productTestDatas = Collections.synchronizedList(new ArrayList<>(
 		Arrays.asList(
 			Product.builder()
 				.id(1L)
@@ -48,7 +49,8 @@ public class ProductRepository {
 				.region(Region.SEOUL)
 				.build()
 
-		));
+		))
+	);
 
 	public Long save(Product product) {
 
