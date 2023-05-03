@@ -66,4 +66,10 @@ public class ShowSeatRepository {
 			).collect(Collectors.toList());
 	}
 
+	public Long save(ShowSeat showSeat) {
+		showSeat.setId((long)showSeatTestDatas.size() + 1);
+		showSeatTestDatas.add(showSeat);
+		return (long)showSeatTestDatas.size() + 1;
+	}
+
 }

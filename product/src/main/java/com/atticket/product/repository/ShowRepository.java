@@ -40,6 +40,14 @@ public class ShowRepository {
 			.build()
 	));
 
+	public Long save(Show show, Long productId) {
+
+		show.setId((long)(showTestDatas).size() + 1);
+		showTestDatas.add(show);
+
+		return (long)showTestDatas.size() + 1;
+	}
+
 	public Optional<Show> findById(String id) {
 
 		return showTestDatas.stream()
