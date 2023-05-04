@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
-import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Grade;
 import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
@@ -111,17 +109,9 @@ public class ProductController {
 	 */
 	@GetMapping("/{productId}")
 
-	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") Long id) throws
-		Exception {
+	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") Long id) {
 
 		log.debug("getProduct - id : " + id);
-
-		if (id.equals("error")) {
-			throw new Exception("unexpected error our");
-		}
-		if (id.equals("test-error")) {
-			throw new BaseException(BaseStatus.TEST_ERROR);
-		}
 
 		//상품 정보
 		Product product = productService.getProductById(id);
@@ -208,9 +198,8 @@ public class ProductController {
 
 		return ok(
 			GetShowsResDto.builder()
-				.shows(
-					showList
-				).build()
+				.shows(showList)
+				.build()
 		);
 	}
 

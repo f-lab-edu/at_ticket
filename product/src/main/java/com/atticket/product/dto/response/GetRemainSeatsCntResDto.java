@@ -18,14 +18,13 @@ public class GetRemainSeatsCntResDto {
 	public static class RemainSeat {
 
 		//공연 Id
-
-		private final Long showId;
+		private Long showId;
 
 		//좌석 등급
-		private final String grade;
+		private String grade;
 
 		//남은 좌석 수
-		private final int cnt;
+		private int cnt;
 
 	}
 

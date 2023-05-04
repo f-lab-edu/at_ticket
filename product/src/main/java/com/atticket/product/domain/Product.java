@@ -14,31 +14,43 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Product {
-	//상품 Id
+
+	//상품 id
 	private Long id;
-	//상품 이름
+
+	//이름
 	private String name;
-	//상품 설명
+
+	//설명
 	private String explain;
+
 	//도메인 카테고리
 	private Category category;
+
 	//도메인별 세부 장르
 	private SubCategory subCategory;
+
 	//러닝 타임
 	private LocalTime runningTime;
+
 	//인터 미션
 	private LocalTime interMission;
+
 	//지역
 	private Region region;
+
 	//상연 시작 일자
 	private LocalDate startDate;
+
 	//상연 종료 일자
 	private LocalDate endDate;
+
 	//이미지
 	private String image;
-	//나이 제한
 
+	//나이 제한
 	private AgeLimit ageLimit;
+
 	//장소 Id
 	private Long placeId;
 

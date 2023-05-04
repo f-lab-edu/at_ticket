@@ -72,8 +72,4 @@ public class ProductRepository {
 		productTestDatas.removeIf(product -> id.equals(product.getId()));
 	}
 
-	public List<Product> findAll() {
-		return productTestDatas;
-	}
-
 }

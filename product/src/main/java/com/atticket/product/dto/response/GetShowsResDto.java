@@ -18,12 +18,12 @@ public class GetShowsResDto {
 	public static class Show {
 
 		//공연 Id
-		private final Long id;
+		private Long id;
 
 		//session
-		private final int session;
+		private int session;
 
 		//공연 시간
-		private final LocalTime time;
+		private LocalTime time;
 	}
 }

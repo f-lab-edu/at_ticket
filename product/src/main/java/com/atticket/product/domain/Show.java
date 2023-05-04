@@ -10,15 +10,22 @@ import lombok.Getter;
 @Builder
 public class Show {
 
-	//공연 Id
+	//공연 id
 	private Long id;
-	//공연 시간
+
+	//시간
 	private LocalTime time;
-	//공연 회차
+
+	//회차
 	private int session;
-	//공연 일자
+
+	//일자
 	private LocalDate date;
 
+	//상품 id
 	private Long productId;
+
+	//공연홀 id
+	private Long hallId;
 
 }

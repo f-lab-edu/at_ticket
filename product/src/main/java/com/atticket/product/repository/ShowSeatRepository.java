@@ -72,10 +72,6 @@ public class ShowSeatRepository {
 			).collect(Collectors.toList());
 	}
 
-	public List<ShowSeat> findAll() {
-		return showSeatTestDatas;
-	}
-
 	/**
 	 * seatList을 String -> List<Long> 반환
 	 * @param stringSeatList

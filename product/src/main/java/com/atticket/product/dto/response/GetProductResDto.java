@@ -29,34 +29,34 @@ public class GetProductResDto {
 	@Builder
 	public static class Product {
 
-		private final String name;
+		private String name;
 
 		//상품 설명
-		private final String explain;
+		private String explain;
 
 		//카테고리
-		private final Category category;
+		private Category category;
 
 		//하위 카테고리
-		private final SubCategory subCategory;
+		private SubCategory subCategory;
 
 		//러닝 타임
-		private final LocalTime runningTime;
+		private LocalTime runningTime;
 
 		//상연 시작 일자
-		private final LocalDate startDate;
+		private LocalDate startDate;
 
 		//상연 종료 일자
-		private final LocalDate endDate;
+		private LocalDate endDate;
 
 		//나이 제한
-		private final AgeLimit ageLimit;
+		private AgeLimit ageLimit;
 
 		//이미지
-		private final String image;
+		private String image;
 
 		//장소 정보
-		private final Region region;
+		private Region region;
 
 	}
 
@@ -66,10 +66,10 @@ public class GetProductResDto {
 	public static class Grade {
 
 		//좌석 타입
-		private final String type;
+		private String type;
 
 		//좌석 가격
-		private final int price;
+		private int price;
 
 	}
 

@@ -15,23 +15,23 @@ public class GetRemainSeatsResDto {
 	@Builder
 	public static class ShowSeat {
 
-		private final Long id;
+		private Long id;
 
 		// 좌석 공간 (e.g. 1층, 2층, .../ A존, B존, ...)
-		private final String space;
+		private String space;
 
 		// 좌석 x 좌표
-		private final String locX;
+		private String locX;
 
 		// 좌석 y 좌표
-		private final String locY;
+		private String locY;
 
-		private final String row;
+		private String row;
 
-		private final int rowNum;
+		private int rowNum;
 
-		private final String grade;
+		private String grade;
 
-		private final int price;
+		private int price;
 	}
 }

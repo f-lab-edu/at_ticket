@@ -58,7 +58,4 @@ public class ShowRepository {
 			).collect(Collectors.toList());
 	}
 
-	public List<Show> findAll() {
-		return showTestDatas;
-	}
 }

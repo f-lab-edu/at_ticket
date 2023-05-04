@@ -22,7 +22,4 @@ public class SeatRepository {
 			).findAny();
 	}
 
-	public List<Seat> findAll() {
-		return seatTestDatas;
-	}
 }

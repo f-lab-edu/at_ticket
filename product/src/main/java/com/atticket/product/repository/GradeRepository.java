@@ -47,7 +47,4 @@ public class GradeRepository {
 			).collect(Collectors.toList());
 	}
 
-	public List<Grade> findAll() {
-		return gradeTestDatas;
-	}
 }

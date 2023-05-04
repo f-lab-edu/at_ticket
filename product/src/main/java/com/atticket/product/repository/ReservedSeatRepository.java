@@ -62,8 +62,4 @@ public class ReservedSeatRepository {
 			).collect(Collectors.toList());
 	}
 
-	public List<ReservedSeat> findAll() {
-		return reservedSeatTestDatas;
-	}
-
 }
