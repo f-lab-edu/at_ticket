@@ -16,14 +16,12 @@ public class GetShowsResDto {
 	@Getter
 	@Builder
 	public static class Show {
-
+		
 		//공연 Id
-		private Long id;
-
+		private final Long id;
 		//session
-		private int session;
-
+		private final int session;
 		//공연 시간
-		private LocalTime time;
+		private final LocalTime time;
 	}
 }

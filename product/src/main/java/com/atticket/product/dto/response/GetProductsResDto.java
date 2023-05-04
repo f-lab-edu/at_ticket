@@ -19,34 +19,22 @@ public class GetProductsResDto {
 	@Builder
 	@Getter
 	public static class Product {
-
-		private Category category;
-
-		private Long id;
-
-		private String name;
-
-		private String image;
-
-		private Place place;
-
-		private LocalDate startDate;
-
-		private LocalDate endDate;
-
-		private LocalTime runningTime;
-
-		private LocalTime interMission;
-
-		private AgeLimit ageLimit;
+		private final Category category;
+		private final Long id;
+		private final String name;
+		private final String image;
+		private final Place place;
+		private final LocalDate startDate;
+		private final LocalDate endDate;
+		private final LocalTime runningTime;
+		private final LocalTime interMission;
+		private final AgeLimit ageLimit;
 	}
 
 	@Builder
 	@Getter
 	public static class Place {
-
-		private Long id;
-
-		private String name;
+		private final Long id;
+		private final String name;
 	}
 }

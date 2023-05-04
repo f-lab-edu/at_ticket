@@ -18,10 +18,8 @@ public class GetProductResDto {
 
 	//상품 세부 정보
 	private final Product product;
-
 	//좌석 Type List
 	private final List<Grade> seatGrades;
-
 	//List<공연 상연일>
 	private final List<LocalDate> showDates;
 
@@ -29,35 +27,25 @@ public class GetProductResDto {
 	@Builder
 	public static class Product {
 
-		private String name;
-
+		private final String name;
 		//상품 설명
-		private String explain;
-
+		private final String explain;
 		//카테고리
-		private Category category;
-
+		private final Category category;
 		//하위 카테고리
-		private SubCategory subCategory;
-
+		private final SubCategory subCategory;
 		//러닝 타임
-		private LocalTime runningTime;
-
+		private final LocalTime runningTime;
 		//상연 시작 일자
-		private LocalDate startDate;
-
+		private final LocalDate startDate;
 		//상연 종료 일자
-		private LocalDate endDate;
-
+		private final LocalDate endDate;
 		//나이 제한
-		private AgeLimit ageLimit;
-
+		private final AgeLimit ageLimit;
 		//이미지
-		private String image;
-
+		private final String image;
 		//장소 정보
-		private Region region;
-
+		private final Region region;
 	}
 
 	//좌석 등급
@@ -66,11 +54,8 @@ public class GetProductResDto {
 	public static class Grade {
 
 		//좌석 타입
-		private String type;
-
+		private final String type;
 		//좌석 가격
-		private int price;
-
+		private final int price;
 	}
-
 }
