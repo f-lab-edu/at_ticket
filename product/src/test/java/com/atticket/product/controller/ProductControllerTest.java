@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
-import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ShowRepository;
+import com.atticket.product.service.GradeService;
 import com.atticket.product.service.ProductService;
+import com.atticket.product.service.ShowService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
@@ -38,9 +38,9 @@ public class ProductControllerTest {
 	ProductService productService;
 
 	@MockBean
-	ShowRepository showRepository;
+	ShowService showService;
 	@MockBean
-	GradeRepository gradeRepository;
+	GradeService gradeService;
 
 	@Test
 	@DisplayName("mockMvc를 통한 상품 상세 조회 테스트")
@@ -84,7 +84,7 @@ public class ProductControllerTest {
 		String productId = "1";
 		String date = "20230301";
 
-		given(showRepository.findShowsByProductId(1L)).willReturn(
+		given(showService.getShowsByProductId(1L)).willReturn(
 			Arrays.asList(
 				Show.builder()
 					.id(1L)

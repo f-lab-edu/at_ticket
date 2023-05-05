@@ -22,28 +22,28 @@ public class ShowSeatRepository {
 		ShowSeat.builder()
 			.id(1L)
 			.showId(1L)
-			.seatList(convertListToString(testSeatListData1))
+			.seatList("1,2,3,4,5,6,7")
 			.gradeId(1L)
 			.productId(1L)
 			.build(),
 		ShowSeat.builder()
 			.id(2L)
 			.showId(1L)
-			.seatList(convertListToString(testSeatListData2))
+			.seatList("8,9,10,11")
 			.gradeId(2L)
 			.productId(1L)
 			.build(),
 		ShowSeat.builder()
 			.id(3L)
 			.showId(2L)
-			.seatList(convertListToString(testSeatListData3))
+			.seatList("1,2,3,4,5,6,7,8")
 			.gradeId(1L)
 			.productId(1L)
 			.build(),
 		ShowSeat.builder()
 			.id(4L)
 			.showId(2L)
-			.seatList(convertListToString(testSeatListData4))
+			.seatList("9,10,11")
 			.gradeId(2L)
 			.productId(1L)
 			.build()
@@ -70,35 +70,6 @@ public class ShowSeatRepository {
 			.filter(
 				showSeat -> showSeat.getShowId().equals(showId)
 			).collect(Collectors.toList());
-	}
-
-	/**
-	 * seatList을 String -> List<Long> 반환
-	 * @param stringSeatList
-	 * @return
-	 */
-	public List<Long> convertStringToList(String stringSeatList) {
-
-		List<Long> seatList = new ArrayList<>();
-		if (!stringSeatList.isBlank()) {
-			String[] seatString = (stringSeatList).split(",");
-			for (String seat : seatString) {
-				seatList.add(Long.parseLong(seat));
-			}
-		}
-
-		return seatList;
-	}
-
-	/**
-	 * seatList을 List<Long> -> String 반환
-	 * @param seatList
-	 * @return
-	 */
-	public String convertListToString(List<Long> seatList) {
-
-		List<String> seatStringList = seatList.stream().map(s -> Long.toString(s)).collect(Collectors.toList());
-		return String.join(",", seatStringList);
 	}
 
 }

@@ -6,7 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum SubCategory {
-
 	ORIGINAL("오리지널"),
 	CREATIVE("창작"),
 	HORROR("공포"),

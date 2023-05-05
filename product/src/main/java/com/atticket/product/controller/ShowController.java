@@ -2,8 +2,8 @@ package com.atticket.product.controller;
 
 import static com.atticket.common.response.BaseResponse.ok;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
-import com.atticket.product.domain.ReservedSeat;
-import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
-import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ReservedSeatRepository;
-import com.atticket.product.repository.ShowSeatRepository;
+import com.atticket.product.dto.service.RemainSeatCntServiceDto;
+import com.atticket.product.service.ShowSeatService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/shows")
 public class ShowController {
 
-	private final GradeRepository gradeRepository;
-	private final ShowSeatRepository showSeatRepository;
-	private final ReservedSeatRepository reservedSeatRepository;
+	private final ShowSeatService showSeatService;
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")
@@ -81,49 +76,20 @@ public class ShowController {
 
 		log.debug("getRemainSeatsCnt - showId : " + showId);
 
-		//공연의 좌석 - 등급 매핑 정보 조회
-		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		//등급별 남은 좌석 조회
+		List<RemainSeatCntServiceDto> reminsCnts = showSeatService.getRemainSeatCntByShowId(showId);
 
-		//showId로 예매 좌석 리스트 조회
-		List<ReservedSeat> reservedSeats = reservedSeatRepository.findShowSeatByShowId(showId);
-
-		List<GetRemainSeatsCntResDto.RemainSeat> remainSeats = new ArrayList<>();
-
-		//showSeats 등급별 SeatList 카운트
-
-		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
-		for (ShowSeat showSeat : showSeats) {
-			List<Long> seats = showSeatRepository.convertStringToList(showSeat.getSeatList());
-			int remainSeatCnt = seats.size();
-
-			log.debug("showId : " + showId);
-			log.debug("seats : " + showSeat.getSeatList());
-
-			for (ReservedSeat reservedSeat : reservedSeats) {
-				for (Long seat : seats) {
-
-					log.debug("reserved seats : " + reservedSeat.getSeatId());
-					if (seat.equals(reservedSeat.getSeatId())) {
-						remainSeatCnt = remainSeatCnt - 1;
-					}
-				}
-			}
-
-			remainSeats.add(
-				GetRemainSeatsCntResDto.RemainSeat.builder()
-					.showId(showSeat.getShowId())
-					.grade(
-						(gradeRepository.findById(showSeat.getGradeId())).get().getType()
-					)
-					.cnt(remainSeatCnt)
-					.build()
-			);
-
-		}
+		List<GetRemainSeatsCntResDto.RemainSeat> remainSeatsList = reminsCnts.stream()
+			.map(cntDto -> GetRemainSeatsCntResDto.RemainSeat.builder()
+				.showId(showId)
+				.grade(cntDto.getGradeNm())
+				.cnt(cntDto.getSeatCnt())
+				.build())
+			.collect(Collectors.toList());
 
 		return ok(
 			GetRemainSeatsCntResDto.builder()
-				.remainSeats(remainSeats)
+				.remainSeats(remainSeatsList)
 				.build()
 		);
 	}

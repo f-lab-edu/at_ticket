@@ -16,8 +16,8 @@ public class GetShowsResDto {
 	@Getter
 	@Builder
 	public static class Show {
-		
-		//공연 Id
+
+		//공연 id
 		private final Long id;
 		//session
 		private final int session;

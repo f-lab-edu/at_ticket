@@ -5,7 +5,6 @@ import static com.atticket.common.response.BaseResponse.ok;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +24,9 @@ import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.dto.response.GetProductsResDto;
 import com.atticket.product.dto.response.GetShowsResDto;
-import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ShowRepository;
+import com.atticket.product.service.GradeService;
 import com.atticket.product.service.ProductService;
+import com.atticket.product.service.ShowService;
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 
@@ -41,8 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 
 	private final ProductService productService;
-	private final ShowRepository showRepository;
-	private final GradeRepository gradeRepository;
+	private final ShowService showService;
+	private final GradeService gradeService;
 
 	/**
 	 * 상품 검색
@@ -116,29 +115,23 @@ public class ProductController {
 		//상품 정보
 		Product product = productService.getProductById(id);
 
-		if (product == null) {
+		//상품이 없는 경우
+		if (product.getId() == null) {
 			return ok(
 				GetProductResDto.builder().build()
 			);
 		}
 
-		//공연 정보
-		List<Show> shows = showRepository.findShowsByProductId(id);
-		//공연 정보에서 Date정보만 뽑기
-		List<LocalDate> showDateList = shows.stream().map(Show::getDate).collect(Collectors.toList());
-
 		//등급 정보
-		List<Grade> grades = gradeRepository.findGradeByProductId(id);
-		List<GetProductResDto.Grade> gradeList = new ArrayList<>();
+		List<Grade> grades = gradeService.getGradesByProductId(id);
 
-		for (Grade grade : grades) {
-			gradeList.add(
+		List<GetProductResDto.Grade> gradeList =
+			grades.stream().map(x ->
 				GetProductResDto.Grade.builder()
-					.price(grade.getPrice())
-					.type(grade.getType())
+					.price(x.getPrice())
+					.type(x.getType())
 					.build()
-			);
-		}
+			).collect(Collectors.toList());
 
 		return ok(
 			GetProductResDto.builder()
@@ -157,9 +150,8 @@ public class ProductController {
 						.build()
 				)
 				.seatGrades(gradeList)
-				.showDates(
-					showDateList
-				).build()
+				.showDates(showService.getShowDatesByProductId(id))
+				.build()
 		);
 	}
 
@@ -172,29 +164,19 @@ public class ProductController {
 		log.debug("getShowList - date : " + inputDate);
 
 		//LocalDate로  입력 날짜 파싱
-		DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
-		LocalDate paredDate = LocalDate.parse(inputDate, formatter);
+		LocalDate paredDate = LocalDate.parse(inputDate, DateTimeFormatter.BASIC_ISO_DATE);
 
-		//공연 정보
-		List<Show> shows = showRepository.findShowsByProductId(productId);
+		//날짜의 공연 리스트 조회
+		List<Show> shows = showService.getShowDateByProductId(productId, paredDate);
 
-		//날짜로 필터링
-		shows = shows.stream().filter(
-			show -> show.getDate().equals(paredDate)
-		).collect(Collectors.toList());
-
-		List<GetShowsResDto.Show> showList = new ArrayList<>();
-
-		for (Show show : shows) {
-
-			showList.add(
-				GetShowsResDto.Show.builder()
+		List<GetShowsResDto.Show> showList =
+			shows.stream()
+				.map(show -> GetShowsResDto.Show.builder()
 					.id(show.getId())
 					.session(show.getSession())
 					.time(show.getTime())
 					.build()
-			);
-		}
+				).collect(Collectors.toList());
 
 		return ok(
 			GetShowsResDto.builder()
