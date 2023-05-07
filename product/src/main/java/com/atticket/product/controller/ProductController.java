@@ -8,6 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
-import com.atticket.product.domain.Grade;
-import com.atticket.product.domain.Product;
+import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Show;
 import com.atticket.product.dto.request.GetProductsReqDto;
 import com.atticket.product.dto.response.GetProductResDto;
@@ -112,77 +115,33 @@ public class ProductController {
 
 		log.debug("getProduct - id : " + id);
 
-		//상품 정보
-		Product product = productService.getProductById(id);
-
-		//상품이 없는 경우
-		if (product.getId() == null) {
-			return ok(
-				GetProductResDto.builder().build()
-			);
-		}
-
-		//등급 정보
-		List<Grade> grades = gradeService.getGradesByProductId(id);
-
-		List<GetProductResDto.Grade> gradeList =
-			grades.stream().map(x ->
-				GetProductResDto.Grade.builder()
-					.price(x.getPrice())
-					.type(x.getType())
-					.build()
-			).collect(Collectors.toList());
-
-		return ok(
-			GetProductResDto.builder()
-				.product(
-					GetProductResDto.Product.builder()
-						.category(product.getCategory())
-						.subCategory(product.getSubCategory())
-						.name(product.getName())
-						.explain(product.getExplain())
-						.runningTime(product.getRunningTime())
-						.startDate(product.getStartDate())
-						.endDate(product.getEndDate())
-						.ageLimit(product.getAgeLimit())
-						.image(product.getImage())
-						.region(product.getRegion())
-						.build()
-				)
-				.seatGrades(gradeList)
-				.showDates(showService.getShowDatesByProductId(id))
-				.build()
-		);
+		return ok(GetProductResDto.construct(productService.getProductById(id),
+			gradeService.getGradesByProductId(id), showService.getShowDatesByProductId(id)));
 	}
 
 	//일자별 공연 조회
 	@GetMapping("/{productId}/shows")
 	public BaseResponse<GetShowsResDto> getShows(@PathVariable("productId") Long productId,
-		@RequestParam("date") String inputDate) throws Exception {
+		@RequestParam(name = "date") String inputDate) throws Exception{
+
+		System.out.println(inputDate);
 
 		log.debug("getShowList - productId : " + productId);
 		log.debug("getShowList - date : " + inputDate);
 
+		LocalDate paredDate ;
+
 		//LocalDate로  입력 날짜 파싱
-		LocalDate paredDate = LocalDate.parse(inputDate, DateTimeFormatter.BASIC_ISO_DATE);
+		try{
+			paredDate = LocalDate.parse(inputDate, DateTimeFormatter.BASIC_ISO_DATE);
+		}catch(Exception e){
+			throw new BaseException(BaseStatus.DATE_PATTERN);
+		}
 
 		//날짜의 공연 리스트 조회
 		List<Show> shows = showService.getShowDateByProductId(productId, paredDate);
 
-		List<GetShowsResDto.Show> showList =
-			shows.stream()
-				.map(show -> GetShowsResDto.Show.builder()
-					.id(show.getId())
-					.session(show.getSession())
-					.time(show.getTime())
-					.build()
-				).collect(Collectors.toList());
-
-		return ok(
-			GetShowsResDto.builder()
-				.shows(showList)
-				.build()
-		);
+		return ok(GetShowsResDto.construct(shows));
 	}
 
 	/**

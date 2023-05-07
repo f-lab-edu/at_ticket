@@ -1,6 +1,7 @@
 package com.atticket.product.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
@@ -22,9 +23,7 @@ public class ProductService {
 	 */
 	public Product getProductById(Long productId) {
 
-		return productRepository.findById(productId).orElse(
-			Product.builder().build()
-		);
+		return productRepository.findById(productId).orElse(null);
 
 	}
 
@@ -37,7 +36,7 @@ public class ProductService {
 		//Todo 해당 상품Id를 가지고 있는 공연 정보들 우선 삭제 필요
 
 		//해당 id 상품이 없으면 Exception
-		if (productRepository.findById(productId).isEmpty()) {
+		if (ObjectUtils.isEmpty(productRepository.findById(productId))) {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		}
 
