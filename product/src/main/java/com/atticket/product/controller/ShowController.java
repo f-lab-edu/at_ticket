@@ -3,7 +3,6 @@ package com.atticket.product.controller;
 import static com.atticket.common.response.BaseResponse.ok;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,17 +78,8 @@ public class ShowController {
 		//등급별 남은 좌석 조회
 		List<GetRemainSeatCntSvcDto> remainSeatCnts = showSeatService.getRemainSeatCntByShowId(showId);
 
-		List<GetRemainSeatsCntResDto.RemainSeat> remainSeatsList = remainSeatCnts.stream()
-			.map(cntDto -> GetRemainSeatsCntResDto.RemainSeat.builder()
-				.showId(showId)
-				.gradeNm(cntDto.getGradeNm())
-				.gradeId(cntDto.getGradeId())
-				.cnt(cntDto.getSeatCnt())
-				.build())
-			.collect(Collectors.toList());
-
 		return ok(
-			GetRemainSeatsCntResDto.construct(remainSeatsList)
+			GetRemainSeatsCntResDto.construct(remainSeatCnts)
 		);
 	}
 

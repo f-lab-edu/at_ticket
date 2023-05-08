@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.ObjectUtils;
 
+import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ public class GetRemainSeatsCntResDto {
 
 	private final List<RemainSeat> remainSeats;
 
-	public static GetRemainSeatsCntResDto construct(List<RemainSeat> remainSeats) {
+	public static GetRemainSeatsCntResDto construct(List<GetRemainSeatCntSvcDto> remainSeats) {
 		if (ObjectUtils.isEmpty(remainSeats)) {
 			return null;
 		}
@@ -26,7 +28,7 @@ public class GetRemainSeatsCntResDto {
 					.showId(x.getShowId())
 					.gradeId(x.getGradeId())
 					.gradeNm(x.getGradeNm())
-					.cnt(x.getCnt())
+					.seatCnt(x.getSeatCnt())
 					.build()
 			).collect(Collectors.toList()));
 	}
@@ -43,6 +45,6 @@ public class GetRemainSeatsCntResDto {
 		//좌석 등급 이름
 		private final String gradeNm;
 		//남은 좌석 수
-		private final int cnt;
+		private final int seatCnt;
 	}
 }

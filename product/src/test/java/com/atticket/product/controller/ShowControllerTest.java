@@ -2,6 +2,7 @@ package com.atticket.product.controller;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,12 +54,12 @@ public class ShowControllerTest {
 
 		Long showId = 1L;
 
-		mockMvc.perform(
-				get("/shows/" + showId + "/seats/count")
-			)
+		mockMvc.perform(get("/shows/" + showId + "/seats/count"))
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.data.remainSeats", notNullValue()))
 			.andDo(MockMvcResultHandlers.print());
+
+		verify(showSeatService).getRemainSeatCntByShowId(1L);
 
 	}
 }

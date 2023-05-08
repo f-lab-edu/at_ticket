@@ -1,6 +1,7 @@
 package com.atticket.product.service;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.atticket.common.response.BaseException;
 import com.atticket.product.domain.Product;
 import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.type.AgeLimit;
@@ -31,7 +33,7 @@ public class ProductServiceTest {
 
 	@Test
 	@DisplayName("상품 조회 ")
-	void getProductById() throws Exception {
+	void getProductById() {
 
 		//Given
 		Long productId = 1L;
@@ -58,6 +60,37 @@ public class ProductServiceTest {
 		Assertions.assertEquals(result.getId(), givenProduct.getId());
 		Assertions.assertEquals(result.getName(), givenProduct.getName());
 
+		verify(productRepository).findById(1L);
+
 	}
 
+	@Test
+	@DisplayName("상품 삭제")
+	void deleteProduct() {
+
+		Long productId = 1L;
+
+		Product givenProduct = Product.builder()
+			.id(productId)
+			.category(Category.MUSICAL)
+			.subCategory(SubCategory.ORIGINAL)
+			.name("상품1")
+			.explain("설명")
+			.runningTime(LocalTime.of(2, 0))
+			.startDate(LocalDate.of(2023, 4, 21))
+			.endDate(LocalDate.of(2024, 4, 21))
+			.ageLimit(AgeLimit.FIFTEEN)
+			.image("http://이미지.jpg")
+			.region(Region.SEOUL)
+			.build();
+
+		when(productRepository.findById(productId)).thenReturn(Optional.of(givenProduct));
+
+		productService.deleteProduct(productId);
+
+		when(productRepository.findById(productId)).thenReturn(null);
+
+		Assertions.assertThrows(BaseException.class, () -> productService.deleteProduct(productId));
+
+	}
 }
