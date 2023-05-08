@@ -16,7 +16,7 @@ import com.atticket.common.response.BaseResponse;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
-import com.atticket.product.dto.service.RemainSeatCntServiceDto;
+import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.service.ShowSeatService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class ShowController {
 				.space("1층")
 				.locX("12")
 				.locY("22")
-				.row("T열")
+				.row("T행")
 				.rowNum(1)
 				.grade("VIP")
 				.price(120000)
@@ -52,7 +52,7 @@ public class ShowController {
 				.space("1층")
 				.locX("15")
 				.locY("25")
-				.row("T열")
+				.row("T행")
 				.rowNum(2)
 				.grade("VIP")
 				.price(120000)
@@ -62,7 +62,7 @@ public class ShowController {
 				.space("1층")
 				.locX("18")
 				.locY("28")
-				.row("T열")
+				.row("T행")
 				.rowNum(3)
 				.grade("VIP")
 				.price(120000)
@@ -77,20 +77,19 @@ public class ShowController {
 		log.debug("getRemainSeatsCnt - showId : " + showId);
 
 		//등급별 남은 좌석 조회
-		List<RemainSeatCntServiceDto> reminsCnts = showSeatService.getRemainSeatCntByShowId(showId);
+		List<GetRemainSeatCntSvcDto> remainSeatCnts = showSeatService.getRemainSeatCntByShowId(showId);
 
-		List<GetRemainSeatsCntResDto.RemainSeat> remainSeatsList = reminsCnts.stream()
+		List<GetRemainSeatsCntResDto.RemainSeat> remainSeatsList = remainSeatCnts.stream()
 			.map(cntDto -> GetRemainSeatsCntResDto.RemainSeat.builder()
 				.showId(showId)
-				.grade(cntDto.getGradeNm())
+				.gradeNm(cntDto.getGradeNm())
+				.gradeId(cntDto.getGradeId())
 				.cnt(cntDto.getSeatCnt())
 				.build())
 			.collect(Collectors.toList());
 
 		return ok(
-			GetRemainSeatsCntResDto.builder()
-				.remainSeats(remainSeatsList)
-				.build()
+			GetRemainSeatsCntResDto.construct(remainSeatsList)
 		);
 	}
 

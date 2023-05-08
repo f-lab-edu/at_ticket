@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.atticket.product.dto.service.RemainSeatCntServiceDto;
+import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.service.ShowSeatService;
 
 @WebMvcTest(ShowController.class)
@@ -36,13 +36,13 @@ public class ShowControllerTest {
 		//자리 - 등급 매핑 정보
 		given(showSeatService.getRemainSeatCntByShowId(1L)).willReturn(
 			Arrays.asList(
-				RemainSeatCntServiceDto.builder()
+				GetRemainSeatCntSvcDto.builder()
 					.showId(1L)
 					.gradeId(1L)
 					.gradeNm("A")
 					.seatCnt(5)
 					.build(),
-				RemainSeatCntServiceDto.builder()
+				GetRemainSeatCntSvcDto.builder()
 					.showId(1L)
 					.gradeId(2L)
 					.gradeNm("B")

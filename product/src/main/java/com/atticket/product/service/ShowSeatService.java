@@ -1,14 +1,16 @@
 package com.atticket.product.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.atticket.product.domain.ReservedSeat;
 import com.atticket.product.domain.ShowSeat;
-import com.atticket.product.dto.service.RemainSeatCntServiceDto;
+import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.repository.ShowSeatRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,14 +32,14 @@ public class ShowSeatService {
 	 * @param showId
 	 * @return
 	 */
-	public List<RemainSeatCntServiceDto> getRemainSeatCntByShowId(Long showId) {
+	public List<GetRemainSeatCntSvcDto> getRemainSeatCntByShowId(Long showId) {
 
 		//공연의 좌석 - 등급 매핑 정보 조회
 		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
 		//showId로 예매 좌석 리스트 조회
 		List<ReservedSeat> reservedSeats = reservedSeatService.getReservedSeatsByShowId(showId);
 
-		List<RemainSeatCntServiceDto> serviceDtoList = new ArrayList<>();
+		List<GetRemainSeatCntSvcDto> serviceDtoList = new ArrayList<>();
 
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
 		for (ShowSeat showSeat : showSeats) {
@@ -51,8 +53,9 @@ public class ShowSeatService {
 					}
 				}
 			}
+
 			serviceDtoList.add(
-				RemainSeatCntServiceDto.builder()
+				GetRemainSeatCntSvcDto.builder()
 					.showId(showId)
 					.gradeId(showSeat.getGradeId())
 					.gradeNm(gradeService.getGradeNmById(showSeat.getGradeId()))
@@ -69,16 +72,13 @@ public class ShowSeatService {
 	 * @param stringSeatList
 	 * @return
 	 */
-	public List<Long> convertStringToList(String stringSeatList) {
+	private List<Long> convertStringToList(String stringSeatList) {
 
 		List<Long> seatList = new ArrayList<>();
-		if (!stringSeatList.isBlank()) {
+		if (!ObjectUtils.isEmpty(stringSeatList)) {
 			String[] seatString = (stringSeatList).split(",");
-			for (String seat : seatString) {
-				seatList.add(Long.parseLong(seat));
-			}
+			Arrays.stream(seatString).forEach(x -> seatList.add(Long.parseLong(x)));
 		}
-
 		return seatList;
 	}
 
@@ -87,7 +87,7 @@ public class ShowSeatService {
 	 * @param seatList
 	 * @return
 	 */
-	public String convertListToString(List<Long> seatList) {
+	private String convertListToString(List<Long> seatList) {
 
 		List<String> seatStringList = seatList.stream().map(s -> Long.toString(s)).collect(Collectors.toList());
 		return String.join(",", seatStringList);

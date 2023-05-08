@@ -6,10 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -122,24 +118,22 @@ public class ProductController {
 	//일자별 공연 조회
 	@GetMapping("/{productId}/shows")
 	public BaseResponse<GetShowsResDto> getShows(@PathVariable("productId") Long productId,
-		@RequestParam(name = "date") String inputDate) throws Exception{
-
-		System.out.println(inputDate);
+		@RequestParam(name = "date") String inputDate) throws Exception {
 
 		log.debug("getShowList - productId : " + productId);
 		log.debug("getShowList - date : " + inputDate);
 
-		LocalDate paredDate ;
+		LocalDate paredInputDate;
 
 		//LocalDate로  입력 날짜 파싱
-		try{
-			paredDate = LocalDate.parse(inputDate, DateTimeFormatter.BASIC_ISO_DATE);
-		}catch(Exception e){
+		try {
+			paredInputDate = LocalDate.parse(inputDate, DateTimeFormatter.BASIC_ISO_DATE);
+		} catch (Exception e) {
 			throw new BaseException(BaseStatus.DATE_PATTERN);
 		}
 
 		//날짜의 공연 리스트 조회
-		List<Show> shows = showService.getShowDateByProductId(productId, paredDate);
+		List<Show> shows = showService.getShowDateByProductId(productId, paredInputDate);
 
 		return ok(GetShowsResDto.construct(shows));
 	}

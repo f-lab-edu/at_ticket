@@ -22,9 +22,9 @@ public class GetRemainSeatsResDto {
 		private final String locX;
 		// 좌석 y 좌표
 		private final String locY;
-		// 열
+		// 행
 		private final String row;
-		// 열 번호
+		// 행 번호
 		private final int rowNum;
 		//등급
 		private final String grade;

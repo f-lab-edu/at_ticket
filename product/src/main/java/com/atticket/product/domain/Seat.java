@@ -15,9 +15,9 @@ public class Seat {
 	private String locX;
 	//y 좌표
 	private String locY;
-	//열
+	//행
 	private String row;
-	//열 번호
+	//행 번호
 	private int rowNum;
 	//공연홀 id
 	private String hallId;

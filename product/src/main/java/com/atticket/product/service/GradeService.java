@@ -22,7 +22,6 @@ public class GradeService {
 	 * @return
 	 */
 	public List<Grade> getGradesByProductId(Long productId) {
-		System.out.println("하하");
 		return gradeRepository.findGradeByProductId(productId);
 	}
 

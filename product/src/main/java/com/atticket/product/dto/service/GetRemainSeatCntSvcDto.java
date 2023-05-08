@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class RemainSeatCntServiceDto {
+public class GetRemainSeatCntSvcDto {
 
 	//공연 id
 	private final Long showId;
