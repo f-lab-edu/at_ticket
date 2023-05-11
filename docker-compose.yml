@@ -1,0 +1,13 @@
+version: "1.0"
+services:
+  product-app:
+    build: "./product"
+    container_name : "at_ticket-product"
+    ports :
+      - "8080:8080"
+
+  reservation-app:
+    build: "./reservation"
+    container_name : "at_ticket-reservation"
+    ports :
+      - "9000:9000"
