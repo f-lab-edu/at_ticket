@@ -1,15 +1,18 @@
 package com.atticket.product.domain;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class Grade {
 
-	private String id;
-
+	//등급 id
+	private Long id;
+	//등급 타입
 	private String type;
-
+	//등급 가격
 	private int price;
+	//상품 id
+	private Long productId;
 }

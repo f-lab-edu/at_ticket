@@ -1,12 +1,16 @@
 package com.atticket.product.domain;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class Hall {
-	private String id;
+
+	//공연홀 Id
+	private Long id;
+	//이름
 	private String name;
-	private String hallId;
+	//공연장 Id
+	private Long placeId;
 }

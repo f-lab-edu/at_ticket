@@ -1,5 +1,7 @@
 package com.atticket.common.response;
 
+import org.springframework.util.ObjectUtils;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
@@ -24,11 +26,24 @@ public class BaseResponse<T> {
 
 	// success response with data
 	public static <T> BaseResponse<T> ok(T data) {
+		if (ObjectUtils.isEmpty(data)) {
+			return new BaseResponse<>(BaseStatus.NO_RESULT.getCode(), BaseStatus.NO_RESULT.getMessage(), null);
+		}
 		return new BaseResponse<>(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), data);
 	}
 
 	// error response
-	static <T> BaseResponse<T> fail(BaseStatus status) {
+	static <T> BaseResponse<T> error(BaseStatus status) {
 		return new BaseResponse<>(status.getCode(), status.getMessage(), null);
+	}
+
+	// binding error response
+	static <T> BaseResponse<T> bindError(String message, T data) {
+		return new BaseResponse<>(400, message, data);
+	}
+
+	// binding error response
+	static <T> BaseResponse<T> paramError(String message) {
+		return new BaseResponse<>(400, message,null);
 	}
 }

@@ -15,14 +15,20 @@ import com.atticket.common.response.BaseResponse;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
+import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
+import com.atticket.product.service.ShowSeatService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 //좌석 조회
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/shows")
 public class ShowController {
+
+	private final ShowSeatService showSeatService;
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")
@@ -30,31 +36,32 @@ public class ShowController {
 
 		return ok(GetRemainSeatsResDto.builder().showSeats(List.of(
 			GetRemainSeatsResDto.ShowSeat.builder()
-				.id("showSeat-1")
+
+				.id(1L)
 				.space("1층")
 				.locX("12")
 				.locY("22")
-				.row("T열")
+				.row("T행")
 				.rowNum(1)
 				.grade("VIP")
 				.price(120000)
 				.build(),
 			GetRemainSeatsResDto.ShowSeat.builder()
-				.id("showSeat-2")
+				.id(2L)
 				.space("1층")
 				.locX("15")
 				.locY("25")
-				.row("T열")
+				.row("T행")
 				.rowNum(2)
 				.grade("VIP")
 				.price(120000)
 				.build(),
 			GetRemainSeatsResDto.ShowSeat.builder()
-				.id("showSeat-3")
+				.id(3L)
 				.space("1층")
 				.locX("18")
 				.locY("28")
-				.row("T열")
+				.row("T행")
 				.rowNum(3)
 				.grade("VIP")
 				.price(120000)
@@ -64,28 +71,16 @@ public class ShowController {
 
 	//공연의 남은 좌석수 조회
 	@GetMapping("/{showId}/seats/count")
-	public BaseResponse<GetRemainSeatsCntResDto> getRemainSeatsCnt(@PathVariable("showId") String id) {
+	public BaseResponse<GetRemainSeatsCntResDto> getRemainSeatsCnt(@PathVariable("showId") Long showId) {
 
-		log.info("getRemainSeatsCnt - showId : " + id);
+		log.debug("getRemainSeatsCnt - showId : " + showId);
 
-		return ok(GetRemainSeatsCntResDto.builder()
-			.remainSeats(
-				List.of(
-					GetRemainSeatsCntResDto.RemainSeat.builder()
-						.id("1")
-						.grade("S")
-						.cnt(40)
-						.build(),
-					GetRemainSeatsCntResDto.RemainSeat.builder()
-						.id("1")
-						.grade("A")
-						.cnt(30)
-						.build()
+		//등급별 남은 좌석 조회
+		List<GetRemainSeatCntSvcDto> remainSeatCnts = showSeatService.getRemainSeatCntByShowId(showId);
 
-				)
-
-			)
-			.build());
+		return ok(
+			GetRemainSeatsCntResDto.construct(remainSeatCnts)
+		);
 	}
 
 	//공연 등록
