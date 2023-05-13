@@ -37,41 +37,9 @@ public class ShowController {
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")
-	public BaseResponse<GetRemainSeatsResDto> getRemainSeats(@PathVariable("showId") String id) {
+	public BaseResponse<GetRemainSeatsResDto> getRemainSeats(@PathVariable("showId") Long id) {
 
-		return ok(GetRemainSeatsResDto.builder().showSeats(List.of(
-			GetRemainSeatsResDto.ShowSeat.builder()
-
-				.id(1L)
-				.space("1층")
-				.locX("12")
-				.locY("22")
-				.row("T행")
-				.rowNum(1)
-				.grade("VIP")
-				.price(120000)
-				.build(),
-			GetRemainSeatsResDto.ShowSeat.builder()
-				.id(2L)
-				.space("1층")
-				.locX("15")
-				.locY("25")
-				.row("T행")
-				.rowNum(2)
-				.grade("VIP")
-				.price(120000)
-				.build(),
-			GetRemainSeatsResDto.ShowSeat.builder()
-				.id(3L)
-				.space("1층")
-				.locX("18")
-				.locY("28")
-				.row("T행")
-				.rowNum(3)
-				.grade("VIP")
-				.price(120000)
-				.build()
-		)).build());
+		return ok(GetRemainSeatsResDto.construct(showSeatService.getRemainSeatsByShowId(id)));
 	}
 
 	/**
