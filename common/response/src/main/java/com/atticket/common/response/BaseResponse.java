@@ -1,6 +1,6 @@
 package com.atticket.common.response;
 
-import org.springframework.util.ObjectUtils;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -20,30 +20,25 @@ public class BaseResponse<T> {
 	}
 
 	// success response without data
-	public static <T> BaseResponse<T> ok() {
+	public static BaseResponse ok() {
 		return new BaseResponse<>(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), null);
 	}
 
 	// success response with data
 	public static <T> BaseResponse<T> ok(T data) {
-		if (ObjectUtils.isEmpty(data)) {
+		if (Objects.isNull(data)) {
 			return new BaseResponse<>(BaseStatus.NO_RESULT.getCode(), BaseStatus.NO_RESULT.getMessage(), null);
 		}
 		return new BaseResponse<>(BaseStatus.SUCCESS.getCode(), BaseStatus.SUCCESS.getMessage(), data);
 	}
 
 	// error response
-	static <T> BaseResponse<T> error(BaseStatus status) {
-		return new BaseResponse<>(status.getCode(), status.getMessage(), null);
+	static BaseResponse error(int code, String message) {
+		return new BaseResponse<>(code, message, null);
 	}
 
-	// binding error response
-	static <T> BaseResponse<T> bindError(String message, T data) {
-		return new BaseResponse<>(400, message, data);
-	}
-
-	// binding error response
-	static <T> BaseResponse<T> paramError(String message) {
-		return new BaseResponse<>(400, message,null);
+	// error response with data
+	static <T> BaseResponse<T> error(int code, String message, T data) {
+		return new BaseResponse<>(code, message, data);
 	}
 }

@@ -1,5 +1,12 @@
 package com.atticket.product.type;
 
+import java.util.Arrays;
+
+import org.springframework.util.StringUtils;
+
+import com.atticket.common.response.BaseException;
+import com.atticket.common.response.BaseStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,4 +20,14 @@ public enum SubCategory {
 	COMEDY("코미디");
 
 	private final String subCategory;
+
+	public static SubCategory findByName(String name) {
+		if (!StringUtils.hasText(name)) {
+			return null;
+		}
+
+		return Arrays.stream(SubCategory.values())
+			.filter(subCategory -> subCategory.name().equals(name))
+			.findAny().orElseThrow(() -> new BaseException(BaseStatus.INVALID_SUB_CATEGORY));
+	}
 }

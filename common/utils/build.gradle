@@ -2,8 +2,4 @@ plugins {
     id 'common-conventions'
 }
 
-dependencies {
-    implementation project(':common:utils')
-}
-
 bootJar.enabled = false

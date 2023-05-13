@@ -1,18 +1,17 @@
 package com.atticket.common.response;
 
-import static com.atticket.common.response.BaseResponse.bindError;
 import static com.atticket.common.response.BaseResponse.error;
-import static com.atticket.common.response.BaseResponse.paramError;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,45 +21,47 @@ public class BaseExceptionHandler {
 
 	// BaseException 발생시 핸들러
 	@ExceptionHandler(BaseException.class)
-	public BaseResponse<BaseStatus> handleBaseException(BaseException baseException) {
-		log.error(baseException.getBaseStatus().getMessage(), baseException);
-		return error(baseException.getBaseStatus());
+	public BaseResponse handleBaseException(BaseException exception) {
+		log.error(exception.getClass().getName(), exception);
+		return error(exception.getCode(), exception.getMessage());
 	}
 
 	// Exception 발생시 핸들러
 	@ExceptionHandler(Exception.class)
-	public BaseResponse<BaseStatus> handleException(Exception exception) {
-		log.error(exception.getClass().toString());
-		log.error(BaseStatus.UNEXPECTED_ERROR.getMessage(), exception);
-		return error(BaseStatus.UNEXPECTED_ERROR);
+	public BaseResponse handleException(Exception exception) {
+		log.error(exception.getClass().getName(), exception);
+		return error(BaseStatus.UNEXPECTED_ERROR.getCode(), BaseStatus.UNEXPECTED_ERROR.getMessage());
 	}
 
+	// @ModelAttribute BindException 발생시 핸들러
 	@ExceptionHandler(BindException.class)
-	public BaseResponse handleBindException(BindException bindException) {
-		log.error(bindException.getMessage(), bindException);
-		log.error(bindException.getClass().getName());
-		for (FieldError e : bindException.getFieldErrors()) {
-			System.out.println(e.getCode());
-		}
-		List<String> errMsgList = bindException.getFieldErrors()
-			.stream()
-			.map(error -> {
-				System.out.println(error.getCode());
-				if (Objects.equals(error.getCode(), "typeMismatch")) {
-					return error.getField() + "는 " + Objects.requireNonNull(
-						bindException.getFieldType(error.getField())).getName()
-						+ " 타입으로 입력해주세요.";
-				} else {
-					return error.getDefaultMessage();
+	public BaseResponse<List<String>> handleBindException(BindException exception) {
+		log.error(exception.getClass().getName(), exception);
+		List<String> errMsgList = exception.getFieldErrors()
+			.stream().map(error -> {
+				if (Objects.requireNonNull(error.getDefaultMessage()).contains("BaseException: ")) {
+					return error.getField() + " - " + error.getDefaultMessage().split("BaseException: ")[1];
 				}
-			})
-			.collect(Collectors.toList());
-		return bindError("validation 에러입니다.", errMsgList);
+				return error.getField() + " - " + error.getCode();
+			}).collect(Collectors.toList());
+		return error(400, "validation 에러입니다. ", errMsgList);
 	}
 
+	// @RequestParam MissingServletRequestParameterException 발생시 핸들러
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public BaseResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+	public BaseResponse handleMissingServletRequestParameterException(
+		MissingServletRequestParameterException exception) {
+		log.error(exception.getClass().getName(), exception);
+		List<String> errMsgList = new ArrayList<>(List.of(exception.getParameterName() + " - NotNull"));
+		return error(400, "validation 에러입니다. ", errMsgList);
+	}
 
-		return paramError(exception.getParameterName()+"를 입력해주세요");
+	// @RequestParam MethodArgumentTypeMismatchException 발생시 핸들러
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public BaseResponse handleMethodArgumentTypeMismatchException(
+		MethodArgumentTypeMismatchException exception) {
+		log.error(exception.getClass().getName(), exception);
+		List<String> errMsgList = new ArrayList<>(List.of(exception.getName() + " - typeMismatch"));
+		return error(400, "validation 에러입니다. ", errMsgList);
 	}
 }

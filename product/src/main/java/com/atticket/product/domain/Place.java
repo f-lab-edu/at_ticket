@@ -2,11 +2,13 @@ package com.atticket.product.domain;
 
 import com.atticket.product.type.Region;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class Place {
 
 	//공연장 id

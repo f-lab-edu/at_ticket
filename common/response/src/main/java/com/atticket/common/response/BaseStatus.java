@@ -18,9 +18,6 @@ public enum BaseStatus {
 	 * */
 	TEST_ERROR(400, "테스트 에러메세지입니다."),
 	NO_KEYWORD(400, "키워드를 입력해주세요."),
-	PAGE_OVER_1(404, "page는 1 이상 값을 입력해주세요"),
-	PER_PAGE_OVER_1(400, "perPage는 1 이상 값을 입력해주세요"),
-	DATE_PATTERN(400, "date는 YYYYMMDD형식으로 입력해주세요"),
 
 	/**
 	 * 401 - Unauthorized (인증 에러 관련)

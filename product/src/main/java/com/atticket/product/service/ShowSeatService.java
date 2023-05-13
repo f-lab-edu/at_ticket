@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import com.atticket.product.domain.ReservedSeat;
 import com.atticket.product.domain.ShowSeat;
@@ -75,7 +75,7 @@ public class ShowSeatService {
 	private List<Long> convertStringToList(String stringSeatList) {
 
 		List<Long> seatList = new ArrayList<>();
-		if (!ObjectUtils.isEmpty(stringSeatList)) {
+		if (StringUtils.hasText(stringSeatList)) {
 			String[] seatString = (stringSeatList).split(",");
 			Arrays.stream(seatString).forEach(x -> seatList.add(Long.parseLong(x)));
 		}

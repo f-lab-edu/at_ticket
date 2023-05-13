@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 
 import com.atticket.product.domain.Show;
 
@@ -18,8 +18,8 @@ public class GetShowsResDto {
 
 	private final List<ShowDto> shows;
 
-	public static GetShowsResDto construct(List<Show> shows){
-		if(ObjectUtils.isEmpty(shows)){
+	public static GetShowsResDto construct(List<Show> shows) {
+		if (CollectionUtils.isEmpty(shows)) {
 			return null;
 		}
 		return new GetShowsResDto(shows.stream().map(ShowDto::construct).collect(Collectors.toList()));
@@ -36,7 +36,7 @@ public class GetShowsResDto {
 		//공연 시간
 		private final LocalTime time;
 
-		private static ShowDto construct(Show show){
+		private static ShowDto construct(Show show) {
 			return ShowDto.builder()
 				.id(show.getId())
 				.session(show.getSession())
