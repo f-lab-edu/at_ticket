@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.atticket.common.response.BaseException;
+import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Product;
 import com.atticket.product.repository.ProductRepository;
 
@@ -71,7 +72,15 @@ public class ProductServiceTest {
 
 		//Then
 		Assertions.assertThrows(BaseException.class, () -> productService.deleteProduct(productId));
+	}
 
+	@Test
+	void testCategoryHasSubCategory() {
+		//when
+		BaseException exception = Assertions.assertThrows(BaseException.class,
+			() -> productService.categoryHasSubCategory(Category.MOVIE, SubCategory.ORIGINAL));
+		//then
+		Assertions.assertEquals(exception.getMessage(), BaseStatus.SUB_CATEGORY_DOES_NOT_IN_CATEGORY.getMessage());
 	}
 
 }
