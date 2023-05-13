@@ -3,7 +3,7 @@ package com.atticket.product.dto.response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 
@@ -19,7 +19,7 @@ public class GetRemainSeatsCntResDto {
 	private final List<RemainSeat> remainSeats;
 
 	public static GetRemainSeatsCntResDto construct(List<GetRemainSeatCntSvcDto> remainSeats) {
-		if (ObjectUtils.isEmpty(remainSeats)) {
+		if (CollectionUtils.isEmpty(remainSeats)) {
 			return null;
 		}
 		return new GetRemainSeatsCntResDto(

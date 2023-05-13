@@ -3,9 +3,8 @@ package com.atticket.product.dto.response;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
-import org.springframework.util.ObjectUtils;
 
 import com.atticket.product.domain.Grade;
 import com.atticket.product.domain.Product;
@@ -29,12 +28,12 @@ public class GetProductResDto {
 	//List<공연 상연일>
 	private final List<LocalDate> showDates;
 
-	public static GetProductResDto construct(Product product,List<Grade> grades, List<LocalDate> showDates){
-		if(ObjectUtils.isEmpty(product)){
+	public static GetProductResDto construct(Product product, List<Grade> grades, List<LocalDate> showDates) {
+		if (Objects.isNull(product)) {
 			return null;
 		}
 		return new GetProductResDto(ProductDto.construct(product), grades.stream().map(GradeDto::construct).collect(
-			Collectors.toList()), showDates );
+			Collectors.toList()), showDates);
 	}
 
 	@Getter
@@ -61,7 +60,7 @@ public class GetProductResDto {
 		//장소 정보
 		private final Region region;
 
-		private static ProductDto construct(Product product){
+		private static ProductDto construct(Product product) {
 			return ProductDto.builder()
 				.category(product.getCategory())
 				.subCategory(product.getSubCategory())
@@ -87,7 +86,7 @@ public class GetProductResDto {
 		//좌석 가격
 		private final int price;
 
-		private static GradeDto construct(Grade grade){
+		private static GradeDto construct(Grade grade) {
 			return GradeDto.builder()
 				.type(grade.getType())
 				.price(grade.getPrice())

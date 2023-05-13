@@ -44,5 +44,4 @@ public class GradeRepository {
 				grade -> grade.getProductId().equals(productId)
 			).collect(Collectors.toList());
 	}
-
 }

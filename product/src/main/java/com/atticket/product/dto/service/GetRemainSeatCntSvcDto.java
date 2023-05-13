@@ -17,5 +17,4 @@ public class GetRemainSeatCntSvcDto {
 	private final String gradeNm;
 	//남은 좌석수
 	private final int seatCnt;
-
 }
