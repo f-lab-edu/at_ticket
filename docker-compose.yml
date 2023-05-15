@@ -1,13 +1,17 @@
-version: "1.0"
+version: "3.0"
 services:
   product-app:
     build: "./product"
-    container_name : "at_ticket-product"
-    ports :
-      - "8080:8080"
-
+    container_name: "at_ticket-product"
+    ports:
+      - "8000:8000"
   reservation-app:
     build: "./reservation"
-    container_name : "at_ticket-reservation"
-    ports :
-      - "9000:9000"
+    container_name: "at_ticket-reservation"
+    ports:
+      - "8100:8100"
+  payment-app:
+    build: "./payment"
+    container_name: "at_ticket-payment"
+    ports:
+      - "8200:8200"

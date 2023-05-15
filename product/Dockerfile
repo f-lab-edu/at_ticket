@@ -1,4 +1,4 @@
-FROM  ibmjava:11-jdk
+FROM eclipse-temurin:11
 
 # JAR_FILE 변수 정의
 ARG PRODUCT_JAR_FILE=build/libs/product-*-SNAPSHOT.jar
