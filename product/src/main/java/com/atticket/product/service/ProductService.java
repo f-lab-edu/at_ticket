@@ -74,7 +74,7 @@ public class ProductService {
 			sortOption);
 	}
 
-	public void categoryHasSubCategory(Category category, SubCategory subCategory) {
+	private void categoryHasSubCategory(Category category, SubCategory subCategory) {
 		if (Objects.nonNull(category) && Objects.nonNull(subCategory) && !category.hasSub(subCategory)) {
 			throw new BaseException(BaseStatus.SUB_CATEGORY_DOES_NOT_IN_CATEGORY);
 		}
