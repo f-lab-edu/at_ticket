@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.atticket.common.response.BaseResponse;
+import com.atticket.product.domain.Grade;
 import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
 import com.atticket.product.dto.response.GetProductResDto;
@@ -42,19 +44,24 @@ public class ProductControllerTest {
 		//Given
 		Long productId = 1L;
 
-		Product givenProduct = Product.builder().build();
-
-		// BaseResponse<GetProductResDto> givenProduct = ok(GetProductResDto.construct(
-		// 	Product.builder().build(), Arrays.asList(), Arrays.asList())
-		// );
+		Product givenProduct = Product.builder().id(1L).name("테스트").build();
+		List<Grade> givenGrades = Arrays.asList(Grade.builder().build());
+		List<LocalDate> givenLocalDates = Arrays.asList(LocalDate.of(2023, 3, 1));
 
 		//When
 		when(productService.getProductById(productId)).thenReturn(givenProduct);
+		when(gradeService.getGradesByProductId(productId)).thenReturn(givenGrades);
+		when(showService.getShowDatesByProductId(productId)).thenReturn(givenLocalDates);
+
 		BaseResponse<GetProductResDto> result = productController.getProduct(productId);
 
 		//Then
-		Assertions.assertEquals(result, givenProduct);
-		//verify(productService).getProductById(1L);
+		//?
+		Assertions.assertEquals(result.getData().getProduct().getName(), givenProduct);
+		// Assertions.assertEquals(result.getData().getSeatGrades(), givenGrades);
+		// Assertions.assertEquals(result.getData().getShowDates(), givenLocalDates);
+
+		verify(productController).getProduct(1L);
 
 	}
 
