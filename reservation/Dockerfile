@@ -1,10 +1,26 @@
-FROM eclipse-temurin:11
+FROM eclipse-temurin:11 as build
 
-# JAR_FILE 변수 정의
-ARG RESERVATION_JAR_FILE=build/libs/reservation-*-SNAPSHOT.jar
+# 소스 복사
+COPY .. /
 
-# JAR 파일 메인 디렉토리에 복사
-COPY ${RESERVATION_JAR_FILE} reservation-app.jar
+RUN chmod +x ./gradlew
+RUN ./gradlew bootJar
 
-# 시스템 진입점 정의
-ENTRYPOINT [ "java","-jar","/reservation-app.jar" ]
+FROM eclipse-temurin:11-jre
+
+ARG MODULE_NAME=reservation
+
+#jar 복사
+#reservation/build/libs/reservation-1.0.0-SNAPSHOT.jar
+COPY --from=build ${MODULE_NAME}/build/libs/${MODULE_NAME}-*-SNAPSHOT.jar  app.jar
+
+#실행
+ENTRYPOINT [ "java","-jar","/app.jar" ]
+
+
+
+
+
+
+
+

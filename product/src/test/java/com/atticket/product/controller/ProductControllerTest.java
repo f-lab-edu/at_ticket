@@ -25,7 +25,6 @@ public class ProductControllerTest {
 	private ProductService productService = mock(ProductService.class);
 	private ShowService showService = mock(ShowService.class);
 	private GradeService gradeService = mock(GradeService.class);
-
 	private ProductController productController;
 
 	@BeforeEach
@@ -40,7 +39,7 @@ public class ProductControllerTest {
 		//Given
 		Long productId = 1L;
 
-		Product givenProduct = Product.builder().build();
+		Product givenProduct = Product.builder().name("테스트").build();
 		List<Grade> givenGrades = Arrays.asList(Grade.builder().build());
 		List<LocalDate> givenLocalDates = Arrays.asList(LocalDate.of(2023, 3, 1));
 
@@ -52,7 +51,7 @@ public class ProductControllerTest {
 		BaseResponse<GetProductResDto> result = productController.getProduct(productId);
 
 		//Then
-		Assertions.assertEquals(result.getData().getProduct(), givenProduct);
+		Assertions.assertEquals(result.getData().getProduct().getName(), givenProduct.getName());
 
 	}
 

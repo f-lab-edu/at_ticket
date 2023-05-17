@@ -1,17 +1,23 @@
 version: "3.0"
 services:
   product-app:
-    build: "./product"
+    build:
+      context: .
+      dockerfile: ./product/Dockerfile
     container_name: "at_ticket-product"
     ports:
       - "8000:8000"
   reservation-app:
-    build: "./reservation"
+    build:
+      context: .
+      dockerfile: ./reservation/Dockerfile
     container_name: "at_ticket-reservation"
     ports:
       - "8100:8100"
   payment-app:
-    build: "./payment"
+    build:
+      context: .
+      dockerfile: ./payment/Dockerfile
     container_name: "at_ticket-payment"
     ports:
       - "8200:8200"
