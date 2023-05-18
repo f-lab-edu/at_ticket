@@ -20,9 +20,11 @@ class ShowServiceTest {
 	private ShowRepository showRepository = mock(ShowRepository.class);
 	private ShowService showService;
 
+	private ShowSeatService showSeatService;
+
 	@BeforeEach
 	public void setUpTest() {
-		showService = new ShowService(showRepository);
+		showService = new ShowService(showRepository, showSeatService);
 	}
 
 	@Test
