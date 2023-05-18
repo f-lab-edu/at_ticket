@@ -1,10 +1,18 @@
-FROM  ibmjava:11-jdk
+FROM eclipse-temurin:11 as build
 
-# JAR_FILE 변수 정의
-ARG PRODUCT_JAR_FILE=build/libs/product-*-SNAPSHOT.jar
+# 소스 복사
+COPY .. /
 
-# JAR 파일 메인 디렉토리에 복사
-COPY ${PRODUCT_JAR_FILE} product-app.jar
+RUN chmod +x ./gradlew
+RUN ./gradlew bootJar
 
-# 시스템 진입점 정의
-ENTRYPOINT [ "java","-jar","/product-app.jar" ]
+FROM eclipse-temurin:11-jre
+
+ARG MODULE_NAME=product
+
+#jar 복사
+#product/build/libs/product-1.0.0-SNAPSHOT.jar
+COPY --from=build ${MODULE_NAME}/build/libs/${MODULE_NAME}-*-SNAPSHOT.jar  app.jar
+
+#실행
+ENTRYPOINT [ "java","-jar","/app.jar" ]

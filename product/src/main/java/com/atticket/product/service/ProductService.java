@@ -45,9 +45,11 @@ public class ProductService {
 		//Todo 해당 상품Id를 가지고 있는 공연 정보들 우선 삭제 필요
 
 		//해당 id 상품이 없으면 Exception
-		productRepository.findById(productId).orElseThrow(() -> new BaseException(BaseStatus.TEST_ERROR));
-
-		productRepository.deleteById(productId);
+		if (Objects.isNull(productRepository.findById(productId))) {
+			throw new BaseException(BaseStatus.TEST_ERROR);
+		} else {
+			productRepository.deleteById(productId);
+		}
 	}
 
 	/**

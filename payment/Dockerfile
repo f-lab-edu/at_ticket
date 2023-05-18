@@ -8,19 +8,14 @@ RUN ./gradlew bootJar
 
 FROM eclipse-temurin:11-jre
 
-ARG MODULE_NAME=reservation
+ARG MODULE_NAME=payment
 
 #jar 복사
-#reservation/build/libs/reservation-1.0.0-SNAPSHOT.jar
+#payment/build/libs/payment-1.0.0-SNAPSHOT.jar
 COPY --from=build ${MODULE_NAME}/build/libs/${MODULE_NAME}-*-SNAPSHOT.jar  app.jar
 
 #실행
 ENTRYPOINT [ "java","-jar","/app.jar" ]
-
-
-
-
-
 
 
 

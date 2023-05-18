@@ -38,7 +38,7 @@ public class GetProductResDto {
 
 	@Getter
 	@Builder
-	private static class ProductDto {
+	public static class ProductDto {
 
 		private final String name;
 		//상품 설명
@@ -79,7 +79,7 @@ public class GetProductResDto {
 	//좌석 등급
 	@Getter
 	@Builder
-	private static class GradeDto {
+	public static class GradeDto {
 
 		//좌석 타입
 		private final String type;

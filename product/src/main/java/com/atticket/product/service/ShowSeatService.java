@@ -68,6 +68,26 @@ public class ShowSeatService {
 	}
 
 	/**
+	 * 공연 좌석 매핑 정보 등록
+	 * @param productId
+	 * @param showId
+	 * @param gradeId
+	 * @param seats
+	 * @return
+	 */
+	public Long registerShowSeat(Long productId, Long showId, Long gradeId, List<Long> seats) {
+
+		ShowSeat showSeat = ShowSeat.builder()
+			.showId(showId)
+			.gradeId(gradeId)
+			.productId(productId)
+			.seatList(convertListToString(seats))
+			.build();
+
+		return showSeatRepository.save(showSeat);
+	}
+
+	/**
 	 * seatList을 String -> List<Long> 반환
 	 * @param stringSeatList
 	 * @return

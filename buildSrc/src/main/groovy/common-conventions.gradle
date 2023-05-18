@@ -32,6 +32,6 @@ bootRun {
      * gradlew :{모듈명}:bootRun -Dprofile={프로파일} = java -jar -Dspring.profiles.active={프로파일} 빌드파일명.jar
      * e.g. gradlew :reservation:bootRun -Dprofile=dev = java -jar -Dspring.profiles.active=dev reservation-1.0.0-SNAPSHOT.jar
      * */
-    String activeProfile = System.properties.getProperty('profile')
-    if (activeProfile != null) systemProperty "spring.profiles.active", activeProfile
+//    String activeProfile = System.properties.getProperty('profile')
+//    if (activeProfile != null) systemProperty "spring.profiles.active", activeProfile
 }
