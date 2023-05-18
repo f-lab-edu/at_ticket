@@ -32,7 +32,7 @@ public class GetProductsResDto {
 
 	@Builder
 	@Getter
-	private static class ProductDto {
+	public static class ProductDto {
 
 		private final Category category;
 
@@ -75,7 +75,7 @@ public class GetProductsResDto {
 
 	@AllArgsConstructor
 	@Getter
-	private static class PlaceDto {
+	public static class PlaceDto {
 
 		private final Long id;
 
