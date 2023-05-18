@@ -1,22 +1,26 @@
 package com.atticket.product.client.dto;
 
+import java.beans.ConstructorProperties;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-@AllArgsConstructor
 public class GetReservationSeatsResDto {
 
-	//예약된 좌석 리스트
 	public final List<ReservedSeatsDto> reservedSeats;
+
+	@ConstructorProperties({"reservedSeats"})
+	public GetReservationSeatsResDto(List<ReservedSeatsDto> reservedSeats) {
+		this.reservedSeats = reservedSeats;
+	}
+
+	//예약된 좌석 리스트
 
 	@Getter
 	@ToString
-	@AllArgsConstructor
 	public static class ReservedSeatsDto {
 
 		//예약좌석 id
@@ -27,6 +31,13 @@ public class GetReservationSeatsResDto {
 
 		//좌석 id
 		private final Long seatId;
+
+		@ConstructorProperties({"id", "showId", "seatId"})
+		public ReservedSeatsDto(Long id, Long showId, Long seatId) {
+			this.id = id;
+			this.showId = showId;
+			this.seatId = seatId;
+		}
 
 	}
 

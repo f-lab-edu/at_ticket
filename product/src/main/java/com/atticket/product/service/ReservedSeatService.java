@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.atticket.product.client.client.ReservationFeignClient;
-import com.atticket.product.client.dto.GetReservationSeatsResDto;
 import com.atticket.product.domain.ReservedSeat;
 
 import lombok.RequiredArgsConstructor;
@@ -23,11 +22,11 @@ public class ReservedSeatService {
 	 * @return
 	 */
 	public List<ReservedSeat> getReservedSeatsByShowId(Long showId) {
-
-		GetReservationSeatsResDto reservationSeats =
-			reservationFeignClient.getReservationSeats(String.valueOf(showId)).getData();
-
-		List<ReservedSeat> reservedSeats = reservationSeats.getReservedSeats().stream()
+		
+		List<ReservedSeat> reservedSeats = reservationFeignClient.getReservationSeats(showId)
+			.getData()
+			.getReservedSeats()
+			.stream()
 			.map(
 				seat ->
 					ReservedSeat.builder()
@@ -35,7 +34,8 @@ public class ReservedSeatService {
 						.seatId(seat.getSeatId())
 						.showId(seat.getShowId())
 						.build()
-			).collect(Collectors.toList());
+			)
+			.collect(Collectors.toList());
 
 		return reservedSeats;
 	}
