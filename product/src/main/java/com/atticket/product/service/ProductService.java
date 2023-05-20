@@ -65,13 +65,18 @@ public class ProductService {
 	 * @return 각 파라미터 필터를 적용한 상품 Entity 리스트를 리턴한다.
 	 */
 	public List<Product> getProducts(int page, int perPage, String keyword, Category category,
-		SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate, SortOption sortOption) {
+		SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate,
+		SortOption sortOption) {
 
-		if (Objects.nonNull(category) && Objects.nonNull(subCategory) && !category.hasSub(subCategory)) {
-			throw new BaseException(BaseStatus.SUB_CATEGORY_DOES_NOT_IN_CATEGORY);
-		}
+		categoryHasSubCategory(category, subCategory);
 
 		return productRepository.find(page, perPage, keyword, category, subCategory, region, startDate, endDate,
 			sortOption);
+	}
+
+	private void categoryHasSubCategory(Category category, SubCategory subCategory) {
+		if (Objects.nonNull(category) && Objects.nonNull(subCategory) && !category.hasSub(subCategory)) {
+			throw new BaseException(BaseStatus.SUB_CATEGORY_DOES_NOT_IN_CATEGORY);
+		}
 	}
 }
