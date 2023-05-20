@@ -12,36 +12,45 @@ import com.atticket.product.domain.ShowSeat;
 
 @Repository
 public class ShowSeatRepository {
-	private List<ShowSeat> showSeatTestDatas = new CopyOnWriteArrayList<>(Arrays.asList(
-		ShowSeat.builder()
-			.id(1L)
-			.showId(1L)
-			.seatList("1,2,3,4,5,6,7")
-			.gradeId(1L)
-			.productId(1L)
-			.build(),
-		ShowSeat.builder()
-			.id(2L)
-			.showId(1L)
-			.seatList("8,9,10,11")
-			.gradeId(2L)
-			.productId(1L)
-			.build(),
-		ShowSeat.builder()
-			.id(3L)
-			.showId(2L)
-			.seatList("1,2,3,4,5,6,7,8")
-			.gradeId(1L)
-			.productId(1L)
-			.build(),
-		ShowSeat.builder()
-			.id(4L)
-			.showId(2L)
-			.seatList("9,10,11")
-			.gradeId(2L)
-			.productId(1L)
-			.build()
-	));
+
+	private final ShowRepository showRepository;
+	private final SeatRepository seatRepository;
+	private final GradeRepository gradeRepository;
+
+	private List<ShowSeat> showSeatTestDatas = new CopyOnWriteArrayList<>();
+
+	public ShowSeatRepository(ShowRepository showRepository, SeatRepository seatRepository,
+		GradeRepository gradeRepository) {
+		this.showRepository = showRepository;
+		this.seatRepository = seatRepository;
+		this.gradeRepository = gradeRepository;
+		showSeatTestDatas.addAll(Arrays.asList(
+			ShowSeat.builder()
+				.id(1L)
+				.show(showRepository.findById(1L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L)))
+				.grade(gradeRepository.findById(1L).orElse(null))
+				.build(),
+			ShowSeat.builder()
+				.id(2L)
+				.show(showRepository.findById(1L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(8L, 9L, 10L, 11L)))
+				.grade(gradeRepository.findById(2L).orElse(null))
+				.build(),
+			ShowSeat.builder()
+				.id(3L)
+				.show(showRepository.findById(2L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)))
+				.grade(gradeRepository.findById(1L).orElse(null))
+				.build(),
+			ShowSeat.builder()
+				.id(4L)
+				.show(showRepository.findById(2L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(9L, 10L, 11L)))
+				.grade(gradeRepository.findById(2L).orElse(null))
+				.build()
+		));
+	}
 
 	public Optional<ShowSeat> findById(String id) {
 		return showSeatTestDatas.stream()
@@ -54,7 +63,7 @@ public class ShowSeatRepository {
 
 		return showSeatTestDatas.stream()
 			.filter(
-				showSeat -> showSeat.getProductId().equals(productId)
+				showSeat -> showSeat.getShow().getProduct().getId().equals(productId)
 			).collect(Collectors.toList());
 	}
 
@@ -62,7 +71,7 @@ public class ShowSeatRepository {
 
 		return showSeatTestDatas.stream()
 			.filter(
-				showSeat -> showSeat.getShowId().equals(showId)
+				showSeat -> showSeat.getShow().getId().equals(showId)
 			).collect(Collectors.toList());
 	}
 

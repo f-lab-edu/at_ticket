@@ -71,7 +71,7 @@ public class GetProductResDto {
 				.endDate(product.getEndDate())
 				.ageLimit(product.getAgeLimit())
 				.image(product.getImage())
-				.region(product.getRegion())
+				.region(product.getPlace().getRegion())
 				.build();
 		}
 	}

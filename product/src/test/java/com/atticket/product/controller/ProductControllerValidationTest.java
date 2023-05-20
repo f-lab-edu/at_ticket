@@ -22,11 +22,13 @@ public class ProductControllerValidationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
 	@MockBean
 	ProductService productService;
 
 	@MockBean
 	ShowService showService;
+
 	@MockBean
 	GradeService gradeService;
 

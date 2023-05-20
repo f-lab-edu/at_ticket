@@ -68,14 +68,14 @@ public class ShowController {
 	 */
 	@PostMapping("/product/{productId}")
 	public BaseResponse<RegisterShowResDto> registerShow(@RequestBody RegisterShowReqDto registerShowReqDto,
-		@PathVariable("productId") String productId) {
+		@PathVariable("productId") Long productId) {
 
 		log.debug("registerShow - registerShowReqDto : " + registerShowReqDto);
 		log.debug("registerShow - productId : " + productId);
 
 		List<Long> showIds = registerShowReqDto.getShows()
 			.stream()
-			.map(showInfo -> showService.registerShow(Long.parseLong(productId),
+			.map(showInfo -> showService.registerShow(productId,
 				RegisterShowServiceDto.builder()
 					.date(showInfo.getDate())
 					.time(showInfo.getTime())

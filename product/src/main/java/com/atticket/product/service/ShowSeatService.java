@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.atticket.product.client.client.ReservationFeignClient;
 import com.atticket.product.domain.ReservedSeat;
 import com.atticket.product.domain.Seat;
+import com.atticket.product.domain.Show;
 import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
@@ -21,33 +23,45 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShowSeatService {
 
-	private final ShowSeatRepository showSeatRepository;
-	private final ReservedSeatService reservedSeatService;
+	// service
+	private final HallService hallService;
 	private final GradeService gradeService;
 	private final SeatService seatService;
+	private final ReservedSeatService reservedSeatService;
 
+	// feignClient
+	private final ReservationFeignClient reservationFeignClient;
+
+	// repository
+	private final ShowSeatRepository showSeatRepository;
+
+	/**
+	 * 공연의 남은 좌석 조회
+	 * */
 	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
+		// ShowSeat(공연 등급별 좌석 리스트) 리스트
 		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
-		List<ReservedSeat> reservedSeats = reservedSeatService.getReservedSeatsByShowId(showId);
+		// 예약된 좌석 id 리스트
+		List<Long> reservedSeatIdList = reservationFeignClient.getReservationSeats(showId)
+			.getData().reservedSeats.stream()
+			.map(reservedSeat -> reservedSeat.getSeatId())
+			.collect(Collectors.toList());
 
 		return showSeats.stream().map(showSeat -> {
-			List<Long> seatIdList = convertStringToList(showSeat.getSeatList());
-			List<Long> reservedSeatIdList = reservedSeats.stream()
-				.map(ReservedSeat::getSeatId)
-				.collect(Collectors.toList());
+			List<Long> seatIdList = showSeat.getSeats().stream().map(Seat::getId).collect(Collectors.toList());
 			List<Long> remainSeatIdList = seatIdList.stream()
 				.filter(seatId -> !reservedSeatIdList.contains(seatId))
 				.collect(Collectors.toList());
 			List<Seat> remainSeats = remainSeatIdList.stream()
 				.map(seatService::getSeatById)
 				.collect(Collectors.toList());
-			return new GetRemainSeatsSvcDto(remainSeats, gradeService.getGradeById(showSeat.getGradeId()));
+			return new GetRemainSeatsSvcDto(remainSeats, showSeat.getGrade());
 		}).collect(Collectors.toList());
 
 	}
 
 	/**
-	 * 등급별 남은 좌석 조회
+	 * 등급별 남은 좌석수 조회
 	 * @param showId
 	 * @return
 	 */
@@ -62,7 +76,7 @@ public class ShowSeatService {
 
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
 		for (ShowSeat showSeat : showSeats) {
-			List<Long> seats = convertStringToList(showSeat.getSeatList());
+			List<Long> seats = showSeat.getSeats().stream().map(Seat::getId).collect(Collectors.toList());
 			int remainSeatCnt = seats.size();
 
 			for (ReservedSeat reservedSeat : reservedSeats) {
@@ -76,8 +90,8 @@ public class ShowSeatService {
 			serviceDtoList.add(
 				GetRemainSeatCntSvcDto.builder()
 					.showId(showId)
-					.gradeId(showSeat.getGradeId())
-					.gradeNm(gradeService.getGradeNmById(showSeat.getGradeId()))
+					.gradeId(showSeat.getGrade().getId())
+					.gradeNm(showSeat.getGrade().getType())
 					.seatCnt(remainSeatCnt)
 					.build()
 			);
@@ -88,19 +102,17 @@ public class ShowSeatService {
 
 	/**
 	 * 공연 좌석 매핑 정보 등록
-	 * @param productId
-	 * @param showId
+	 * @param show
 	 * @param gradeId
 	 * @param seats
 	 * @return
 	 */
-	public Long registerShowSeat(Long productId, Long showId, Long gradeId, List<Long> seats) {
+	public Long registerShowSeat(Show show, Long gradeId, List<Long> seats) {
 
 		ShowSeat showSeat = ShowSeat.builder()
-			.showId(showId)
-			.gradeId(gradeId)
-			.productId(productId)
-			.seatList(convertListToString(seats))
+			.show(show)
+			.grade(gradeService.getGradeById(gradeId))
+			.seats(seatService.getSeatsByIdList(seats))
 			.build();
 
 		return showSeatRepository.save(showSeat);

@@ -21,8 +21,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShowService {
 
-	private final ShowRepository showRepository;
+	// service
 	private final ShowSeatService showSeatService;
+	private final HallService hallService;
+	private final ProductService productService;
+
+	// repository
+	private final ShowRepository showRepository;
+
+	public Show getShowById(Long id) {
+		return showRepository.findById(id).orElse(null);
+	}
 
 	/**
 	 * 상품의 공연 정보 리스트 조회
@@ -66,44 +75,43 @@ public class ShowService {
 	 */
 	public Long registerShow(long productId, RegisterShowServiceDto registerShowDto) {
 
-		LocalDate paredDate;
-		LocalTime paredtime;
-		Long registedShowId = null;
+		LocalDate parsedDate;
+		LocalTime parsedTime;
+		Long registeredShowId = null;
 
 		try {
-			paredDate = LocalDate.parse(registerShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
-			paredtime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.ISO_LOCAL_TIME);
+			parsedDate = LocalDate.parse(registerShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
+			parsedTime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.ISO_LOCAL_TIME);
 		} catch (Exception e) {
 			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
 		}
 
 		Show show = Show.builder()
-			.productId(productId)
-			.date(paredDate)
-			.time(paredtime)
-			.hallId(Long.valueOf(registerShowDto.getHallId()))
+			.product(productService.getProductById(productId))
+			.date(parsedDate)
+			.time(parsedTime)
+			.hall(hallService.getHallById(Long.parseLong(registerShowDto.getHallId())))
 			.session(Integer.parseInt(registerShowDto.getSession()))
-			.hallId(Long.parseLong(registerShowDto.getHallId()))
 			.build();
 
 		//공연 저장
-		registedShowId = showRepository.save(show, productId);
+		registeredShowId = showRepository.save(show, productId);
 
 		//등록된 공연의 좌석-등급 매핑 저장
-		if (Objects.isNull(registedShowId)) {
+		if (Objects.isNull(registeredShowId)) {
 			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
 		} else {
 
 			List<RegisterShowServiceDto.SeatInfo> seats = registerShowDto.getSeats();
 			for (int i = 0; i < seats.size(); i++) {
 				RegisterShowServiceDto.SeatInfo seat = seats.get(i);
-				showSeatService.registerShowSeat(productId, registedShowId, Long.valueOf(seat.getGrade()),
+				showSeatService.registerShowSeat(show, Long.valueOf(seat.getGrade()),
 					seat.getIds().stream().map(Long::parseLong).collect(Collectors.toList()));
 			}
 
 		}
 
-		return registedShowId;
+		return registeredShowId;
 	}
 
 }

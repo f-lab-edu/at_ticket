@@ -15,30 +15,42 @@ import com.atticket.product.domain.Show;
 @Repository
 public class ShowRepository {
 
-	private List<Show> showTestDatas = new CopyOnWriteArrayList<>(Arrays.asList(
+	private final ProductRepository productRepository;
+	private final HallRepository hallRepository;
 
-		Show.builder()
-			.id(1L)
-			.time(LocalTime.of(10, 0, 0))
-			.session(1)
-			.date(LocalDate.of(2023, 3, 1))
-			.productId(1L)
-			.build(),
-		Show.builder()
-			.id(2L)
-			.time(LocalTime.of(12, 0, 0))
-			.session(2)
-			.date(LocalDate.of(2023, 3, 1))
-			.productId(1L)
-			.build(),
-		Show.builder()
-			.id(3L)
-			.time(LocalTime.of(10, 0, 0))
-			.session(1)
-			.date(LocalDate.of(2023, 4, 1))
-			.productId(1L)
-			.build()
-	));
+	private List<Show> showTestDatas = new CopyOnWriteArrayList<>();
+
+	public ShowRepository(ProductRepository productRepository, HallRepository hallRepository) {
+		this.productRepository = productRepository;
+		this.hallRepository = hallRepository;
+		this.showTestDatas.addAll(Arrays.asList(
+
+			Show.builder()
+				.id(1L)
+				.time(LocalTime.of(10, 0, 0))
+				.session(1)
+				.date(LocalDate.of(2023, 3, 1))
+				.product(productRepository.findById(1L).orElse(null))
+				.hall(hallRepository.findById(1L).orElse(null))
+				.build(),
+			Show.builder()
+				.id(2L)
+				.time(LocalTime.of(12, 0, 0))
+				.session(2)
+				.date(LocalDate.of(2023, 3, 1))
+				.product(productRepository.findById(1L).orElse(null))
+				.hall(hallRepository.findById(1L).orElse(null))
+				.build(),
+			Show.builder()
+				.id(3L)
+				.time(LocalTime.of(10, 0, 0))
+				.session(1)
+				.date(LocalDate.of(2023, 4, 1))
+				.product(productRepository.findById(1L).orElse(null))
+				.hall(hallRepository.findById(1L).orElse(null))
+				.build()
+		));
+	}
 
 	public Long save(Show show, Long productId) {
 
@@ -48,7 +60,7 @@ public class ShowRepository {
 		return (long)showTestDatas.size() + 1;
 	}
 
-	public Optional<Show> findById(String id) {
+	public Optional<Show> findById(Long id) {
 
 		return showTestDatas.stream()
 			.filter(
@@ -60,7 +72,7 @@ public class ShowRepository {
 
 		return showTestDatas.stream()
 			.filter(
-				show -> show.getProductId().equals(productId)
+				show -> show.getProduct().getId().equals(productId)
 			).collect(Collectors.toList());
 	}
 

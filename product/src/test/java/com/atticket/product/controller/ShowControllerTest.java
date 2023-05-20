@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.service.ShowSeatService;
+import com.atticket.product.service.ShowService;
 
 @WebMvcTest(ShowController.class)
 public class ShowControllerTest {
@@ -28,6 +29,9 @@ public class ShowControllerTest {
 
 	@MockBean
 	ShowSeatService showSeatService;
+
+	@MockBean
+	ShowService showService;
 
 	@Test
 	@DisplayName("공연의 남은 좌석수 조회 테스트")
