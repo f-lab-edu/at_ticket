@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.atticket.product.domain.ReservedSeat;
+import com.atticket.product.domain.Seat;
 import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
+import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
 import com.atticket.product.repository.ShowSeatRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,9 +24,26 @@ public class ShowSeatService {
 	private final ShowSeatRepository showSeatRepository;
 	private final ReservedSeatService reservedSeatService;
 	private final GradeService gradeService;
+	private final SeatService seatService;
 
-	public List<ShowSeat> getShowSeatsByShowId(Long showId) {
-		return showSeatRepository.findShowSeatByShowId(showId);
+	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
+		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		List<ReservedSeat> reservedSeats = reservedSeatService.getReservedSeatsByShowId(showId);
+
+		return showSeats.stream().map(showSeat -> {
+			List<Long> seatIdList = convertStringToList(showSeat.getSeatList());
+			List<Long> reservedSeatIdList = reservedSeats.stream()
+				.map(ReservedSeat::getSeatId)
+				.collect(Collectors.toList());
+			List<Long> remainSeatIdList = seatIdList.stream()
+				.filter(seatId -> !reservedSeatIdList.contains(seatId))
+				.collect(Collectors.toList());
+			List<Seat> remainSeats = remainSeatIdList.stream()
+				.map(seatService::getSeatById)
+				.collect(Collectors.toList());
+			return new GetRemainSeatsSvcDto(remainSeats, gradeService.getGradeById(showSeat.getGradeId()));
+		}).collect(Collectors.toList());
+
 	}
 
 	/**

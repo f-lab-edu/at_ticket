@@ -42,4 +42,8 @@ public class GradeService {
 		}
 
 	}
+
+	public Grade getGradeById(Long id) {
+		return gradeRepository.findById(id).orElse(null);
+	}
 }
