@@ -52,12 +52,14 @@ public class ShowRepository {
 		));
 	}
 
-	public Long save(Show show, Long productId) {
+	public Long save(Show show) {
 
-		show.setId((long)(showTestDatas).size() + 1);
+		Long showId = (long)(showTestDatas).size() + 1;
+
+		show.setId(showId);
 		showTestDatas.add(show);
 
-		return (long)showTestDatas.size() + 1;
+		return showId;
 	}
 
 	public Optional<Show> findById(Long id) {

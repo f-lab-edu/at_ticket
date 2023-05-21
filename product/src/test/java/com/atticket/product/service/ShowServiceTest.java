@@ -20,7 +20,6 @@ class ShowServiceTest {
 	private ShowService showService;
 
 	// service
-	private ShowSeatService showSeatService;
 	private HallService hallService;
 	private ProductService productService;
 
@@ -29,7 +28,7 @@ class ShowServiceTest {
 
 	@BeforeEach
 	public void setUpTest() {
-		showService = new ShowService(showSeatService, hallService, productService, showRepository);
+		showService = new ShowService(hallService, productService, showRepository);
 	}
 
 	@Test

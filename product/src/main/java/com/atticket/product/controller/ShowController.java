@@ -3,7 +3,8 @@ package com.atticket.product.controller;
 import static com.atticket.common.response.BaseResponse.ok;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
 import com.atticket.product.dto.response.RegisterShowResDto;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
-import com.atticket.product.dto.service.RegisterShowServiceDto;
 import com.atticket.product.service.ShowSeatService;
 import com.atticket.product.service.ShowService;
 
@@ -67,37 +67,18 @@ public class ShowController {
 	 * @return
 	 */
 	@PostMapping("/product/{productId}")
-	public BaseResponse<RegisterShowResDto> registerShow(@RequestBody RegisterShowReqDto registerShowReqDto,
+	public BaseResponse<RegisterShowResDto> registerShow(@Valid @RequestBody RegisterShowReqDto registerShowReqDto,
 		@PathVariable("productId") Long productId) {
+
+		System.out.println(registerShowReqDto.getShows().get(0).getSession());
 
 		log.debug("registerShow - registerShowReqDto : " + registerShowReqDto);
 		log.debug("registerShow - productId : " + productId);
 
-		List<Long> showIds = registerShowReqDto.getShows()
-			.stream()
-			.map(showInfo -> showService.registerShow(productId,
-				RegisterShowServiceDto.builder()
-					.date(showInfo.getDate())
-					.time(showInfo.getTime())
-					.session(showInfo.getSession())
-					.hallId(showInfo.getHallId())
-					.seats(showInfo.getSeats()
-						.stream()
-						.map(seatInfo -> RegisterShowServiceDto.SeatInfo.builder()
-							.ids(seatInfo.getIds())
-							.grade(seatInfo.getGrade())
-							.build())
-						.collect(Collectors.toList()))
-					.build()
-			))
-			.collect(Collectors.toList());
-
 		//등록 공연 id 리턴
-		return ok(
-			RegisterShowResDto.builder()
-				.showIds(showIds)
-				.build()
-		);
+		return ok(RegisterShowResDto.builder()
+			.showIds(showSeatService.registerShow(productId, registerShowReqDto.convert()))
+			.build());
 	}
 
 }

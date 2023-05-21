@@ -48,15 +48,25 @@ public class ShowSeatRepository {
 				.show(showRepository.findById(2L).orElse(null))
 				.seats(seatRepository.findByIdList(List.of(9L, 10L, 11L)))
 				.grade(gradeRepository.findById(2L).orElse(null))
+				.build(),
+			ShowSeat.builder()
+				.id(5L)
+				.show(showRepository.findById(3L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(1L, 2L, 3L)))
+				.grade(gradeRepository.findById(1L).orElse(null))
+				.build(),
+			ShowSeat.builder()
+				.id(6L)
+				.show(showRepository.findById(3L).orElse(null))
+				.seats(seatRepository.findByIdList(List.of(4L, 5L)))
+				.grade(gradeRepository.findById(2L).orElse(null))
 				.build()
 		));
 	}
 
-	public Optional<ShowSeat> findById(String id) {
+	public Optional<ShowSeat> findById(Long id) {
 		return showSeatTestDatas.stream()
-			.filter(
-				showSeat -> showSeat.getId().equals(id)
-			).findAny();
+			.filter(showSeat -> showSeat.getId().equals(id)).findAny();
 	}
 
 	public List<ShowSeat> findShowSeatByProductId(Long productId) {
@@ -81,4 +91,9 @@ public class ShowSeatRepository {
 		return (long)showSeatTestDatas.size() + 1;
 	}
 
+	public boolean isExistByShowIdAndGradeId(Long showId, Long gradeId) {
+		return showSeatTestDatas.stream().anyMatch(showSeat ->
+			showId.equals(showSeat.getShow().getId()) && gradeId.equals(showSeat.getGrade().getId()));
+
+	}
 }
