@@ -1,0 +1,6 @@
+plugins {
+    id 'atticket'
+    id 'java'
+}
+
+sourceCompatibility = '11'

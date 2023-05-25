@@ -1,0 +1,15 @@
+plugins {
+    id 'atticket-spring-boot'
+}
+
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+}
+
+test {
+    useJUnitPlatform()
+}
