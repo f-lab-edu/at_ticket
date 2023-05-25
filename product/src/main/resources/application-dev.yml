@@ -3,7 +3,8 @@ server:
 
 api:
   reservation:
-    url: localhost
+    url: reservation
     port: 8100
+
 
 

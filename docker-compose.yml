@@ -1,23 +1,29 @@
 version: "3.0"
 services:
-  product-app:
+  product:
     build:
       context: .
       dockerfile: ./product/Dockerfile
     container_name: "at_ticket-product"
     ports:
       - "8000:8000"
-  reservation-app:
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  reservation:
     build:
       context: .
       dockerfile: ./reservation/Dockerfile
     container_name: "at_ticket-reservation"
-    ports:
-      - "8100:8100"
-  payment-app:
+    expose:
+      - "8100"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  payment:
     build:
       context: .
       dockerfile: ./payment/Dockerfile
     container_name: "at_ticket-payment"
-    ports:
-      - "8200:8200"
+    expose:
+      - "8200"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
