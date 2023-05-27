@@ -1,5 +1,3 @@
 plugins {
-    id 'common-conventions'
+    id 'atticket-java'
 }
-
-bootJar.enabled = false

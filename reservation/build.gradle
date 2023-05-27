@@ -1,7 +1,8 @@
 plugins {
-    id 'common-conventions'
+    id 'atticket-spring-boot-app'
 }
 
 dependencies {
     implementation project(':common:response')
+    implementation project(':common:utils')
 }
