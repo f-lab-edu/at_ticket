@@ -1,5 +1,7 @@
 package com.atticket.product.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.atticket.product.domain.Seat;
@@ -15,6 +17,10 @@ public class SeatService {
 
 	public Seat getSeatById(Long id) {
 		return seatRepository.findById(id).orElse(null);
+	}
+
+	public List<Seat> getSeatsByIdList(List<Long> idList) {
+		return seatRepository.findByIdList(idList);
 	}
 
 }

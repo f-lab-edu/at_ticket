@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import com.atticket.common.response.BaseResponse;
 import com.atticket.product.domain.Grade;
+import com.atticket.product.domain.Place;
 import com.atticket.product.domain.Product;
 import com.atticket.product.dto.response.GetProductResDto;
 import com.atticket.product.service.GradeService;
@@ -39,7 +40,10 @@ public class ProductControllerTest {
 		//Given
 		Long productId = 1L;
 
-		Product givenProduct = Product.builder().name("테스트").build();
+		Product givenProduct = Product.builder()
+			.name("테스트")
+			.place(Place.builder().build())
+			.build();
 		List<Grade> givenGrades = Arrays.asList(Grade.builder().build());
 		List<LocalDate> givenLocalDates = Arrays.asList(LocalDate.of(2023, 3, 1));
 

@@ -1,7 +1,6 @@
 package com.atticket.product.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,24 +22,6 @@ public class GradeService {
 	 */
 	public List<Grade> getGradesByProductId(Long productId) {
 		return gradeRepository.findGradeByProductId(productId);
-	}
-
-	/**
-	 ** 등급 이름 조회
-	 * @param gradeId
-	 * @return
-	 */
-	public String getGradeNmById(Long gradeId) {
-
-		Optional<Grade> grade = gradeRepository.findById(gradeId);
-
-		if (grade.isPresent()) {
-			return grade.get().getType();
-
-		} else {
-			return "";
-		}
-
 	}
 
 	public Grade getGradeById(Long id) {

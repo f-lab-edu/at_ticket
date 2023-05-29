@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +47,7 @@ public class BaseExceptionHandler {
 				}
 				return error.getField() + " - " + error.getCode();
 			}).collect(Collectors.toList());
-		return error(400, "validation 에러입니다. ", errMsgList);
+		return error(400, "validation 에러입니다.", errMsgList);
 	}
 
 	// @RequestParam MissingServletRequestParameterException 발생시 핸들러
@@ -53,7 +56,7 @@ public class BaseExceptionHandler {
 		MissingServletRequestParameterException exception) {
 		log.error(exception.getClass().getName(), exception);
 		List<String> errMsgList = new ArrayList<>(List.of(exception.getParameterName() + " - NotNull"));
-		return error(400, "validation 에러입니다. ", errMsgList);
+		return error(400, "validation 에러입니다.", errMsgList);
 	}
 
 	// @RequestParam MethodArgumentTypeMismatchException 발생시 핸들러
@@ -62,6 +65,37 @@ public class BaseExceptionHandler {
 		MethodArgumentTypeMismatchException exception) {
 		log.error(exception.getClass().getName(), exception);
 		List<String> errMsgList = new ArrayList<>(List.of(exception.getName() + " - typeMismatch"));
-		return error(400, "validation 에러입니다. ", errMsgList);
+		return error(400, "validation 에러입니다.", errMsgList);
+	}
+
+	// response body validation 에러
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public BaseResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+		log.error(exception.getClass().getName(), exception);
+		Throwable cause = exception.getCause();
+		List<String> errMsgList = new ArrayList<>();
+
+		if (cause instanceof JsonMappingException) {
+			JsonMappingException ife = (JsonMappingException)cause;
+			StringBuilder field = new StringBuilder();
+
+			for (int i = 0; i < ife.getPath().size(); i++) {
+				String fieldName = ife.getPath().get(i).getFieldName();
+				if (!Objects.isNull(fieldName)) {
+					if (i != 0) {
+						field.append(".");
+					}
+					field.append(fieldName);
+				} else {
+					int index = ife.getPath().get(i).getIndex();
+					field.append("[").append(index).append("]");
+				}
+
+			}
+
+			errMsgList.add(field + " - typeMismatch");
+		}
+
+		return error(400, "validation 에러입니다.", errMsgList);
 	}
 }

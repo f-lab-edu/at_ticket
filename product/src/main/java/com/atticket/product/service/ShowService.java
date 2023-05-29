@@ -2,7 +2,6 @@ package com.atticket.product.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -11,8 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
+import com.atticket.product.domain.Hall;
+import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
-import com.atticket.product.dto.service.RegisterShowServiceDto;
 import com.atticket.product.repository.ShowRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShowService {
 
+	// service
+	private final HallService hallService;
+	private final ProductService productService;
+
+	// repository
 	private final ShowRepository showRepository;
-	private final ShowSeatService showSeatService;
+
+	public Show getShowById(Long id) {
+		return showRepository.findById(id).orElse(null);
+	}
 
 	/**
 	 * 상품의 공연 정보 리스트 조회
@@ -58,52 +66,31 @@ public class ShowService {
 			.collect(Collectors.toList());
 	}
 
-	/**
-	 * 공연 등록
-	 * @param productId
-	 * @param registerShowDto
-	 * @return 등록된 showId
-	 */
-	public Long registerShow(long productId, RegisterShowServiceDto registerShowDto) {
+	public Long saveShow(Long productId, LocalDate date, LocalTime time, Long hallId, int session) {
 
-		LocalDate paredDate;
-		LocalTime paredtime;
-		Long registedShowId = null;
+		Product product = productService.getProductById(productId);
+		if (Objects.isNull(product)) {
+			throw new BaseException(BaseStatus.INVALID_PRODUCT);
+		}
 
-		try {
-			paredDate = LocalDate.parse(registerShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
-			paredtime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.ISO_LOCAL_TIME);
-		} catch (Exception e) {
-			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
+		Hall hall = hallService.getHallById(hallId);
+		if (Objects.isNull(hall)) {
+			throw new BaseException(BaseStatus.INVALID_HALL);
+		}
+
+		if (!product.getPlace().equals(hall.getPlace())) {
+			throw new BaseException(BaseStatus.PRODUCT_PLACE_NOT_SAME_HALL_PLACE);
 		}
 
 		Show show = Show.builder()
-			.productId(productId)
-			.date(paredDate)
-			.time(paredtime)
-			.hallId(Long.valueOf(registerShowDto.getHallId()))
-			.session(Integer.parseInt(registerShowDto.getSession()))
-			.hallId(Long.parseLong(registerShowDto.getHallId()))
+			.product(product)
+			.date(date)
+			.time(time)
+			.hall(hall)
+			.session(session)
 			.build();
 
 		//공연 저장
-		registedShowId = showRepository.save(show, productId);
-
-		//등록된 공연의 좌석-등급 매핑 저장
-		if (Objects.isNull(registedShowId)) {
-			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
-		} else {
-
-			List<RegisterShowServiceDto.SeatInfo> seats = registerShowDto.getSeats();
-			for (int i = 0; i < seats.size(); i++) {
-				RegisterShowServiceDto.SeatInfo seat = seats.get(i);
-				showSeatService.registerShowSeat(productId, registedShowId, Long.valueOf(seat.getGrade()),
-					seat.getIds().stream().map(Long::parseLong).collect(Collectors.toList()));
-			}
-
-		}
-
-		return registedShowId;
+		return showRepository.save(show);
 	}
-
 }

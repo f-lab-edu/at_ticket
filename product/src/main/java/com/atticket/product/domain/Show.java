@@ -23,11 +23,10 @@ public class Show {
 	private LocalDate date;
 
 	//상품 id
-	private Long productId;
-
+	private Product product;
 
 	//공연홀 id
-	private Long hallId;
+	private Hall hall;
 
 	public void setId(Long id) {
 		this.id = id;

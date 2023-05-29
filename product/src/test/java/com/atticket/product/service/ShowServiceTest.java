@@ -17,14 +17,18 @@ import com.atticket.product.repository.ShowRepository;
 
 class ShowServiceTest {
 
-	private ShowRepository showRepository = mock(ShowRepository.class);
 	private ShowService showService;
 
-	private ShowSeatService showSeatService;
+	// service
+	private HallService hallService;
+	private ProductService productService;
+
+	// repository
+	private ShowRepository showRepository = mock(ShowRepository.class);
 
 	@BeforeEach
 	public void setUpTest() {
-		showService = new ShowService(showRepository, showSeatService);
+		showService = new ShowService(hallService, productService, showRepository);
 	}
 
 	@Test
