@@ -23,11 +23,14 @@ import com.atticket.product.type.SubCategory;
 @Repository
 public class ProductRepository {
 
+	private final PlaceRepository placeRepository;
+
 	// 테스트 데이터
 	private final CopyOnWriteArrayList<Product> productTestDatas = new CopyOnWriteArrayList<>(new ArrayList<>());
 
 	// 생성자에서 더미데이터 추가
-	public ProductRepository() {
+	public ProductRepository(PlaceRepository placeRepository) {
+		this.placeRepository = placeRepository;
 		long size = 30;
 		for (long i = 1; i <= size; i++) {
 			// category size
@@ -39,16 +42,15 @@ public class ProductRepository {
 				.get((int)Math.ceil((double)(i > cs ? i - cs : i) / scs) - 1);
 			// region size
 			long rs = (long)Math.ceil((double)size / Region.values().length);
-			Region region = Region.values()[(int)Math.ceil((double)i / rs) - 1];
+			Place place = placeRepository.findById((long)Math.ceil((double)i / rs)).orElse(null);
 			// ageLimit size
 			long as = (long)Math.ceil((double)size / AgeLimit.values().length);
 			AgeLimit ageLimit = AgeLimit.values()[(int)Math.ceil((double)as / rs) - 1];
 
 			productTestDatas.add(new Product(i, "상품" + i, "상품" + i + " 설명", category,
-				subCategory, LocalTime.of(2, 0), LocalTime.of(0, 20), region,
+				subCategory, LocalTime.of(2, 0), LocalTime.of(0, 20),
 				LocalDate.of(2023, 4, 21), LocalDate.of(2023, 5, 21),
-				"https://상품" + i + " 이미지.jpg", ageLimit,
-				new Place(i, "장소" + i, "장소" + i + " 주소", "장소" + i + " 연락처", region)));
+				"https://상품" + i + " 이미지.jpg", ageLimit, place));
 		}
 	}
 
@@ -79,7 +81,7 @@ public class ProductRepository {
 			.filter(product -> (!StringUtils.hasText(keyword) || (product.getName().contains(keyword)))
 				&& (Objects.isNull(category) || product.getCategory().equals(category))
 				&& (Objects.isNull(subCategory) || product.getSubCategory().equals(subCategory))
-				&& (Objects.isNull(region) || product.getRegion().equals(region))
+				&& (Objects.isNull(region) || product.getPlace().getRegion().equals(region))
 				&& (Objects.isNull(startDate) || product.getEndDate().compareTo(startDate) >= 0)
 				&& (Objects.isNull(endDate) || product.getStartDate().compareTo(endDate) <= 0)
 			)

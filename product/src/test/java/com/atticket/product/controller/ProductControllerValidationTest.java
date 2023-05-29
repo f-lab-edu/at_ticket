@@ -22,11 +22,13 @@ public class ProductControllerValidationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
 	@MockBean
 	ProductService productService;
 
 	@MockBean
 	ShowService showService;
+
 	@MockBean
 	GradeService gradeService;
 
@@ -58,7 +60,7 @@ public class ProductControllerValidationTest {
 		mockMvc.perform(get("/products/" + wrongId))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("validation 에러입니다. "))
+			.andExpect(jsonPath("$.message").value("validation 에러입니다."))
 			.andDo(print());
 
 	}

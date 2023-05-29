@@ -4,10 +4,8 @@ import java.beans.ConstructorProperties;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class GetReservationSeatsResDto {
 
 	public final List<ReservedSeatsDto> reservedSeats;
@@ -18,9 +16,7 @@ public class GetReservationSeatsResDto {
 	}
 
 	//예약된 좌석 리스트
-
 	@Getter
-	@ToString
 	public static class ReservedSeatsDto {
 
 		//예약좌석 id

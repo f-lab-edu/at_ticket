@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
-import com.atticket.product.type.Region;
 import com.atticket.product.type.SubCategory;
 
 import lombok.AllArgsConstructor;
@@ -37,9 +36,6 @@ public class Product {
 
 	//인터 미션
 	private LocalTime interMission;
-
-	//지역
-	private Region region;
 
 	//상연 시작 일자
 	private LocalDate startDate;
