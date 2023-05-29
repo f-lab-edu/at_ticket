@@ -40,7 +40,7 @@ public class ShowSeatService {
 	 * */
 	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
 		// ShowSeat(공연 등급별 좌석 리스트) 리스트
-		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 		// 예약된 좌석 id 리스트
 		List<Long> reservedSeatIdList = reservedSeatService.getReservedSeatIdsByShowId(showId);
 
@@ -65,7 +65,7 @@ public class ShowSeatService {
 	public List<GetRemainSeatCntSvcDto> getRemainSeatCntByShowId(Long showId) {
 
 		//공연의 좌석 - 등급 매핑 정보 조회
-		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 		//showId로 예매 좌석 리스트 조회
 		List<Long> reservedSeatIds = reservedSeatService.getReservedSeatIdsByShowId(showId);
 
@@ -117,7 +117,7 @@ public class ShowSeatService {
 		}
 
 		// 해당 공연에 같은 등급의 좌석정보가 이미 존재하면 exception
-		if (showSeatRepository.isExistByShowIdAndGradeId(showId, gradeId)) {
+		if (!Objects.isNull(showSeatRepository.findByShowId_idAndGrade_id(showId, gradeId))) {
 			throw new BaseException(BaseStatus.ALREADY_EXIST_SHOW_SEAT);
 		}
 
@@ -140,12 +140,12 @@ public class ShowSeatService {
 		});
 
 		ShowSeat showSeat = ShowSeat.builder()
-			.show(show)
+			.showId(show)
 			.grade(grade)
 			.seats(seats)
 			.build();
 
-		return showSeatRepository.save(showSeat);
+		return showSeatRepository.save(showSeat).getId();
 	}
 
 	public List<Long> registerShow(Long productId, RegisterShowServiceDto registerShowServiceDto) {

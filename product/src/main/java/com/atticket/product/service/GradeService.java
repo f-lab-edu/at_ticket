@@ -21,7 +21,7 @@ public class GradeService {
 	 * @return
 	 */
 	public List<Grade> getGradesByProductId(Long productId) {
-		return gradeRepository.findGradeByProductId(productId);
+		return gradeRepository.findByProduct_id(productId);
 	}
 
 	public Grade getGradeById(Long id) {

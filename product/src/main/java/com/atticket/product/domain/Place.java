@@ -1,5 +1,13 @@
 package com.atticket.product.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.atticket.product.type.Region;
 
 import lombok.AllArgsConstructor;
@@ -9,9 +17,13 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
+@Entity
+@Table(name = "PLACE")
 public class Place {
 
 	//공연장 id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	//이름
@@ -24,5 +36,6 @@ public class Place {
 	private String phoneNumber;
 
 	//지역
+	@Enumerated(EnumType.STRING)
 	private Region region;
 }

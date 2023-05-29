@@ -3,14 +3,27 @@ package com.atticket.product.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@Entity
+@Table(name = "SHOWS")
 public class Show {
 
 	//공연 id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	//시간
@@ -23,13 +36,13 @@ public class Show {
 	private LocalDate date;
 
 	//상품 id
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
 	private Product product;
 
 	//공연홀 id
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hall_id")
 	private Hall hall;
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 }

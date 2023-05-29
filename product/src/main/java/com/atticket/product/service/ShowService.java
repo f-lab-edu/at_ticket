@@ -38,7 +38,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<Show> getShowsByProductId(Long productId) {
-		return showRepository.findShowsByProductId(productId);
+		return showRepository.findByProduct_id(productId);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<LocalDate> getShowDatesByProductId(Long productId) {
-		return showRepository.findShowsByProductId(productId)
+		return showRepository.findByProduct_id(productId)
 			.stream()
 			.map(Show::getDate)
 			.collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<Show> getShowDateByProductId(Long productId, LocalDate date) {
-		return showRepository.findShowsByProductId(productId)
+		return showRepository.findByProduct_id(productId)
 			.stream()
 			.filter(show -> show.getDate().equals(date))
 			.collect(Collectors.toList());
@@ -91,6 +91,7 @@ public class ShowService {
 			.build();
 
 		//공연 저장
-		return showRepository.save(show);
+
+		return showRepository.save(show).getId();
 	}
 }

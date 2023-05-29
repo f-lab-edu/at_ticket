@@ -65,7 +65,7 @@ public class GetProductResDto {
 				.category(product.getCategory())
 				.subCategory(product.getSubCategory())
 				.name(product.getName())
-				.explain(product.getExplain())
+				.explain(product.getExplains())
 				.runningTime(product.getRunningTime())
 				.startDate(product.getStartDate())
 				.endDate(product.getEndDate())
