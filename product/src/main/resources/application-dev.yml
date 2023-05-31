@@ -12,6 +12,9 @@ spring:
     url: jdbc:mysql://database:3306/product
     username: root
     password: 1234
+  sql:
+    init:
+      mode: always
 
   jpa:
     hibernate:
@@ -20,3 +23,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
