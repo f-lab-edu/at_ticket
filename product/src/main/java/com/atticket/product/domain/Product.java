@@ -18,13 +18,16 @@ import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.SubCategory;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "PRODUCT")
 public class Product {
