@@ -10,6 +10,6 @@ import com.atticket.product.domain.Show;
 @Repository
 public interface ShowRepository extends JpaRepository<Show, Long> {
 
-	public List<Show> findByProduct_id(Long productId);
+	List<Show> findByProduct_id(Long productId);
 
 }

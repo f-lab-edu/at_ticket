@@ -16,7 +16,6 @@ spring:
   sql:
     init:
       mode: always
-
   jpa:
     hibernate:
       ddl-auto: create
