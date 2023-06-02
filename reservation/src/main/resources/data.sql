@@ -5,4 +5,9 @@ VALUES('1', '1');
 
 INSERT INTO reservation.reserved_seat
 (seat_id, show_id)
-VALUES('1', '2');
+VALUES('2', '1');
+
+
+INSERT INTO reservation.reserved_seat
+(seat_id, show_id)
+VALUES('5', '2');

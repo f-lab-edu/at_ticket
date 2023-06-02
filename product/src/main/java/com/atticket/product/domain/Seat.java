@@ -28,6 +28,9 @@ public class Seat {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	//hall별 좌석 번호
+	private Long seatNo;
+
 	//공간 (e.g. 1층, 2층, .../ A존, B존, ...)
 	private String space;
 
@@ -41,7 +44,7 @@ public class Seat {
 	private String seatRow;
 
 	//행 번호
-	private int rowNum;
+	private int seatRowNum;
 
 	//공연홀
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -1,8 +1,5 @@
 package com.atticket.product.domain;
 
-import java.util.List;
-
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,10 +36,8 @@ public class ShowSeat {
 	@JoinColumn(name = "show_id")
 	private Show showId;
 
-	//Todo: 수정필요
 	//좌석 리스트
-	@Convert(converter = ShowSeatConverter.class)
-	private List<Seat> seats;
+	private String seats;
 
 	//등급 id
 	@ManyToOne(fetch = FetchType.LAZY)

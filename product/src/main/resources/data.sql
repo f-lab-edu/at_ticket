@@ -26,15 +26,43 @@ INSERT INTO product.grade
 VALUES('10000', 'B', '1');
 
 INSERT INTO product.seat
-(locx, locy, row_num, seat_row, `space`, hall_id)
-VALUES('15', '23', '1', 'h', "계단좌석", '1');
+(seat_no,locx, locy,seat_row_num, seat_row, `space`, hall_id)
+VALUES('1','15', '23', '1', 'h', "계단좌석", '1');
+
+INSERT INTO product.seat
+(seat_no,locx, locy, seat_row_num, seat_row, `space`, hall_id)
+VALUES('2','10', '1', '1', 'h', "2층좌석", '1');
+
+INSERT INTO product.seat
+(seat_no,locx, locy, seat_row_num, seat_row, `space`, hall_id)
+VALUES('3','10', '1', '1', 'h', "좌측좌석", '1');
+
+INSERT INTO product.seat
+(seat_no,locx, locy, seat_row_num, seat_row, `space`, hall_id)
+VALUES('4','10', '16', '21', 'h', "좌측좌석", '1');
+
+INSERT INTO product.seat
+(seat_no,locx, locy, seat_row_num, seat_row, `space`, hall_id)
+VALUES('1','2', '1', '1', 'h', "좌측좌석", '2');
+
+INSERT INTO product.seat
+(seat_no,locx, locy, seat_row_num, seat_row, `space`, hall_id)
+VALUES('2','4', '5', '1', 'h', "좌측좌석", '2');
 
 INSERT INTO product.shows
 (`date`, `session`, `time`, hall_id, product_id)
 VALUES('20230531', 1, '10:00:00', '1', '1');
 
+INSERT INTO product.shows
+(`date`, `session`, `time`, hall_id, product_id)
+VALUES('20230531', 1, '10:00:00', '2', '1');
+
 
 INSERT INTO product.show_seat
 (seats, grade_id, show_id)
-VALUES('1,2,3,4,5,6', '1', '1');
+VALUES('1,2,3', '1', '1');
+
+INSERT INTO product.show_seat
+(seats, grade_id, show_id)
+VALUES('1,2', '1', '2');
 

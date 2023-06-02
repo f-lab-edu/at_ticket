@@ -19,15 +19,17 @@ public class SeatService {
 	public Seat getSeatById(Long id) {
 		return seatRepository.findById(id).orElse(null);
 	}
-
-	public List<Seat> getSeatsByIdList(List<Long> seatIdList) {
-
-		List<Seat> seats = seatRepository.findAll();
-
-		return seats.stream()
-			.filter(
-				seat -> seatIdList.contains(seat.getId())
-			).collect(Collectors.toList());
+	
+	public Seat getSeatBySeatNoAndHallId(Long seatNo, Long hallId) {
+		return seatRepository.findBySeatNoAndHallId(seatNo, hallId).orElse(null);
 	}
 
+	public List<Seat> getSeatsBySeatNoList(List<Long> seatIds, Long hallId) {
+
+		List<Seat> seats = seatIds.stream()
+			.map(s -> seatRepository.findBySeatNoAndHallId(s, hallId).orElse(null))
+			.collect(Collectors.toList());
+
+		return seats;
+	}
 }
