@@ -41,22 +41,12 @@ public class ShowSeatService {
 	 * 공연의 남은 좌석 조회
 	 * */
 	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
-
-		//Show의 hallId
-		Long hallId = showService.getShowById(showId).getHall().getId();
 		// ShowSeat(공연 등급별 좌석 리스트) 리스트
 		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 		// 예약된 좌석 id 리스트
 		List<Long> reservedSeatIdList = reservedSeatService.getReservedSeatIdsByShowId(showId);
-
 		return showSeats.stream().map(showSeat -> {
-			List<Long> seatNoList = converToSeatIdList(showSeat.getSeats());
-			List<Long> seatIdList = seatNoList.stream()
-				.map(sn -> seatService.getSeatBySeatNoAndHallId(sn, hallId))
-				.map(sn -> sn.getId())
-				.collect(
-					Collectors.toList()
-				);
+			List<Long> seatIdList = converToSeatIdList(showSeat.getSeats());
 			List<Long> remainSeatIdList = seatIdList.stream()
 				.filter(seatId -> !reservedSeatIdList.contains(seatId))
 				.collect(Collectors.toList());
@@ -65,7 +55,6 @@ public class ShowSeatService {
 				.collect(Collectors.toList());
 			return new GetRemainSeatsSvcDto(remainSeats, showSeat.getGrade());
 		}).collect(Collectors.toList());
-
 	}
 
 	/**
@@ -75,11 +64,8 @@ public class ShowSeatService {
 	 */
 	public List<GetRemainSeatCntSvcDto> getRemainSeatCntByShowId(Long showId) {
 
-		//Show의 hallId
-		Long hallId = showService.getShowById(showId).getHall().getId();
 		//공연의 좌석 - 등급 매핑 정보 조회
 		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
-
 		//showId로 예매 좌석 리스트 조회
 		List<Long> reservedSeatIds = reservedSeatService.getReservedSeatIdsByShowId(showId);
 
@@ -87,12 +73,8 @@ public class ShowSeatService {
 
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
 		showSeats.forEach(showSeat -> {
-			List<Long> seatNos = converToSeatIdList(showSeat.getSeats());
-			List<Long> seatIds = seatNos.stream()
-				.map(s -> seatService.getSeatBySeatNoAndHallId(s, hallId))
-				.map(Seat::getId)
-				.collect(Collectors.toList());
-			int remainSeatCnt = (int)seatIds.stream().filter(seatId -> !reservedSeatIds.contains(seatId)).count();
+			List<Long> seats = converToSeatIdList(showSeat.getSeats());
+			int remainSeatCnt = (int)seats.stream().filter(seat -> !reservedSeatIds.contains(seat)).count();
 			serviceDtoList.add(
 				GetRemainSeatCntSvcDto.builder()
 					.showId(showId)
@@ -136,12 +118,18 @@ public class ShowSeatService {
 			throw new BaseException(BaseStatus.NO_DUPLICATE_SEAT);
 		}
 
-		//show의 hall에 해당하는 seat가 존재하는지 확인
-		List<Seat> seats = seatService.getSeatsBySeatNoList(seatIds, show.getHall().getId());
+		List<Seat> seats = seatService.getSeatsBySeatIds(seatIds);
 		// 유효하지 않은 좌석 id가 있으면 exception return
 		if (seatIds.size() != seats.size() || seats.contains(null)) {
 			throw new BaseException(BaseStatus.INVALID_SEAT);
 		}
+
+		// 홀에 속한 좌석이 아니면 exception
+		seats.forEach(seat -> {
+			if (!seat.getHall().equals(show.getHall())) {
+				throw new BaseException(BaseStatus.HALL_DOES_NOT_INCLUDE_SEAT);
+			}
+		});
 
 		ShowSeat showSeat = ShowSeat.builder()
 			.showId(show)

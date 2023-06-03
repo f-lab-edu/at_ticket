@@ -1,7 +1,6 @@
 package com.atticket.product.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -19,17 +18,9 @@ public class SeatService {
 	public Seat getSeatById(Long id) {
 		return seatRepository.findById(id).orElse(null);
 	}
-	
-	public Seat getSeatBySeatNoAndHallId(Long seatNo, Long hallId) {
-		return seatRepository.findBySeatNoAndHallId(seatNo, hallId).orElse(null);
-	}
 
-	public List<Seat> getSeatsBySeatNoList(List<Long> seatIds, Long hallId) {
+	public List<Seat> getSeatsBySeatIds(List<Long> seatIds) {
 
-		List<Seat> seats = seatIds.stream()
-			.map(s -> seatRepository.findBySeatNoAndHallId(s, hallId).orElse(null))
-			.collect(Collectors.toList());
-
-		return seats;
+		return seatRepository.findAllById(seatIds);
 	}
 }

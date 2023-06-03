@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,17 +18,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-@Table(name = "SEAT")
+@Entity(name = "SEAT")
 public class Seat {
 
 	//좌석 id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	//hall별 좌석 번호
-	private Long seatNo;
 
 	//공간 (e.g. 1층, 2층, .../ A존, B존, ...)
 	private String space;
