@@ -42,18 +42,18 @@ services:
       - 8100
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-  payment:
-    depends_on:
-      database:
-        condition: service_healthy
-    build:
-      context: .
-      dockerfile: ./payment/Dockerfile
-    container_name: at_ticket-payment
-    expose:
-      - 8200
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
+#  payment:
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#    build:
+#      context: .
+#      dockerfile: ./payment/Dockerfile
+#    container_name: at_ticket-payment
+#    expose:
+#      - 8200
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=dev
 
 
 
