@@ -29,11 +29,13 @@ import com.atticket.product.type.SubCategory;
 public class ProductServiceTest {
 
 	private ProductRepository productRepository = mock(ProductRepository.class);
+	private GradeService gradeService = mock(GradeService.class);
+	private ShowService showService = mock(ShowService.class);
 	private ProductService productService;
 
 	@BeforeEach
 	public void setUpTest() {
-		productService = new ProductService(productRepository);
+		productService = new ProductService(productRepository, gradeService, showService);
 	}
 
 	@Test

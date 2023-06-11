@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.atticket.common.response.BaseException;
@@ -26,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final GradeService gradeService;
+	private final ShowService showService;
 
 	/**
 	 *상품id로 상품 조회
@@ -42,14 +45,21 @@ public class ProductService {
 	 * 상품 삭제
 	 * @param productId 상품 id
 	 */
+
+	@Transactional
 	public void deleteProduct(Long productId) {
 
-		//Todo 해당 상품Id를 가지고 있는 공연 정보들 우선 삭제 필요
+		Product product = productRepository.findById(productId).orElse(null);
 
 		//해당 id 상품이 없으면 Exception
-		if (Objects.isNull(productRepository.findById(productId))) {
+		if (Objects.isNull(product)) {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		} else {
+
+			//todo 수정 중
+			//gradeService.deleteByProduct(product);
+			//showService.deleteByProduct(product);
+
 			productRepository.deleteById(productId);
 		}
 	}
