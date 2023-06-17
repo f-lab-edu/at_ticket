@@ -1,5 +1,7 @@
 package com.atticket.product.service;
 
+import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Product;
+import com.atticket.product.domain.Show;
 import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
@@ -26,9 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ProductService {
 
-	private final ProductRepository productRepository;
-	private final GradeService gradeService;
+	//service
 	private final ShowService showService;
+	private final GradeService gradeService;
+	private final ReservedSeatService reservedSeatService;
+	private final ShowSeatService showSeatService;
+
+	//repository
+	private final ProductRepository productRepository;
 
 	/**
 	 *상품id로 상품 조회
@@ -56,12 +64,22 @@ public class ProductService {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		} else {
 
-			//todo 수정 중
-			//gradeService.deleteByProduct(product);
-			//showService.deleteByProduct(product);
+			List<Show> shows = showService.getShowsByProductId(product.getId());
 
-			productRepository.deleteById(productId);
+			for (Show show : shows) {
+				if (reservedSeatService.getReservedSeatIdsByShowId(show.getId()).size() > 0) {
+					//show의 예약이 존재하면  Exception
+					throw new BaseException(EXIST_RESERVED);
+				} else {
+					//없으면 좌석-show 매핑삭제
+					showSeatService.deleteByShow(show);
+				}
+			}
+			showService.deleteByProduct(product);
+			gradeService.deleteByProduct(product);
 		}
+
+		productRepository.deleteById(productId);
 	}
 
 	/**

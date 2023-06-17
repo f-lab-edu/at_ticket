@@ -178,4 +178,7 @@ public class ShowSeatService {
 
 	}
 
+	public int deleteByShow(Show show) {
+		return showSeatRepository.deleteByShowId(show);
+	}
 }

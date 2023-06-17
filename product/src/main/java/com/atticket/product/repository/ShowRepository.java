@@ -12,6 +12,6 @@ import com.atticket.product.domain.Show;
 public interface ShowRepository extends JpaRepository<Show, Long> {
 
 	List<Show> findByProduct_id(Long productId);
-
-	public int deleteByProduct(Product product);
+	
+	int deleteByProduct(Product product);
 }

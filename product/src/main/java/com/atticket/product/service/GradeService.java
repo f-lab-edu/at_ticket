@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.atticket.product.domain.Grade;
+import com.atticket.product.domain.Product;
 import com.atticket.product.repository.GradeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,9 @@ public class GradeService {
 
 	public Grade getGradeById(Long id) {
 		return gradeRepository.findById(id).orElse(null);
+	}
+
+	public int deleteByProduct(Product product) {
+		return gradeRepository.deleteByProduct(product);
 	}
 }

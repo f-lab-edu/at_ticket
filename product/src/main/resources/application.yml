@@ -23,6 +23,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    #서버시작 시점에 ddl 문을 생성하여 DB적용
     generate-ddl: true
     defer-datasource-initialization: true
+

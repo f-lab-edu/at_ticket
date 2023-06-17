@@ -41,8 +41,6 @@ public class ReservationController {
 
 		//Todo
 		//reservedSeat 테이블에 좌석 정보 저장
-
-		//reservation 테이블에 예약 정보 저장
 		return ok(SampleDto.builder().content("hi").build());
 	}
 

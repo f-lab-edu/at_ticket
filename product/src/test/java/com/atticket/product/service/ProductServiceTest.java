@@ -28,14 +28,20 @@ import com.atticket.product.type.SubCategory;
 
 public class ProductServiceTest {
 
-	private ProductRepository productRepository = mock(ProductRepository.class);
-	private GradeService gradeService = mock(GradeService.class);
-	private ShowService showService = mock(ShowService.class);
+	//service
 	private ProductService productService;
+	private ShowService showService = mock(ShowService.class);
+	private GradeService gradeService = mock(GradeService.class);
+	private ReservedSeatService reservedSeatService = mock(ReservedSeatService.class);
+	private ShowSeatService showSeatService = mock(ShowSeatService.class);
+
+	//repository
+	private ProductRepository productRepository = mock(ProductRepository.class);
 
 	@BeforeEach
 	public void setUpTest() {
-		productService = new ProductService(productRepository, gradeService, showService);
+		productService = new ProductService(showService, gradeService, reservedSeatService, showSeatService,
+			productRepository);
 	}
 
 	@Test
