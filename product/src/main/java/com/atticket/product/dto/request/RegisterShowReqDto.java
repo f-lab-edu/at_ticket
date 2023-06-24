@@ -2,7 +2,6 @@ package com.atticket.product.dto.request;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,29 +54,23 @@ public class RegisterShowReqDto {
 
 		//좌석 Id
 		private List<Long> ids;
-
-		public void setIds(String ids) {
-			this.ids = Arrays.stream(ids.split(","))
-				.map(id -> Long.parseLong(id.trim()))
-				.collect(Collectors.toList());
-		}
 	}
 
 	public RegisterShowServiceDto convert() {
 		return RegisterShowServiceDto.builder()
 			.showInfos(this.shows.stream().map(show ->
-				RegisterShowServiceDto.ShowInfo.builder()
-					.date(show.getDate())
-					.time(show.getTime())
-					.session(show.getSession())
-					.hallId(show.getHallId())
-					.seatInfos(show.getSeats().stream().map(seat ->
-						RegisterShowServiceDto.SeatInfo.builder()
-							.gradeId(seat.getGrade())
-							.seatIds(seat.getIds())
-							.build())
-						.collect(Collectors.toList()))
-					.build())
+					RegisterShowServiceDto.ShowInfo.builder()
+						.date(show.getDate())
+						.time(show.getTime())
+						.session(show.getSession())
+						.hallId(show.getHallId())
+						.seatInfos(show.getSeats().stream().map(seat ->
+								RegisterShowServiceDto.SeatInfo.builder()
+									.gradeId(seat.getGrade())
+									.seatIds(seat.getIds())
+									.build())
+							.collect(Collectors.toList()))
+						.build())
 				.collect(Collectors.toList()))
 			.build();
 	}

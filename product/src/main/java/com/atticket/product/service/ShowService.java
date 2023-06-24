@@ -13,6 +13,8 @@ import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Hall;
 import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
+import com.atticket.product.repository.HallRepository;
+import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.repository.ShowRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ShowService {
-
-	// service
-	private final HallService hallService;
-	private final ProductService productService;
-
+	
 	// repository
 	private final ShowRepository showRepository;
+	private final ProductRepository productRepository;
+	private final HallRepository hallRepository;
 
 	public Show getShowById(Long id) {
 		return showRepository.findById(id).orElse(null);
@@ -38,7 +38,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<Show> getShowsByProductId(Long productId) {
-		return showRepository.findShowsByProductId(productId);
+		return showRepository.findByProduct_id(productId);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<LocalDate> getShowDatesByProductId(Long productId) {
-		return showRepository.findShowsByProductId(productId)
+		return showRepository.findByProduct_id(productId)
 			.stream()
 			.map(Show::getDate)
 			.collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class ShowService {
 	 * @return
 	 */
 	public List<Show> getShowDateByProductId(Long productId, LocalDate date) {
-		return showRepository.findShowsByProductId(productId)
+		return showRepository.findByProduct_id(productId)
 			.stream()
 			.filter(show -> show.getDate().equals(date))
 			.collect(Collectors.toList());
@@ -68,12 +68,12 @@ public class ShowService {
 
 	public Long saveShow(Long productId, LocalDate date, LocalTime time, Long hallId, int session) {
 
-		Product product = productService.getProductById(productId);
+		Product product = productRepository.getReferenceById(productId);
 		if (Objects.isNull(product)) {
 			throw new BaseException(BaseStatus.INVALID_PRODUCT);
 		}
 
-		Hall hall = hallService.getHallById(hallId);
+		Hall hall = hallRepository.getReferenceById(hallId);
 		if (Objects.isNull(hall)) {
 			throw new BaseException(BaseStatus.INVALID_HALL);
 		}
@@ -91,6 +91,10 @@ public class ShowService {
 			.build();
 
 		//공연 저장
-		return showRepository.save(show);
+		return showRepository.save(show).getId();
+	}
+
+	public int deleteByProduct(Product product) {
+		return showRepository.deleteByProduct(product);
 	}
 }

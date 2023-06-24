@@ -20,7 +20,6 @@ import com.atticket.product.dto.response.GetRemainSeatsResDto;
 import com.atticket.product.dto.response.RegisterShowResDto;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.service.ShowSeatService;
-import com.atticket.product.service.ShowService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ShowController {
 
 	private final ShowSeatService showSeatService;
-	private final ShowService showService;
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")

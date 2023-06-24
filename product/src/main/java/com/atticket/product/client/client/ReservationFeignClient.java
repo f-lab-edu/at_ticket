@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.product.client.dto.GetReservationSeatsResDto;
 
-@FeignClient(name = "reservationClient", url = "localhost:8100/reservations")
+@FeignClient(name = "reservationClient", url = "${api.reservation.url}:${api.reservation.port}/reservations")
 public interface ReservationFeignClient {
 	@GetMapping(value = "/show/{showId}/seats")
 	BaseResponse<GetReservationSeatsResDto> getReservationSeats(@PathVariable("showId") Long showId);

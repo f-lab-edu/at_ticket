@@ -20,7 +20,7 @@ public class ReservedSeatService {
 	 * @return
 	 */
 	public List<ReservedSeat> getReservedSeatsByShowId(Long showId) {
-		return reservedSeatRepository.findShowSeatByShowId(showId);
+		return reservedSeatRepository.findByShowId(showId);
 	}
 
 }

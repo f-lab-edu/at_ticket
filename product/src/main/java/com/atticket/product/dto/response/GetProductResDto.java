@@ -23,7 +23,7 @@ public class GetProductResDto {
 
 	//상품 세부 정보
 	private final ProductDto product;
-	//좌석 Type List
+	//좌석 type List
 	private final List<GradeDto> seatGrades;
 	//List<공연 상연일>
 	private final List<LocalDate> showDates;
@@ -65,7 +65,7 @@ public class GetProductResDto {
 				.category(product.getCategory())
 				.subCategory(product.getSubCategory())
 				.name(product.getName())
-				.explain(product.getExplain())
+				.explain(product.getExplains())
 				.runningTime(product.getRunningTime())
 				.startDate(product.getStartDate())
 				.endDate(product.getEndDate())

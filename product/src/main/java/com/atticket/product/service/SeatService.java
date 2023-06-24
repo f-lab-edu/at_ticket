@@ -19,8 +19,8 @@ public class SeatService {
 		return seatRepository.findById(id).orElse(null);
 	}
 
-	public List<Seat> getSeatsByIdList(List<Long> idList) {
-		return seatRepository.findByIdList(idList);
-	}
+	public List<Seat> getSeatsBySeatIds(List<Long> seatIds) {
 
+		return seatRepository.findAllById(seatIds);
+	}
 }

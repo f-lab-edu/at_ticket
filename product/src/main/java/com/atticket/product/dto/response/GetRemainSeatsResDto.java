@@ -64,8 +64,8 @@ public class GetRemainSeatsResDto {
 					.space(seat.getSpace())
 					.locX(seat.getLocX())
 					.locY(seat.getLocY())
-					.row(seat.getRow())
-					.rowNum(seat.getRowNum())
+					.row(seat.getSeatRow())
+					.rowNum(seat.getSeatRowNum())
 					.grade(getRemainSeatsSvcDto.getGrade().getType())
 					.price(getRemainSeatsSvcDto.getGrade().getPrice())
 					.build()).collect(Collectors.toList());

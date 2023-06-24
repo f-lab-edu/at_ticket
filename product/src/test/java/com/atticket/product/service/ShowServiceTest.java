@@ -4,7 +4,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,22 +12,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.atticket.product.domain.Show;
+import com.atticket.product.repository.HallRepository;
+import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.repository.ShowRepository;
 
 class ShowServiceTest {
 
-	private ShowService showService;
-
 	// service
-	private HallService hallService;
-	private ProductService productService;
+	private ShowService showService;
 
 	// repository
 	private ShowRepository showRepository = mock(ShowRepository.class);
+	private ProductRepository productRepository = mock(ProductRepository.class);
+	private HallRepository hallRepository = mock(HallRepository.class);
 
 	@BeforeEach
 	public void setUpTest() {
-		showService = new ShowService(hallService, productService, showRepository);
+		showService = new ShowService(showRepository, productRepository, hallRepository);
+
 	}
 
 	@Test
@@ -36,16 +37,18 @@ class ShowServiceTest {
 	void getShowsByProductId() {
 		//Given
 		Long productId = 1L;
-		List<Show> givenShows = Arrays.asList();
+		// List<Show> givenShows = Arrays.asList();
 
-		when(showRepository.findShowsByProductId(productId)).thenReturn(givenShows);
+		List<Show> givenShows;
+		givenShows = null;
+		when(showRepository.findByProduct_id(productId)).thenReturn(givenShows);
 
 		//When
 		List<Show> results = showService.getShowsByProductId(productId);
 
 		//Then
 		Assertions.assertEquals(givenShows, results);
-		verify(showRepository).findShowsByProductId(1L);
+		verify(showRepository).findByProduct_id(1L);
 
 	}
 

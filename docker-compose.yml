@@ -1,23 +1,59 @@
 version: "3.0"
 services:
-  product-app:
+  database:
+    image: mysql
+    container_name: at_ticket_db
+    #DB시작 시 초기화 스크립트 실행
+    volumes:
+      - ./mysql-init-files/:/docker-entrypoint-initdb.d/
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+  product:
+    #DB가 실행되기 전까진 어플리케이션이 실행되지 않도록 설정
+    depends_on:
+      database:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./product/Dockerfile
-    container_name: "at_ticket-product"
+    container_name: at_ticket-product
     ports:
-      - "8000:8000"
-  reservation-app:
+      - 8000:8000
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+  reservation:
+    depends_on:
+      database:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./reservation/Dockerfile
-    container_name: "at_ticket-reservation"
-    ports:
-      - "8100:8100"
-  payment-app:
+    container_name: at_ticket-reservation
+    expose:
+      - 8100
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+  payment:
+    depends_on:
+      database:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./payment/Dockerfile
-    container_name: "at_ticket-payment"
-    ports:
-      - "8200:8200"
+    container_name: at_ticket-payment
+    expose:
+      - 8200
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+

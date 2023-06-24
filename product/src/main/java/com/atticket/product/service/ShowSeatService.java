@@ -1,6 +1,7 @@
 package com.atticket.product.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
@@ -40,12 +42,11 @@ public class ShowSeatService {
 	 * */
 	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
 		// ShowSeat(공연 등급별 좌석 리스트) 리스트
-		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 		// 예약된 좌석 id 리스트
 		List<Long> reservedSeatIdList = reservedSeatService.getReservedSeatIdsByShowId(showId);
-
 		return showSeats.stream().map(showSeat -> {
-			List<Long> seatIdList = showSeat.getSeats().stream().map(Seat::getId).collect(Collectors.toList());
+			List<Long> seatIdList = converToSeatIdList(showSeat.getSeats());
 			List<Long> remainSeatIdList = seatIdList.stream()
 				.filter(seatId -> !reservedSeatIdList.contains(seatId))
 				.collect(Collectors.toList());
@@ -54,7 +55,6 @@ public class ShowSeatService {
 				.collect(Collectors.toList());
 			return new GetRemainSeatsSvcDto(remainSeats, showSeat.getGrade());
 		}).collect(Collectors.toList());
-
 	}
 
 	/**
@@ -65,25 +65,16 @@ public class ShowSeatService {
 	public List<GetRemainSeatCntSvcDto> getRemainSeatCntByShowId(Long showId) {
 
 		//공연의 좌석 - 등급 매핑 정보 조회
-		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 		//showId로 예매 좌석 리스트 조회
 		List<Long> reservedSeatIds = reservedSeatService.getReservedSeatIdsByShowId(showId);
 
 		List<GetRemainSeatCntSvcDto> serviceDtoList = new ArrayList<>();
 
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
-		for (ShowSeat showSeat : showSeats) {
-			List<Long> seats = showSeat.getSeats().stream().map(Seat::getId).collect(Collectors.toList());
-			int remainSeatCnt = seats.size();
-
-			for (Long reservedSeat : reservedSeatIds) {
-				for (Long seat : seats) {
-					if (seat.equals(reservedSeat)) {
-						remainSeatCnt = remainSeatCnt - 1;
-					}
-				}
-			}
-
+		showSeats.forEach(showSeat -> {
+			List<Long> seats = converToSeatIdList(showSeat.getSeats());
+			int remainSeatCnt = (int)seats.stream().filter(seat -> !reservedSeatIds.contains(seat)).count();
 			serviceDtoList.add(
 				GetRemainSeatCntSvcDto.builder()
 					.showId(showId)
@@ -92,7 +83,7 @@ public class ShowSeatService {
 					.seatCnt(remainSeatCnt)
 					.build()
 			);
-		}
+		});
 
 		return serviceDtoList;
 	}
@@ -117,7 +108,7 @@ public class ShowSeatService {
 		}
 
 		// 해당 공연에 같은 등급의 좌석정보가 이미 존재하면 exception
-		if (showSeatRepository.isExistByShowIdAndGradeId(showId, gradeId)) {
+		if (!Objects.isNull(showSeatRepository.findByShowId_idAndGrade_id(showId, gradeId))) {
 			throw new BaseException(BaseStatus.ALREADY_EXIST_SHOW_SEAT);
 		}
 
@@ -126,9 +117,10 @@ public class ShowSeatService {
 		if (seatIds.size() != idSet.size()) {
 			throw new BaseException(BaseStatus.NO_DUPLICATE_SEAT);
 		}
-		List<Seat> seats = seatService.getSeatsByIdList(seatIds);
+
+		List<Seat> seats = seatService.getSeatsBySeatIds(seatIds);
 		// 유효하지 않은 좌석 id가 있으면 exception return
-		if (seatIds.size() != seats.size()) {
+		if (seatIds.size() != seats.size() || seats.contains(null)) {
 			throw new BaseException(BaseStatus.INVALID_SEAT);
 		}
 
@@ -140,12 +132,12 @@ public class ShowSeatService {
 		});
 
 		ShowSeat showSeat = ShowSeat.builder()
-			.show(show)
+			.showId(show)
 			.grade(grade)
-			.seats(seats)
+			.seats(seatConvertToString(seats))
 			.build();
 
-		return showSeatRepository.save(showSeat);
+		return showSeatRepository.save(showSeat).getId();
 	}
 
 	public List<Long> registerShow(Long productId, RegisterShowServiceDto registerShowServiceDto) {
@@ -157,5 +149,36 @@ public class ShowSeatService {
 				.forEach(seatInfo -> registerShowSeat(showId, seatInfo.getGradeId(), seatInfo.getSeatIds()));
 			return showId;
 		}).collect(Collectors.toList());
+	}
+
+	/**
+	 * List<Seat>의 좌석 id를 String으로 변환
+	 * @param seats
+	 * @return
+	 */
+	private String seatConvertToString(List<Seat> seats) {
+
+		return String.join(",", seats.stream().map(s -> Long.toString(s.getId())).collect(Collectors.toList()));
+	}
+
+	/**
+	 *좌석id리스트(String)을 List로 변환
+	 * @param seatsString
+	 * @return
+	 */
+	private List<Long> converToSeatIdList(String seatsString) {
+		if (StringUtils.hasText(seatsString)) {
+			String[] seatStringArray = (seatsString).split(",");
+			List<Long> seatsIdList =
+				Arrays.stream(seatStringArray).map(x -> Long.parseLong(x)).collect(Collectors.toList());
+			return seatsIdList;
+		} else {
+			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
+		}
+
+	}
+
+	public int deleteByShow(Show show) {
+		return showSeatRepository.deleteByShowId(show);
 	}
 }

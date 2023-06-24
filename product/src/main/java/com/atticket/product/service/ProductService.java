@@ -1,14 +1,20 @@
 package com.atticket.product.service;
 
+import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Product;
+import com.atticket.product.domain.Show;
 import com.atticket.product.repository.ProductRepository;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
@@ -23,6 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ProductService {
 
+	//service
+	private final ShowService showService;
+	private final GradeService gradeService;
+	private final ReservedSeatService reservedSeatService;
+	private final ShowSeatService showSeatService;
+
+	//repository
 	private final ProductRepository productRepository;
 
 	/**
@@ -40,16 +53,33 @@ public class ProductService {
 	 * 상품 삭제
 	 * @param productId 상품 id
 	 */
+
+	@Transactional
 	public void deleteProduct(Long productId) {
 
-		//Todo 해당 상품Id를 가지고 있는 공연 정보들 우선 삭제 필요
+		Product product = productRepository.findById(productId).orElse(null);
 
 		//해당 id 상품이 없으면 Exception
-		if (Objects.isNull(productRepository.findById(productId))) {
+		if (Objects.isNull(product)) {
 			throw new BaseException(BaseStatus.TEST_ERROR);
 		} else {
-			productRepository.deleteById(productId);
+
+			List<Show> shows = showService.getShowsByProductId(product.getId());
+
+			for (Show show : shows) {
+				if (reservedSeatService.getReservedSeatIdsByShowId(show.getId()).size() > 0) {
+					//show의 예약이 존재하면  Exception
+					throw new BaseException(EXIST_RESERVED);
+				} else {
+					//없으면 좌석-show 매핑삭제
+					showSeatService.deleteByShow(show);
+				}
+			}
+			showService.deleteByProduct(product);
+			gradeService.deleteByProduct(product);
 		}
+
+		productRepository.deleteById(productId);
 	}
 
 	/**
@@ -70,8 +100,18 @@ public class ProductService {
 
 		categoryHasSubCategory(category, subCategory);
 
-		return productRepository.find(page, perPage, keyword, category, subCategory, region, startDate, endDate,
-			sortOption);
+		List<Product> productDatas = productRepository.findAll();
+
+		return productDatas.stream()
+			.filter(product -> (!StringUtils.hasText(keyword) || (product.getName().contains(keyword)))
+				&& (Objects.isNull(category) || product.getCategory().equals(category))
+				&& (Objects.isNull(subCategory) || product.getSubCategory().equals(subCategory))
+				&& (Objects.isNull(region) || product.getPlace().getRegion().equals(region))
+				&& (Objects.isNull(startDate) || product.getEndDate().compareTo(startDate) >= 0)
+				&& (Objects.isNull(endDate) || product.getStartDate().compareTo(endDate) <= 0)
+			)
+			.skip((long)(page - 1) * perPage).limit(perPage)
+			.collect(Collectors.toList());
 	}
 
 	private void categoryHasSubCategory(Category category, SubCategory subCategory) {
