@@ -24,14 +24,14 @@ public class BaseExceptionHandler {
 
 	// BaseException 발생시 핸들러
 	@ExceptionHandler(BaseException.class)
-	public BaseResponse handleBaseException(BaseException exception) {
+	public BaseResponse<Object> handleBaseException(BaseException exception) {
 		log.error(exception.getClass().getName(), exception);
 		return error(exception.getCode(), exception.getMessage());
 	}
 
 	// Exception 발생시 핸들러
 	@ExceptionHandler(Exception.class)
-	public BaseResponse handleException(Exception exception) {
+	public BaseResponse<Object> handleException(Exception exception) {
 		log.error(exception.getClass().getName(), exception);
 		return error(BaseStatus.UNEXPECTED_ERROR.getCode(), BaseStatus.UNEXPECTED_ERROR.getMessage());
 	}
@@ -52,7 +52,7 @@ public class BaseExceptionHandler {
 
 	// @RequestParam MissingServletRequestParameterException 발생시 핸들러
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public BaseResponse handleMissingServletRequestParameterException(
+	public BaseResponse<Object> handleMissingServletRequestParameterException(
 		MissingServletRequestParameterException exception) {
 		log.error(exception.getClass().getName(), exception);
 		List<String> errMsgList = new ArrayList<>(List.of(exception.getParameterName() + " - NotNull"));
@@ -61,19 +61,23 @@ public class BaseExceptionHandler {
 
 	// @RequestParam MethodArgumentTypeMismatchException 발생시 핸들러
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public BaseResponse handleMethodArgumentTypeMismatchException(
+	public BaseResponse<List<String>> handleMethodArgumentTypeMismatchException(
 		MethodArgumentTypeMismatchException exception) {
 		log.error(exception.getClass().getName(), exception);
 		List<String> errMsgList = new ArrayList<>(List.of(exception.getName() + " - typeMismatch"));
 		return error(400, "validation 에러입니다.", errMsgList);
 	}
 
-	// response body validation 에러
+	// @RequestBody validation 에러
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public BaseResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+	public BaseResponse<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
 		log.error(exception.getClass().getName(), exception);
 		Throwable cause = exception.getCause();
 		List<String> errMsgList = new ArrayList<>();
+
+		if (Objects.isNull(cause)) {
+			return error(400, "RequestBody가 존재하지 않습니다.");
+		}
 
 		if (cause instanceof JsonMappingException) {
 			JsonMappingException ife = (JsonMappingException)cause;
