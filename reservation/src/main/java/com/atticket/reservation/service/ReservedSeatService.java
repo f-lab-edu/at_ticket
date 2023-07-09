@@ -23,4 +23,23 @@ public class ReservedSeatService {
 		return reservedSeatRepository.findByShowId(showId);
 	}
 
+	/**
+	 * 공연 좌석 예약여부 조회
+	 */
+	public boolean existsReservedSeat(Long showId, List<Long> seatId) {
+		return reservedSeatRepository.existsByShowIdAndSeatIdIn(showId, seatId);
+	}
+
+	/**
+	 * 공연 좌석 예약하기
+	 */
+	public void saveReservedSeat(Long showId, List<Long> seatIds) {
+		seatIds.forEach(seatId -> {
+			ReservedSeat reservedSeat = ReservedSeat.builder()
+				.showId(showId)
+				.seatId(seatId)
+				.build();
+			reservedSeatRepository.save(reservedSeat);
+		});
+	}
 }

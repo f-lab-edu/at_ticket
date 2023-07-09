@@ -10,5 +10,6 @@ import com.atticket.reservation.domain.ReservedSeat;
 @Repository
 public interface ReservedSeatRepository extends JpaRepository<ReservedSeat, Long> {
 	List<ReservedSeat> findByShowId(Long showId);
-	
+
+	Boolean existsByShowIdAndSeatIdIn(Long showId, List<Long> seatId);
 }

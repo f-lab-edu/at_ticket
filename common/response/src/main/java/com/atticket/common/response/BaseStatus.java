@@ -23,6 +23,7 @@ public enum BaseStatus {
 	PRODUCT_PLACE_NOT_SAME_HALL_PLACE(400, "상품의 장소와 홀의 장소가 일치하지 않습니다."),
 	HALL_DOES_NOT_INCLUDE_SEAT(400, "홀에 속한 좌석이 아닙니다."),
 	EXIST_RESERVED(400, "예약 건이 존재하는 공연은 삭제할 수 없습니다."),
+	EXIST_RESERVED_SEAT(400, "이미 예약된 좌석이 포함되어 있습니다."),
 
 	/**
 	 * 401 - Unauthorized (인증 에러 관련)
