@@ -51,6 +51,7 @@ public enum BaseStatus {
 	INVALID_GRADE(404, "유효하지 않은 등급입니다."),
 	INVALID_PRODUCT(404, "유효하지 않은 상품입니다."),
 	INVALID_HALL(404, "유효하지 않은 홀입니다."),
+	INVALID_RECEIPT(404, "유효하지 않은 결제 정보입니다."),
 
 	/**
 	 * 500 - Server Error (서버 에러)
