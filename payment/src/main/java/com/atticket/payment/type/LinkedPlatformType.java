@@ -5,10 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PaymentModule {
+public enum LinkedPlatformType {
 
-	NAVER_PAY("네이버페이"),
-	KAKAO_PAY("카카오페이");
+	I_AM_PORT("아임포트"),
+	NICE_PAY("나이스페이");
 
-	private final String payment;
+	private final String name;
+
 }
