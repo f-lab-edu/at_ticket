@@ -54,6 +54,26 @@ services:
       - 8200
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.2
+    container_name: at_ticket-keycloak
+    #    로컬에서 배포할 때
+    ports:
+      - 8080:8080
+      #    expose:
+      #      - 8080
+      #    로컬에서 배포할 때
+    command: start-dev --features=preview
+    #    command: start --features=preview
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=atticket
+    volumes:
+      - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+    depends_on:
+      database:
+        condition: service_healthy
+
 
 
 
