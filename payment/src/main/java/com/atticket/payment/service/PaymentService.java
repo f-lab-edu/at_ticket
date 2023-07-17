@@ -2,6 +2,7 @@ package com.atticket.payment.service;
 
 import static com.atticket.common.response.BaseStatus.INVALID_RECEIPT;
 import static com.atticket.common.response.BaseStatus.INVALID_TOKEN;
+import static com.atticket.common.response.BaseStatus.UNEXPECTED_ERROR;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,10 +17,14 @@ import com.atticket.payment.Repository.PaymentRepository;
 import com.atticket.payment.client.client.IamPortFeignClient;
 import com.atticket.payment.client.dto.reponse.GetIamPortAccessTokenResDto;
 import com.atticket.payment.client.dto.reponse.GetIamPortReceiptResDto;
+import com.atticket.payment.client.dto.reponse.PostIamPortPaymentCancelResDto;
 import com.atticket.payment.client.dto.request.GetIamPortAccessTokenReqDto;
+import com.atticket.payment.client.dto.request.PostIamPortPaymentCancelReqDto;
 import com.atticket.payment.domain.Payment;
 import com.atticket.payment.dto.request.ConfirmReceiptReqDto;
+import com.atticket.payment.dto.request.PostCancelPaymentReqDto;
 import com.atticket.payment.dto.response.ConfirmReceiptResDto;
+import com.atticket.payment.dto.response.PostCancelPaymentResDto;
 import com.atticket.payment.type.LinkedPlatformType;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +38,55 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 	private final IamPortFeignClient iamPortFeignClient;
+
+	public PostCancelPaymentResDto cancelPayment(PostCancelPaymentReqDto postCancelPaymentReqDto) {
+
+		String paymentId = ""; //결제 id
+		String orderId = ""; //주문 id
+
+		if (postCancelPaymentReqDto.getLinkedPlatform() == LinkedPlatformType.I_AM_PORT) {
+
+			//1.accessToken 발급
+			String accessToken = getIamPortAccessToken(postCancelPaymentReqDto.getImpKey(),
+				postCancelPaymentReqDto.getImpSecret());
+			log.debug("accessToken" + accessToken);
+
+			//2.취소 요청
+			PostIamPortPaymentCancelResDto postIamPortPaymentCancelResDto = iamPortFeignClient.postPaymentCancel(
+				accessToken,
+				PostIamPortPaymentCancelReqDto.builder()
+					.imp_uid(postCancelPaymentReqDto.getPaymentId())
+					.merchant_uid(postCancelPaymentReqDto.getOrderId())
+					.amount(
+						postCancelPaymentReqDto.getAmount())
+					.tax_free(
+						postCancelPaymentReqDto.getTaxFree())
+					.reason(postCancelPaymentReqDto.getReason())
+					.refund_holder(postCancelPaymentReqDto.getRefundHolder())
+					.refund_account(postCancelPaymentReqDto.getRefundAccount())
+					.refund_bank(postCancelPaymentReqDto.getRefundBank())
+					.refund_tel(postCancelPaymentReqDto.getRefundTel())
+					.build()
+			);
+
+			if (Objects.isNull(postIamPortPaymentCancelResDto.getResponse()) && postIamPortPaymentCancelResDto.getCode()
+				.equals("-1")) {
+				throw new BaseException(INVALID_TOKEN);
+			}
+
+			//0이면 정상 조회 아니면  message에 오류 메세지 포함
+			if (!postIamPortPaymentCancelResDto.getCode().equals("0")) {
+				log.debug("cancelPayment error_message" + postIamPortPaymentCancelResDto.getMessage());
+				throw new BaseException(UNEXPECTED_ERROR);
+			}
+
+			paymentId = postIamPortPaymentCancelResDto.getResponse().getImp_uid();
+			orderId = postIamPortPaymentCancelResDto.getResponse().getMerchant_uid();
+		}
+
+		return new PostCancelPaymentResDto(paymentId, orderId);
+
+	}
 
 	public ConfirmReceiptResDto confrimReceipt(ConfirmReceiptReqDto confirmReceiptReqDto) {
 
