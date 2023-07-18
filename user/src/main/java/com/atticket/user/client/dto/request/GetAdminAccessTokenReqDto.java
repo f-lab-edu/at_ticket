@@ -1,19 +1,15 @@
 package com.atticket.user.client.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@Builder
-@ToString
 public class GetAdminAccessTokenReqDto {
 
-	String client_id = "admin-cli";
+	private String grant_type = "password";
 
-	String username;
+	private String client_id = "admin-cli";
 
-	String password;
+	private String username = "admin";
 
-	String grant_type = "password";
+	private String password = "atticket";
 }
