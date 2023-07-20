@@ -9,7 +9,12 @@ public class GetAdminAccessTokenReqDto {
 
 	private String client_id = "admin-cli";
 
-	private String username = "admin";
+	private String username;
 
-	private String password = "atticket";
+	private String password;
+
+	public GetAdminAccessTokenReqDto(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
 }

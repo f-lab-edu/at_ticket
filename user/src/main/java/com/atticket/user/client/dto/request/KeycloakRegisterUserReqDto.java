@@ -3,8 +3,8 @@ package com.atticket.user.client.dto.request;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class KeycloakRegisterUserReqDto {
@@ -21,25 +21,17 @@ public class KeycloakRegisterUserReqDto {
 
 	private List<Credential> credentials;
 
-	private KeycloakRegisterUserReqDto(String userId, String email, String name, List<Credential> credentials) {
-		this.username = userId;
+	public KeycloakRegisterUserReqDto(String username, String password, String email, String name) {
+		List<Credential> credentials = Arrays.asList(new Credential(password));
+		this.username = username;
 		this.email = email;
 		this.firstName = name;
 		this.credentials = credentials;
 	}
 
-	public static KeycloakRegisterUserReqDto construct(String userId, String password, String email, String name) {
-		List<Credential> credentials = parseToCredentials(password);
-		return new KeycloakRegisterUserReqDto(userId, email, name, credentials);
-	}
-
-	@RequiredArgsConstructor
+	@AllArgsConstructor
 	@Getter
-	private static class Credential {
-		private final String value;
-	}
-
-	private static List<Credential> parseToCredentials(String password) {
-		return Arrays.asList(new Credential(password));
+	private class Credential {
+		private String value;
 	}
 }
