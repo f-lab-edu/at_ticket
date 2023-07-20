@@ -8,8 +8,6 @@ services:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
     ports:
       - 3306:3306
-    expose:
-      - 3306
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 1234
@@ -28,8 +26,6 @@ services:
     container_name: at_ticket-product
     ports:
       - 8000:8000
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
   reservation:
     depends_on:
       database:
@@ -38,10 +34,8 @@ services:
       context: .
       dockerfile: ./reservation/Dockerfile
     container_name: at_ticket-reservation
-    expose:
-      - 8100
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - 8100:8100
   payment:
     depends_on:
       database:
@@ -50,30 +44,31 @@ services:
       context: .
       dockerfile: ./payment/Dockerfile
     container_name: at_ticket-payment
-    expose:
-      - 8200
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - 8200:8200
+  user:
+    #DB가 실행되기 전까진 어플리케이션이 실행되지 않도록 설정
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./user/Dockerfile
+    container_name: at_ticket-user
+    ports:
+      - 9000:9000
   keycloak:
     image: quay.io/keycloak/keycloak:21.1.2
     container_name: at_ticket-keycloak
-    #    로컬에서 배포할 때
     ports:
       - 8080:8080
-      #    expose:
-      #      - 8080
-      #    로컬에서 배포할 때
     command: start-dev --features=preview
-    #    command: start --features=preview
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=atticket
     volumes:
-      - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keycloak/local.conf:/opt/keycloak/conf/keycloak.conf
     depends_on:
       database:
         condition: service_healthy
-
-
-
 
