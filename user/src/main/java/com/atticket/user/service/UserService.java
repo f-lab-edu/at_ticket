@@ -4,14 +4,18 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.atticket.common.response.BaseException;
 import com.atticket.user.client.client.KeycloakFeignClient;
 import com.atticket.user.client.dto.request.GetAdminAccessTokenReqDto;
 import com.atticket.user.client.dto.request.KeycloakRegisterUserReqDto;
 import com.atticket.user.client.dto.response.GetAdminAccessTokenResDto;
 import com.atticket.user.dto.request.RegisterUserReqDto;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,36 +25,29 @@ public class UserService {
 	private KeycloakAccessToken keycloakAccessToken = new KeycloakAccessToken();
 
 	public void registerUser(RegisterUserReqDto reqDto) {
+		// Admin Token 체크
 		if (keycloakAccessToken.isExpired()) {
 			this.setAdminToken();
 		}
 
-		System.out.println(reqDto.getUserId());
-		System.out.println(reqDto.getPassword());
-		System.out.println(reqDto.getName());
-		System.out.println(reqDto.getEmail());
-
-		KeycloakRegisterUserReqDto a = KeycloakRegisterUserReqDto.builder()
-			.username(reqDto.getUserId())
-			.firstName(reqDto.getName())
-			.email(reqDto.getEmail())
-			// .credentials(KeycloakRegisterUserReqDto.parseToCredentials(reqDto.getPassword()))
-			.build();
-		System.out.println(a.getEnabled());
-		System.out.println(a.getEmailVerified());
-
-		keycloakFeignClient.registerUser("bearer " + keycloakAccessToken.token,
-			a
-		);
-
+		try {
+			keycloakFeignClient.registerUser("bearer " + keycloakAccessToken.token,
+				KeycloakRegisterUserReqDto.construct(reqDto.getUserId(),
+					reqDto.getPassword(), reqDto.getEmail(), reqDto.getName())
+			);
+		} catch (FeignException e) {
+			throw new BaseException(400, e.getMessage());
+		}
 	}
 
+	// AdminToken 셋팅
 	private void setAdminToken() {
+		// AdminToken 발급
 		GetAdminAccessTokenResDto resDto = keycloakFeignClient.getAdminAccessToken(
 			new GetAdminAccessTokenReqDto()
 		);
 
-		System.out.println("setAdminToken : " + resDto.getAccess_token());
+		log.info("getAdminAccessToken");
 
 		keycloakAccessToken.token = resDto.getAccess_token();
 		keycloakAccessToken.expireTime = LocalDateTime.now().plusSeconds(resDto.getExpires_in() - 10);
