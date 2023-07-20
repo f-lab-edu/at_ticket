@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import com.atticket.user.client.dto.request.GetAdminAccessTokenReqDto;
+import com.atticket.user.client.dto.request.GetAccessTokenReqDto;
 import com.atticket.user.client.dto.request.KeycloakRegisterUserReqDto;
-import com.atticket.user.client.dto.response.GetAdminAccessTokenResDto;
+import com.atticket.user.client.dto.response.GetAccessTokenResDto;
 
 @FeignClient(name = "keycloakFeignClient", url = "${keycloak.url}", decode404 = true)
 public interface KeycloakFeignClient {
@@ -18,5 +18,9 @@ public interface KeycloakFeignClient {
 
 	@PostMapping(value = "/realms/master/protocol/openid-connect/token",
 		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	GetAdminAccessTokenResDto getAdminAccessToken(GetAdminAccessTokenReqDto reqDto);
+	GetAccessTokenResDto getAdminAccessToken(GetAccessTokenReqDto reqDto);
+
+	@PostMapping(value = "/realms/${keycloak.realm}/protocol/openid-connect/token",
+		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	GetAccessTokenResDto getUserAccessToken(GetAccessTokenReqDto reqDto);
 }

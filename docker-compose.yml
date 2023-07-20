@@ -9,8 +9,8 @@ services:
     ports:
       - 3306:3306
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
+    env_file:
+      - config/.env.local
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
@@ -25,6 +25,8 @@ services:
     build:
       context: .
       dockerfile: ./product/Dockerfile
+    env_file:
+      - config/.env.local
     container_name: at_ticket-product
     ports:
       - 8000:8000
@@ -39,6 +41,8 @@ services:
     build:
       context: .
       dockerfile: ./reservation/Dockerfile
+    env_file:
+      - config/.env.local
     container_name: at_ticket-reservation
     ports:
       - 8100:8100
@@ -54,6 +58,8 @@ services:
       context: .
       dockerfile: ./payment/Dockerfile
     container_name: at_ticket-payment
+    env_file:
+      - config/.env.local
     ports:
       - 8200:8200
     environment:
@@ -70,6 +76,8 @@ services:
     build:
       context: .
       dockerfile: ./user/Dockerfile
+    env_file:
+      - config/.env.local
     container_name: at_ticket-user
     ports:
       - 9000:9000
@@ -82,10 +90,9 @@ services:
     container_name: at_ticket-keycloak
     ports:
       - 8080:8080
+    env_file:
+      - config/.env.local
     command: start-dev --features=preview
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=atticket
     volumes:
       - ./keycloak/local.conf:/opt/keycloak/conf/keycloak.conf
     depends_on:

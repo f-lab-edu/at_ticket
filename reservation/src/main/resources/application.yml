@@ -16,3 +16,4 @@ spring:
         format_sql: true
     generate-ddl: true
 
+JWT_SECRET_KEY: OOZ6O3cs-cjWbnlU9hF8t9s1B8mfqoLCGzMyd6hRgvsFJ999a0en9wZqmJQBtjcOGdmYSVEp04LL_jCl1xHGVA

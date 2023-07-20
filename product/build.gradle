@@ -5,5 +5,4 @@ plugins {
 dependencies {
     implementation project(':common:response')
     implementation project(':common:utils')
-    implementation project(':common:jwt-manager')
 }

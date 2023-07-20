@@ -4,6 +4,8 @@ import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -15,9 +17,16 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 
+@Component
 public class JwtManager {
 
-	private static final String JWT_SECRET_KEY = "RnsOGLI8iBkiS2NT7aoWa10INYGllfWgtt_gUhnyzXfEUuKAjgLguHp_2G9vFvBe5Rf2WV49J7HzDjbaZOtsiw";
+	private static String JWT_SECRET_KEY;
+
+	@Value("${JWT_SECRET_KEY}")
+	public void setKey(String value) {
+		System.out.println(value);
+		this.JWT_SECRET_KEY = value;
+	}
 
 	public static Object parseToClaims() {
 		String token = getJwt();

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetAdminAccessTokenResDto {
+public class GetAccessTokenResDto {
 
 	private String access_token;
 

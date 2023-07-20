@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
+import com.atticket.user.client.dto.response.GetAccessTokenResDto;
+import com.atticket.user.dto.request.LoginUserReqDto;
 import com.atticket.user.dto.request.RegisterUserReqDto;
 import com.atticket.user.service.UserService;
 
@@ -24,5 +26,10 @@ public class UserController {
 	public BaseResponse<Object> registerUser(@RequestBody RegisterUserReqDto reqDto) {
 		userService.registerUser(reqDto);
 		return ok();
+	}
+
+	@PostMapping("/token")
+	public BaseResponse<GetAccessTokenResDto> loginUser(@RequestBody LoginUserReqDto reqDto) {
+		return ok(userService.login(reqDto));
 	}
 }

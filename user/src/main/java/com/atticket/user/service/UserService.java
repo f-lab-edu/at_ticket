@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.user.client.client.KeycloakFeignClient;
-import com.atticket.user.client.dto.request.GetAdminAccessTokenReqDto;
+import com.atticket.user.client.dto.request.GetAccessTokenReqDto;
 import com.atticket.user.client.dto.request.KeycloakRegisterUserReqDto;
-import com.atticket.user.client.dto.response.GetAdminAccessTokenResDto;
+import com.atticket.user.client.dto.response.GetAccessTokenResDto;
+import com.atticket.user.dto.request.LoginUserReqDto;
 import com.atticket.user.dto.request.RegisterUserReqDto;
 
 import feign.FeignException;
@@ -30,8 +31,33 @@ public class UserService {
 	@Value("${keycloak.admin.password}")
 	private String KEYCLOAK_ADMIN_PASSWORD;
 
+	private String KEYCLOAK_ADMIN_CLIENT_ID = "admin-cli";
+
+	@Value("${keycloak.client.id}")
+	private String KEYCLOAK_CLIENT_ID;
+
+	@Value("${keycloak.client.secret}")
+	private String KEYCLOAK_CLIENT_SECRET;
+
 	private KeycloakAccessToken keycloakAccessToken = new KeycloakAccessToken();
 
+	/**
+	 * 로그인
+	 */
+	public GetAccessTokenResDto login(LoginUserReqDto reqDto) {
+		try {
+			return keycloakFeignClient.getUserAccessToken(
+				new GetAccessTokenReqDto(KEYCLOAK_CLIENT_ID, KEYCLOAK_CLIENT_SECRET,
+					reqDto.getUsername(), reqDto.getPassword())
+			);
+		} catch (FeignException e) {
+			throw new BaseException(400, e.getMessage());
+		}
+	}
+
+	/**
+	 * 회원가입
+	 */
 	public void registerUser(RegisterUserReqDto reqDto) {
 
 		try {
@@ -55,17 +81,22 @@ public class UserService {
 		}
 	}
 
-	// AdminToken 셋팅
+	/**
+	 * 관리자 Access Token 셋팅
+	 */
 	private void setAdminToken() {
-		// AdminToken 발급
-		GetAdminAccessTokenResDto resDto = keycloakFeignClient.getAdminAccessToken(
-			new GetAdminAccessTokenReqDto(KEYCLOAK_ADMIN_USERNAME, KEYCLOAK_ADMIN_PASSWORD)
+		// 관리자 Access Token 발급
+		GetAccessTokenResDto resDto = keycloakFeignClient.getAdminAccessToken(
+			new GetAccessTokenReqDto(KEYCLOAK_ADMIN_CLIENT_ID, null,
+				KEYCLOAK_ADMIN_USERNAME, KEYCLOAK_ADMIN_PASSWORD)
 		);
 
-		log.info("getAdminAccessToken");
+		log.info("getAccessToken");
 
 		keycloakAccessToken.token = resDto.getAccess_token();
 		keycloakAccessToken.expireTime = LocalDateTime.now().plusSeconds(resDto.getExpires_in() - 10);
+
+		log.info("setAccessToken");
 
 	}
 
