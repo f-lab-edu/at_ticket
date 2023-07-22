@@ -13,3 +13,5 @@ include ':payment'
 include ':product'
 include ':common:response'
 include ':common:utils'
+include 'kafka'
+
