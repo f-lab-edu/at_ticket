@@ -4,6 +4,7 @@ import static com.atticket.common.response.BaseStatus.INVALID_RECEIPT;
 import static com.atticket.common.response.BaseStatus.INVALID_TOKEN;
 import static com.atticket.common.response.BaseStatus.UNEXPECTED_ERROR;
 
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,6 +26,7 @@ import com.atticket.payment.dto.request.ConfirmReceiptReqDto;
 import com.atticket.payment.dto.request.PostCancelPaymentReqDto;
 import com.atticket.payment.dto.response.ConfirmReceiptResDto;
 import com.atticket.payment.dto.response.PostCancelPaymentResDto;
+
 import com.atticket.payment.type.LinkedPlatformType;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,7 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 	private final IamPortFeignClient iamPortFeignClient;
+
 
 	public PostCancelPaymentResDto cancelPayment(PostCancelPaymentReqDto postCancelPaymentReqDto) {
 
@@ -87,6 +90,7 @@ public class PaymentService {
 		return new PostCancelPaymentResDto(paymentId, orderId);
 
 	}
+
 
 	public ConfirmReceiptResDto confrimReceipt(ConfirmReceiptReqDto confirmReceiptReqDto) {
 
