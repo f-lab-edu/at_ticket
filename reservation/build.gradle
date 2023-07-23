@@ -6,4 +6,5 @@ dependencies {
     implementation project(':common:response')
     implementation project(':common:utils')
     implementation project(':common:jwt-manager')
+    implementation project(':common:secret-config')
 }

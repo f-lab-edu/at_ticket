@@ -22,7 +22,7 @@ public class JwtManager {
 
 	private static String JWT_SECRET_KEY;
 
-	@Value("${JWT_SECRET_KEY}")
+	@Value("${jwt-secret-key}")
 	public void setKey(String value) {
 		System.out.println(value);
 		this.JWT_SECRET_KEY = value;
@@ -44,7 +44,8 @@ public class JwtManager {
 	}
 
 	private static String getJwt() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpServletRequest request =
+			((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		return request.getHeader("Authorization");
 	}
 }

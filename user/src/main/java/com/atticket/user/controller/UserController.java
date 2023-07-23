@@ -1,6 +1,6 @@
 package com.atticket.user.controller;
 
-import static com.atticket.common.response.BaseResponse.ok;
+import static com.atticket.common.response.BaseResponse.*;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +22,18 @@ public class UserController {
 
 	private final UserService userService;
 
+	/**
+	 * 회원가입
+	 */
 	@PostMapping("")
 	public BaseResponse<Object> registerUser(@RequestBody RegisterUserReqDto reqDto) {
 		userService.registerUser(reqDto);
 		return ok();
 	}
 
+	/**
+	 * 로그인
+	 */
 	@PostMapping("/token")
 	public BaseResponse<GetAccessTokenResDto> loginUser(@RequestBody LoginUserReqDto reqDto) {
 		return ok(userService.login(reqDto));

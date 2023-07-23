@@ -1,0 +1,5 @@
+plugins {
+    id 'atticket-spring-boot'
+}
+
+bootJar.enabled = false

@@ -1,16 +1,16 @@
-version: "3.0"
+version: "3.9"
 services:
   database:
-    image: mysql
+    image: mysql:8.0.21
     container_name: at_ticket_db
     #DB시작 시 초기화 스크립트 실행
     volumes:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
     ports:
-      - 3306:3306
+      - "3306:3306"
     restart: always
-    env_file:
-      - config/.env.local
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
@@ -25,11 +25,9 @@ services:
     build:
       context: .
       dockerfile: ./product/Dockerfile
-    env_file:
-      - config/.env.local
     container_name: at_ticket-product
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -41,11 +39,9 @@ services:
     build:
       context: .
       dockerfile: ./reservation/Dockerfile
-    env_file:
-      - config/.env.local
     container_name: at_ticket-reservation
     ports:
-      - 8100:8100
+      - "8100:8100"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -58,10 +54,8 @@ services:
       context: .
       dockerfile: ./payment/Dockerfile
     container_name: at_ticket-payment
-    env_file:
-      - config/.env.local
     ports:
-      - 8200:8200
+      - "8200:8200"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -71,30 +65,11 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      keycloak:
-        condition: service_started
     build:
       context: .
       dockerfile: ./user/Dockerfile
-    env_file:
-      - config/.env.local
     container_name: at_ticket-user
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:21.1.2
-    container_name: at_ticket-keycloak
-    ports:
-      - 8080:8080
-    env_file:
-      - config/.env.local
-    command: start-dev --features=preview
-    volumes:
-      - ./keycloak/local.conf:/opt/keycloak/conf/keycloak.conf
-    depends_on:
-      database:
-        condition: service_healthy

@@ -1,8 +1,11 @@
 server:
   port: 9000
 keycloak:
-  url: http://localhost:8080
+  url: ${KEYCLOAK_URL}
   realm: atticket
+  client:
+    id: atticket
+    secret: ${KEYCLOAK_CLIENT_SECRET}
   admin:
-    username: admin
-    password: atticket
+    username: ${KEYCLOAK_ADMIN_USERNAME}
+    password: ${KEYCLOAK_ADMIN_PASSWORD}

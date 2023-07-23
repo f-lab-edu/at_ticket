@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,4 +16,4 @@ spring:
         format_sql: true
     generate-ddl: true
 
-JWT_SECRET_KEY: OOZ6O3cs-cjWbnlU9hF8t9s1B8mfqoLCGzMyd6hRgvsFJ999a0en9wZqmJQBtjcOGdmYSVEp04LL_jCl1xHGVA
+jwt-secret-key: ${JWT_SECRET_KEY}
