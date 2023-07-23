@@ -7,8 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Product {
-	private int productId;
+public class NotifyData {
+
+	private String title;
 	private String message;
 
 }

@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+##환경 변수###
+!**/src/main/resources/env/
+!**/src/test/resources/env/

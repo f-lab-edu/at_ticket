@@ -8,26 +8,30 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.atticket.kafka.payload.Product;
+import com.atticket.kafka.payload.NotifyData;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductKafkaProducer {
+public class ProductProducer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProductKafkaProducer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductProducer.class);
 
-	private final KafkaTemplate<String, Product> kafkaTemplate;
-	private static final String MY_TOPIC = "product";
+	private final KafkaTemplate<String, NotifyData> kafkaTemplate;
+	private static final String MAIL_TOPIC = "mail_notify";
 
-	public void sendMessage(Product data) {
+	/**
+	 * 상품에 관한 알림에 대한 이벤트를 발행한다.
+	 * @param data
+	 */
+	public void sendMail(NotifyData data) {
 
 		LOGGER.info(String.format("Message sent -> %s", data.toString()));
 
-		Message<Product> message = MessageBuilder
+		Message<NotifyData> message = MessageBuilder
 			.withPayload(data)
-			.setHeader(KafkaHeaders.TOPIC, MY_TOPIC)
+			.setHeader(KafkaHeaders.TOPIC, MAIL_TOPIC)
 			.build();
 		kafkaTemplate.send(message);
 

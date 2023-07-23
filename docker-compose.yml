@@ -27,9 +27,11 @@ services:
     container_name: at_ticket_kafka
     ports:
       - "9092:9092"
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -70,7 +72,5 @@ services:
       - 8200
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-
-
 
 

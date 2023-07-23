@@ -10,7 +10,7 @@ public class TopicConfig {
 	public class kafkaTopicConfig {
 		@Bean
 		public NewTopic javaGuidesTopic() {
-			return TopicBuilder.name("product").partitions(10).build();
+			return TopicBuilder.name("mail_notify").build();
 		}
 	}
 }

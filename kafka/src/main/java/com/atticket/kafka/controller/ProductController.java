@@ -6,21 +6,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atticket.kafka.payload.Product;
-import com.atticket.kafka.producer.ProductKafkaProducer;
+import com.atticket.kafka.payload.NotifyData;
+import com.atticket.kafka.producer.ProductProducer;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/kafka")
-public class MessageController {
+@RequestMapping("/kafka/product")
+public class ProductController {
 
-	private final ProductKafkaProducer kafkaJsonProducer;
+	private final ProductProducer kafkaJsonProducer;
 
-	@PostMapping("/product")
-	public ResponseEntity<String> publish(@RequestBody Product product) {
-		kafkaJsonProducer.sendMessage(product);
+	/**
+	 * 상품에 관련 알림 요청을 받는다.
+	 * @param notifyData
+	 * @return
+	 */
+	@PostMapping("/notify/mail")
+	public ResponseEntity<String> publish(@RequestBody NotifyData notifyData) {
+		kafkaJsonProducer.sendMail(notifyData);
 		return ResponseEntity.ok("Json Message sent to the topic");
 	}
 

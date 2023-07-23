@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
+import com.atticket.product.client.client.KafkaFeignClient;
+import com.atticket.product.client.dto.PostNotifyProductToMailDto;
 import com.atticket.product.domain.Grade;
 import com.atticket.product.domain.Seat;
 import com.atticket.product.domain.Show;
@@ -33,6 +35,8 @@ public class ShowSeatService {
 	private final GradeService gradeService;
 	private final SeatService seatService;
 	private final ReservedSeatService reservedSeatService;
+
+	private final KafkaFeignClient kafkaFeignClient;
 
 	// repository
 	private final ShowSeatRepository showSeatRepository;
@@ -141,7 +145,8 @@ public class ShowSeatService {
 	}
 
 	public List<Long> registerShow(Long productId, RegisterShowServiceDto registerShowServiceDto) {
-		return registerShowServiceDto.getShowInfos().stream().map(showInfo -> {
+
+		List<Long> result = registerShowServiceDto.getShowInfos().stream().map(showInfo -> {
 			Long showId = showService.saveShow(productId, showInfo.getDate(),
 				showInfo.getTime(), showInfo.getHallId(), showInfo.getSession());
 			//등록된 공연의 좌석-등급 매핑 저장
@@ -149,6 +154,14 @@ public class ShowSeatService {
 				.forEach(seatInfo -> registerShowSeat(showId, seatInfo.getGradeId(), seatInfo.getSeatIds()));
 			return showId;
 		}).collect(Collectors.toList());
+		
+		kafkaFeignClient.postNotifyProductToMail(
+			PostNotifyProductToMailDto.builder()
+				.title("[atticket] 공연 등록 알림")
+				.message("공연 : " + productId + "가 등록되었습니다")
+				.build());
+
+		return result;
 	}
 
 	/**

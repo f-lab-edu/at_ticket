@@ -22,6 +22,7 @@ dependencies {
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 }
 
 tasks.named('test') {
