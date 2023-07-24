@@ -17,7 +17,7 @@ spring:
               packages: '*'
       group-id: myGroup
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      bootstrap-server: localhost:9092
+      bootstrap-servers: localhost:9092
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 server:
   port: 9000
