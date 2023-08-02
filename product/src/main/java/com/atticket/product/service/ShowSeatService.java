@@ -13,8 +13,6 @@ import org.springframework.util.StringUtils;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
-import com.atticket.product.client.client.KafkaFeignClient;
-import com.atticket.product.client.dto.PostNotifyProductToMailDto;
 import com.atticket.product.domain.Grade;
 import com.atticket.product.domain.Seat;
 import com.atticket.product.domain.Show;
@@ -22,6 +20,7 @@ import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
 import com.atticket.product.dto.service.RegisterShowServiceDto;
+import com.atticket.product.repository.ShowRepository;
 import com.atticket.product.repository.ShowSeatRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -36,10 +35,12 @@ public class ShowSeatService {
 	private final SeatService seatService;
 	private final ReservedSeatService reservedSeatService;
 
-	private final KafkaFeignClient kafkaFeignClient;
+	//private final KafkaFeignClient kafkaFeignClient;
+	private final WishProductService wishProductService;
 
 	// repository
 	private final ShowSeatRepository showSeatRepository;
+	private final ShowRepository showRepository;
 
 	/**
 	 * 공연의 남은 좌석 조회
@@ -145,7 +146,6 @@ public class ShowSeatService {
 	}
 
 	public List<Long> registerShow(Long productId, RegisterShowServiceDto registerShowServiceDto) {
-
 		List<Long> result = registerShowServiceDto.getShowInfos().stream().map(showInfo -> {
 			Long showId = showService.saveShow(productId, showInfo.getDate(),
 				showInfo.getTime(), showInfo.getHallId(), showInfo.getSession());
@@ -154,12 +154,9 @@ public class ShowSeatService {
 				.forEach(seatInfo -> registerShowSeat(showId, seatInfo.getGradeId(), seatInfo.getSeatIds()));
 			return showId;
 		}).collect(Collectors.toList());
-		
-		kafkaFeignClient.postNotifyProductToMail(
-			PostNotifyProductToMailDto.builder()
-				.title("[atticket] 공연 등록 알림")
-				.message("공연 : " + productId + "가 등록되었습니다")
-				.build());
+
+		//관심 공연 등록 알림 메일 발송
+		wishProductNotify(productId, result);
 
 		return result;
 	}
@@ -193,5 +190,21 @@ public class ShowSeatService {
 
 	public int deleteByShow(Show show) {
 		return showSeatRepository.deleteByShowId(show);
+	}
+
+	/**
+	 * 관심 공연 등록 알림 메일 발송 기능 호출
+	 * @param show
+	 */
+	public void wishProductNotify(Long productId, List<Long> show) {
+
+		List<Show> newShowList = showRepository.findAllById(show);
+		List<String> mailDatas = newShowList.stream().map(x -> {
+				String mailData = " 날짜 : " + x.getDate() + " 시간 :" + x.getTime();
+				return mailData;
+			}
+		).collect(Collectors.toList());
+
+		wishProductService.sendNotifyMail(productId, mailDatas);
 	}
 }

@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 @PropertySource(value = {"classpath:/env/env.yml"}, factory = YamlLoadFactory.class)
 public class MailSender {
 
@@ -30,10 +33,7 @@ public class MailSender {
 	@Value("${mail.user_pw}")
 	private String user_pw;
 
-	@Value("${mail.receiver_email}")
-	private String receiver_email;
-
-	public void Send(String subject, String text) throws Exception {
+	public void Send(String subject, String text, String receiverEmail) throws Exception {
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", smtp_host);
 		props.put("mail.smtp.port", smtp_port);
@@ -56,7 +56,7 @@ public class MailSender {
 			// 받는 이메일
 			message.setRecipients(
 				Message.RecipientType.TO,
-				InternetAddress.parse(receiver_email)
+				InternetAddress.parse(receiverEmail)
 			);
 
 			// 제목
@@ -64,6 +64,8 @@ public class MailSender {
 
 			// 내용
 			message.setText(text);
+
+			log.info(" 메일 발송 " + " " + receiverEmail + " " + subject + " " + text);
 
 			// 발송
 			Transport.send(message);

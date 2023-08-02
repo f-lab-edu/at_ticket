@@ -70,3 +70,11 @@ INSERT INTO product.show_seat
 (seats, grade_id, show_id)
 VALUES('4,5', '1', '2');
 
+
+INSERT INTO product.wish_product
+(name, user_email,user_id,product_id)
+VALUES('캣츠', 'qltkd8487@gmail.com',"user1",1);
+
+INSERT INTO product.wish_product
+(name, user_email,user_id,product_id)
+VALUES('캣츠', 'gllgll23@naver.com',"user2",1);
