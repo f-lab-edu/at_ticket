@@ -1,15 +1,15 @@
-package com.atticket.payment;
+package com.atticket.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-@EnableFeignClients
-@ComponentScan({"com.atticket"})
 @SpringBootApplication
-public class PaymentApplication {
+@ComponentScan({"com.atticket"})
+@EnableFeignClients
+public class UserApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(PaymentApplication.class, args);
+		SpringApplication.run(UserApplication.class, args);
 	}
 }

@@ -1,0 +1,12 @@
+plugins {
+    id 'atticket-spring-boot'
+}
+
+dependencies {
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+
+    implementation project(':common:response')
+    implementation project(':common:utils')
+    implementation project(':common:secret-config')
+}

@@ -1,13 +1,29 @@
 version: "3.9"
 services:
+  reverse-proxy:
+    image: nginx:1.21
+    container_name: at_ticket-reverse-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    # SSL 적용
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl/api/fullchain.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/fullchain.pem
+      - ./ssl/api/privkey.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/privkey.pem
+      - ./ssl/keycloak/fullchain.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/fullchain.pem
+      - ./ssl/keycloak/privkey.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/privkey.pem
+
+
   database:
     image: mysql:8.0.21
     container_name: at_ticket_db
     #DB시작 시 초기화 스크립트 실행
     volumes:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
@@ -26,8 +42,8 @@ services:
       context: .
       dockerfile: ./product/Dockerfile
     container_name: at_ticket-product
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -40,8 +56,8 @@ services:
       context: .
       dockerfile: ./reservation/Dockerfile
     container_name: at_ticket-reservation
-    ports:
-      - "8100:8100"
+    expose:
+      - 8100
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -54,8 +70,8 @@ services:
       context: .
       dockerfile: ./payment/Dockerfile
     container_name: at_ticket-payment
-    ports:
-      - "8200:8200"
+    expose:
+      - 8200
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
@@ -65,9 +81,33 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      keycloak:
+        condition: service_started
     build:
       context: .
       dockerfile: ./user/Dockerfile
     container_name: at_ticket-user
-    ports:
-      - "9000:9000"
+    expose:
+      - 9000
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.2
+    container_name: at_ticket-keycloak
+    expose:
+      - 8080
+    command: start --features=preview
+    environment:
+      - KC_DB=mysql
+      - KC_DB_USERNAME=${DB_USERNAME}
+      - KC_DB_PASSWORD=${DB_PASSWORD}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USERNAME}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_DB_URL=${DB_KEYCLOAK_URL}
+    volumes:
+      - ./keycloak/dev.conf:/opt/keycloak/conf/keycloak.conf
+    depends_on:
+      database:
+        condition: service_healthy
