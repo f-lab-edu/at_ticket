@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   reverse-proxy:
-    image: nginx
+    image: nginx:1.21
     container_name: at_ticket-reverse-proxy
     ports:
       - "80:80"
@@ -17,7 +17,7 @@ services:
 
 
   database:
-    image: mysql
+    image: mysql:8.0.21
     container_name: at_ticket_db
     #DB시작 시 초기화 스크립트 실행
     volumes:
