@@ -2,7 +2,13 @@ package com.atticket.payment.domain;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.atticket.payment.domain.converter.PaymentEntityLinkedPlatformConverter;
 import com.atticket.payment.domain.converter.PaymentEntityPgProviderConverter;
@@ -30,6 +36,9 @@ public class Payment {
 
 	//결제 번호
 	private String paymentId;
+
+	//예약 id
+	private Long reservationId;
 
 	//주문 id
 	private String orderId;

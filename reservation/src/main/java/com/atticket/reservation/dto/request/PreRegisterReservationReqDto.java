@@ -9,10 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterReservationReqDto {
-
-	@NotNull
-	private String paymentId;
+public class PreRegisterReservationReqDto {
 
 	@NotNull
 	private Long showId;

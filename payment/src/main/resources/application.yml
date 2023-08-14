@@ -2,9 +2,12 @@ server:
   port: 8200
 
 api:
+  product:
+    url: localhost
+    port: 8000
   reservation:
     url: localhost
-    port: 8200
+    port: 8100
 
 spring:
   datasource:
@@ -24,3 +27,8 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+
+iamport:
+  api:
+    key: ${IAMPORT_REST_API_KEY}
+    secret: ${IAMPORT_REST_API_SECRET}

@@ -51,7 +51,7 @@ public class ShowSeatService {
 		// 예약된 좌석 id 리스트
 		List<Long> reservedSeatIdList = reservedSeatService.getReservedSeatIdsByShowId(showId);
 		return showSeats.stream().map(showSeat -> {
-			List<Long> seatIdList = converToSeatIdList(showSeat.getSeats());
+			List<Long> seatIdList = convertToSeatIdList(showSeat.getSeats());
 			List<Long> remainSeatIdList = seatIdList.stream()
 				.filter(seatId -> !reservedSeatIdList.contains(seatId))
 				.collect(Collectors.toList());
@@ -78,7 +78,7 @@ public class ShowSeatService {
 
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
 		showSeats.forEach(showSeat -> {
-			List<Long> seats = converToSeatIdList(showSeat.getSeats());
+			List<Long> seats = convertToSeatIdList(showSeat.getSeats());
 			int remainSeatCnt = (int)seats.stream().filter(seat -> !reservedSeatIds.contains(seat)).count();
 			serviceDtoList.add(
 				GetRemainSeatCntSvcDto.builder()
@@ -176,7 +176,7 @@ public class ShowSeatService {
 	 * @param seatsString
 	 * @return
 	 */
-	private List<Long> converToSeatIdList(String seatsString) {
+	private List<Long> convertToSeatIdList(String seatsString) {
 		if (StringUtils.hasText(seatsString)) {
 			String[] seatStringArray = (seatsString).split(",");
 			List<Long> seatsIdList =
@@ -206,5 +206,27 @@ public class ShowSeatService {
 		).collect(Collectors.toList());
 
 		wishProductService.sendNotifyMail(productId, mailDatas);
+	}
+
+	public Integer getSeatsPrice(Long showId, List<Long> seatIds) {
+		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
+
+		Integer totalPrice = 0;
+		List<Integer> priceList = new ArrayList<>();
+		seatIds.forEach(seatId -> {
+			System.out.println(seatId);
+			ShowSeat showSeatInfo = showSeats.stream().filter(showSeat -> {
+				List<Long> showSeatIds = convertToSeatIdList(showSeat.getSeats());
+				return showSeatIds.contains(seatId);
+			}).findAny().get();
+			int price = showSeatInfo.getGrade().getPrice();
+			priceList.add(price);
+		});
+
+		for (Integer a : priceList) {
+			totalPrice += a;
+		}
+
+		return totalPrice;
 	}
 }

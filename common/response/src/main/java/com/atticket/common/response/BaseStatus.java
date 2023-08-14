@@ -32,6 +32,8 @@ public enum BaseStatus {
 	INVALID_TOKEN(401, "사용자 토큰이 유효하지 않습니다."),
 	EXPIRED_TOKEN(401, "사용자 토큰이 만료되었습니다."),
 
+	INVALID_PAY_INFO(401, "유효하지 않은 결제정보입니다."),
+
 	/**
 	 * 403 - Forbidden (권한 에러 관련)
 	 * */
