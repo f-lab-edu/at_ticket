@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.atticket.common.jwtmanager.JwtManager;
 import com.atticket.common.response.BaseResponse;
-import com.atticket.common.response.SampleDto;
 import com.atticket.reservation.domain.ReservedSeat;
 import com.atticket.reservation.dto.request.RegisterReservationReqDto;
 import com.atticket.reservation.dto.response.GetReservationSeatsResDto;
@@ -37,8 +37,8 @@ public class ReservationController {
 	 * 예약조회
 	 * */
 	@GetMapping("")
-	public BaseResponse<SampleDto> getReservations() {
-		return ok(SampleDto.builder().content("hi").build());
+	public BaseResponse<Object> getReservations() {
+		return ok(JwtManager.parseToClaims());
 	}
 
 	/**

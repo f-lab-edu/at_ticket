@@ -29,8 +29,8 @@ public enum BaseStatus {
 	 * 401 - Unauthorized (인증 에러 관련)
 	 * */
 	NO_TOKEN(401, "사용자 토큰이 존재하지 않습니다."),
-
 	INVALID_TOKEN(401, "사용자 토큰이 유효하지 않습니다."),
+	EXPIRED_TOKEN(401, "사용자 토큰이 만료되었습니다."),
 
 	/**
 	 * 403 - Forbidden (권한 에러 관련)
