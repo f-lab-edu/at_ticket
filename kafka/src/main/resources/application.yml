@@ -1,36 +1,4 @@
-server:
-  port: 8000
-
-logging:
-  level:
-    root: info
-
-
-api:
-  reservation:
-    url: localhost
-    port: 8100
-
-
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  sql:
-    init:
-      mode: always
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    generate-ddl: true
-    defer-datasource-initialization: true
-
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -51,6 +19,5 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: localhost:9092
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-
-
-
+server:
+  port: 9200
