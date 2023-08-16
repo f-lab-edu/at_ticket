@@ -10,9 +10,6 @@ api:
   reservation:
     url: localhost
     port: 8100
-  kafka:
-    url: localhost
-    port: 9200
 
 
 spring:
