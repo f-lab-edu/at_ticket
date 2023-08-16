@@ -20,4 +20,4 @@ spring:
       bootstrap-servers: kafka:9093
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 server:
-  port: 9000
+  port: 9200

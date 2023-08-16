@@ -2,7 +2,7 @@ version: "3.9"
 services:
   database:
     image: mysql:8.0.21
-    container_name: at_ticket_db
+    container_name: mysql
     #DB시작 시 초기화 스크립트 실행
     volumes:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
@@ -19,12 +19,14 @@ services:
 
   zookeeper:
     image: wurstmeister/zookeeper
-    container_name: at_ticket_zookeeper
+    container_name: zookeeper
     ports:
       - "2181:2181"
+
+
   kafka:
     image: wurstmeister/kafka:2.12-2.5.0
-    container_name: at_ticket_kafka
+    container_name: kafka
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -81,13 +83,14 @@ services:
       - "8200:8200"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+
   kafka-app:
     build:
       context: .
       dockerfile: ./kafka/Dockerfile
-    container_name: at_ticket-kafka
+    container_name: at_ticket-kafka-app
     ports:
-      - "9000:9000"
+      - "9200:9200"
     depends_on:
       - kafka
       - zookeeper
@@ -95,7 +98,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
 
-user:
+  user:
     #DB가 실행되기 전까진 어플리케이션이 실행되지 않도록 설정
     depends_on:
       database:

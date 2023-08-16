@@ -12,25 +12,24 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
-@PropertySource(value = {"classpath:/env/env.yml"}, factory = YamlLoadFactory.class)
+
 public class MailSender {
 
-	@Value("${mail.smtp_host}")
+	@Value("${mail_smtp_host}")
 	private String smtp_host;
 
-	@Value("${mail.smpt_port}")
+	@Value("${mail_smtp_port}")
 	private String smtp_port;
 
-	@Value("${mail.user_email}")
+	@Value("${mail_user_email}")
 	private String user_email;
 
-	@Value("${mail.user_pw}")
+	@Value("${mail_user_pw}")
 	private String user_pw;
 
 	public void Send(String subject, String text, String receiverEmail) throws Exception {

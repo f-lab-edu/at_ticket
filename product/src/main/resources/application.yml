@@ -12,7 +12,7 @@ api:
     port: 8100
   kafka:
     url: localhost
-    port: 9000
+    port: 9200
 
 
 spring:
