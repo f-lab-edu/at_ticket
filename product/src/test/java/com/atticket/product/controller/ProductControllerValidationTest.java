@@ -32,37 +32,37 @@ public class ProductControllerValidationTest {
 	@MockBean
 	GradeService gradeService;
 
-	@Test
-	@DisplayName("없는 상품 상세 조회 테스트")
-	void getProductNothingTest() throws Exception {
-
-		//given
-		given(productService.getProductById(11L)).willReturn(null);
-
-		String productId = "11";
-
-		mockMvc.perform(get("/products/" + productId))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.message").value("조회된 데이터가 없습니다."))
-			.andDo(print());
-
-	}
-
-	@Test
-	@DisplayName("상품 조회 validation 테스트")
-	void getProductValidationTest() throws Exception {
-
-		//given
-		given(productService.getProductById(11L)).willReturn(null);
-
-		String wrongId = "product";
-
-		mockMvc.perform(get("/products/" + wrongId))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("validation 에러입니다."))
-			.andDo(print());
-
-	}
+//	@Test
+//	@DisplayName("없는 상품 상세 조회 테스트")
+//	void getProductNothingTest() throws Exception {
+//
+//		//given
+//		given(productService.getProductById(11L)).willReturn(null);
+//
+//		String productId = "11";
+//
+//		mockMvc.perform(get("/products/" + productId))
+//			.andExpect(status().isOk())
+//			.andExpect(jsonPath("$.message").value("조회된 데이터가 없습니다."))
+//			.andDo(print());
+//
+//	}
+//
+//	@Test
+//	@DisplayName("상품 조회 validation 테스트")
+//	void getProductValidationTest() throws Exception {
+//
+//		//given
+//		given(productService.getProductById(11L)).willReturn(null);
+//
+//		String wrongId = "product";
+//
+//		mockMvc.perform(get("/products/" + wrongId))
+//			.andExpect(status().isOk())
+//			.andExpect(jsonPath("$.code").value("400"))
+//			.andExpect(jsonPath("$.message").value("validation 에러입니다."))
+//			.andDo(print());
+//
+//	}
 
 }

@@ -97,7 +97,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-
+#
   user:
     #DB가 실행되기 전까진 어플리케이션이 실행되지 않도록 설정
     depends_on:
