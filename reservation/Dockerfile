@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17 as build
+FROM eclipse-temurin:11 as build
 
 # 소스 복사
 COPY .. /
@@ -6,7 +6,7 @@ COPY .. /
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:11-jre
 
 ARG MODULE_NAME=reservation
 
