@@ -19,5 +19,11 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: kafka:9093
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database:3306?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
 server:
   port: 9200

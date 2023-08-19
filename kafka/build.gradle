@@ -1,35 +1,11 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-}
-
-group = 'com.test '
-version = '0.0.1-SNAPSHOT'
-
-java {
-    sourceCompatibility = '17'
-}
-
-repositories {
-    mavenCentral()
+    id 'atticket-spring-boot-app'
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.kafka:spring-kafka'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
-
     implementation project(':common:response')
+    implementation project(':common:utils')
     implementation project(':common:secret-config')
-
-    implementation 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
