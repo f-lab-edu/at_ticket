@@ -22,6 +22,7 @@ services:
     #DB시작 시 초기화 스크립트 실행
     volumes:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
+      - db_volume:/var/lib/mysql
     expose:
       - 3306
     restart: always
@@ -156,3 +157,5 @@ services:
     depends_on:
       database:
         condition: service_healthy
+volumes:
+  db_volume:

@@ -6,6 +6,7 @@ services:
     #DB시작 시 초기화 스크립트 실행
     volumes:
       - ./mysql-init-files/:/docker-entrypoint-initdb.d/
+      - db_volume:/var/lib/mysql
     ports:
       - "3306:3306"
     restart: always
@@ -97,7 +98,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-#
+  #
   user:
     #DB가 실행되기 전까진 어플리케이션이 실행되지 않도록 설정
     depends_on:
@@ -109,3 +110,6 @@ services:
     container_name: at_ticket-user
     ports:
       - "9000:9000"
+
+volumes:
+  db_volume:
