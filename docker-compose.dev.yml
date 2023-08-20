@@ -10,10 +10,15 @@ services:
     # SSL 적용
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl/api/fullchain.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/fullchain.pem
-      - ./ssl/api/privkey.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/privkey.pem
-      - ./ssl/keycloak/fullchain.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/fullchain.pem
-      - ./ssl/keycloak/privkey.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/privkey.pem
+      #      - ./ssl/api/fullchain.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/fullchain.pem
+      #      - ./ssl/api/privkey.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/privkey.pem
+      #      - ./ssl/keycloak/fullchain.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/fullchain.pem
+      #      - ./ssl/keycloak/privkey.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/privkey.pem
+
+      - /home/at_ticket_setting/ssl/api/fullchain.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/fullchain.pem
+      - /home/at_ticket_setting/ssl/api/privkey.pem:/etc/letsencrypt/live/api.atticket.o-r.kr/privkey.pem
+      - /home/at_ticket_setting/ssl/keycloak/fullchain.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/fullchain.pem
+      - /home/at_ticket_setting/ssl/keycloak/privkey.pem:/etc/letsencrypt/live/keycloak.atticket.o-r.kr/privkey.pem
 
 
   database:
