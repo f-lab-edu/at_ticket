@@ -46,7 +46,6 @@ public class PreReservedSeatService {
 	 */
 	public void deletePreReservedSeat(Long showId, List<Long> seatIds) {
 		List<PreReservedSeat> preReservedSeats = preReservedSeatRepository.findByShowIdAndSeatIdIn(showId, seatIds);
-		List<Long> ids = preReservedSeats.stream().map(d -> d.getId()).collect(Collectors.toList());
-		preReservedSeatRepository.deleteAllById(ids);
+		preReservedSeatRepository.deleteAll(preReservedSeats);
 	}
 }

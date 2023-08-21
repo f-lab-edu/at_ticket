@@ -129,6 +129,7 @@ public class PaymentService {
 
 		// 금액이 맞지 않다면 exception
 		if (!priceRes.getData().equals(receiptRes.getAmount())) {
+			log.debug("가격 불일치");
 			throw new BaseException(INVALID_RECEIPT);
 		}
 
