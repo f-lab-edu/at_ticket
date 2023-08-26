@@ -5,95 +5,121 @@
 
 ![img](./readmeImage/at_ticket%20logo1.PNG)
 
+## 🎫 At Ticket － etiquette at ticket
 
+> 콘서트, 뮤지컬, 영화 티켓 상품을 등록하고 예매할 수 있는 티켓 예매 플랫폼 프로젝트입니다.
 
-<div style="font-size:20px; font-weight : bold;  " >  etiquette at ticket  </div> 
-
-    콘서트, 뮤지컬, 영화 티켓 상품을 등록하고 예매할 수 있는 티켓 예매 플랫폼 프로젝트입니다.
-
-## 프로젝트 구조
+## 🎫 프로젝트 구조
 
 ---
 
 ![img](./readmeImage/구조도.png)
 
-## 사용 기술 및 개발환경
+## 🎫사용 기술 및 개발환경
+
+---
+<div>
+  <img src="https://img.shields.io/badge/Java11-red?style=for-the-badge&logo=Java&logoColor=white"/></a> 
+  <img src="https://img.shields.io/badge/spring boot-brightgreen?style=for-the-badge&logo=spring boot&logoColor=white"/></a>
+  <img src="https://img.shields.io/badge/Mysql-4479A1?style=for-the-badge&logo=MySql&logoColor=white"/></a>
+  <img src="https://img.shields.io/badge/apachekafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white"/></a> 
+  <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a> 
+  <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/></a>
+  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/></a> 
+  <img src="https://img.shields.io/badge/KEYCLOCK-848484?style=for-the-badge&logo=KEYCLOCK&logoColor=white"/></a> 
+</div>
+
+## 🎫 기능 목록
 
 ---
 
-**Java11** , **spring boot** , **mysql**, **Jenkins**, **Docker** ,**kafka** , **Keycloak** , **Ngnix**
+* **상품**
+    * 조회 / 상세 조회
+    * 등록 / 수정 / 삭제
+    * 관심 등록한 상품의 메일 알림 기능
+* **공연**
+    * 조회 / 상세조회
+    * 등록 / 수정 / 삭제
+    * 남은 좌석 조회
+    * 공연 티켓 예매
+* **회원 기능**
+    * 회원 가입 기능
+    * 로그인 기능
 
-## 기능 목록
+**Use case** 를 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)
+
+## 🎫 협업을 중요시 합니다.
 
 ---
 
-* 상품
-    * 등록
-    * 조회
-* 공연
-    * 등록
-    * 조회
-* 어쩌구 저쩌구
+> 읽기 좋은, 팀원의 의견이 담긴 코드를 작성하기 위해 노력하였습니다.
 
-더 자세히 보고 싶으시다면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)
-
-## 협업을 중요시 합니다.
-
----
-
-* 코드 컨벤션
-    ```
-    읽기 좋은 코드를 지향합니다.
-    ```
-
+* **코드 컨벤션**
     * 네이버 code style 적용 [(네이버 코드 컨벤션)](https://naver.github.io/hackday-conventions-java/)
     * 플러그인을 사용하여 코드 컨벤션을 유지 하였습니다.
 
 
-* 코드 리뷰
-    ```
-      더 나은 코드를 위하여
-    ```
-    * PR 된 코드들은 코드리뷰를 통해 팀원의 의견을 들은 후 Main branch에 반영됩니다.
+* **코드 리뷰**
+    * Push 된 코드들은 Pull Request를 거쳐,  **코드리뷰**를 통해 팀원의 의견이 반영된 후 Main branch에 반영됩니다.
 
-## 반복 작업을 자동화 하였습니다
+## 🎫 멀티모듈 방식을 채택하였습니다.
 
 ---
 
-**Jenkins**를 사용하여 반복적으로 이루어지는 코드 배포를 자동화하였습니다.
+> 코드의 중복을 줄이고 기능들 간의 의존성을 줄이기 위하여 **멀티 모듈 싱글 프로젝트** 방식을 사용하였습니다.
 
-## 멀티모듈 사용
+* 공통적으로 사용되는 **Common 모듈**로 분리하여 코드의 중복을 줄였습니다.
+* 각 필요한 기능에서 필요한 dependency만 사용할 수 있도록 **plugin을 분리하여** 작성하였습니다.
+
+## 🎫 반복 작업을 자동화 하였습니다.
 
 ---
+> 반복해서 이루어저야 하는 배포 과정을 자동화 하였습니다.
 
-* 멀티 모듈을 사용하여, 공통적으로 사용하는 코드들은 Common 모듈로 분리하여 사용하였습니다.
-* 독립적인 모듈 기능 어쩌구..
-* gradle의 Custom plugin을 사용하여 필요한 기능에서 필요한 dependency만 사용할 수 있도록 작성하였습니다.
+**Jenkins**를 사용하여 반복적으로 이루어야 하는 CI/CD 과정을 자동화하였습니다.
+
+**구체적인 CI/CD 과정은 다음과 같습니다.**
+
+```
+1. 개발자가 코드를 깃허브에 푸시한다.
+2. 깃허브가 webhook을 통해, Jenkins로 요청을 보낸다.
+3. Jenkins가 도커를 사용하여 빌드 및 배포를 한다 
+    (도커로 빌드시에는 설정이 미리 작성되어있는 docker compose 파일을 이용합니다.)
+```
 
 [//]: # (## 비동기 사용해봄)
 
-## 프로젝트를 진행하면서 고민해본 고민들
+## 🎫 프로젝트를 진행하면서 생각해본 고민들
 
 ---
 
-* 예약하기 기능
-    * 사용자가 동시에 같은 표를 예약하려고 하는 경우, 누구에게 표 구매 우선권을 주어야 하나?
-    * 중간에 에러가 발생시 / 중간에 결제 하다 말았을 경우
-* 좌석 등급 매핑은 어떻게 만드는 것이 좋은가
-* JPA 사용시 entity의 관계를 최대한 활용하는 것이 좋을까?
+> 단순히 기능을 만드는 것에 그치지 않고, 일어날 수 있을 만한 문제점들에 대해 고민해보았습니다.
 
-* Common 모듈 사용시 어디까지가 공통으로 사용해야 할 것인가
+* **좌석-등급 매핑**에 관한 고민
+  👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%5BIssue-%231%5D%EC%A2%8C%EC%84%9D%E2%80%90%EB%93%B1%EA%B8%89-%EB%A7%A4%ED%95%91%EC%97%90-%EA%B4%80%ED%95%98%EC%97%AC)
+* **JPA** 사용시 **entity의 관계**를 최대한 활용하는 것이 좋을까? 👉[자세히 보기]()
+* 어디까지 **Common 모듈**에 작성하면 좋을까? 👉[자세히 보기]()
+* 예약하기 기능에 관한 고민
+    * 사용자가 **동시에 같은 표를 예약**하려고 하는 경우, 누구에게 **표 구매 우선권**을 주어야 하나? 👉[자세히 보기]()
+    * 예약하기 프로세스 중간에 **에러가 발생시** / 사용자가 **결제하다 말았을 경우**에는 어떻게해야 할까? 👉[자세히 보기]()
 
- <span style="color:blue"> wiki  </span>
+<!--
+ * 세션 관리는 어떻게 할 것 인가
+ * keyclock, JWT
+ * 상태코드는 어떻게 정할 것인가
+-->
 
-[//]: # (* 세션 관리는 어떻게 할 것 인가)
-
-[//]: # (    * keyclock, JWT)
-
-### Todo
+## 🎫To Do
 
 ---
 
 * 성능 테스트
-* 대용량 트래픽이 들어올때..?
-* 말씀해 주신 거,........
+* 테스트 코드 작성
+
+<!-- 
+* 대용량 트래픽 처리
+* 서버 증설 
+* 부하 분산 ..?
+* 말씀해 주신 거,........ -->
+
+
