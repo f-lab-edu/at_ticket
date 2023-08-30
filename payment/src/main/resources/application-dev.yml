@@ -1,14 +1,6 @@
 server:
   port: 8200
 
-api:
-  product:
-    url: product
-    port: 8000
-  reservation:
-    url: reservation
-    port: 8100
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

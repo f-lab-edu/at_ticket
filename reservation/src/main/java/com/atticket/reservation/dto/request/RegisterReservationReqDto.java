@@ -1,7 +1,5 @@
 package com.atticket.reservation.dto.request;
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -15,8 +13,5 @@ public class RegisterReservationReqDto {
 	private String paymentId;
 
 	@NotNull
-	private Long showId;
-
-	@NotNull
-	private List<Long> seatIds;
+	private Long reservationId;
 }

@@ -12,7 +12,13 @@ import lombok.ToString;
 @Validated
 public class ConfirmReceiptReqDto {
 
-	//결제 번호
+	//결제 번호 (imp_xxxxxxx)
 	@NotNull
 	private String paymentId;
+
+	@NotNull
+	private Long reservationId;
+
+	@NotNull
+	private Long amount;
 }

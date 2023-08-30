@@ -38,7 +38,7 @@ public class ReservationController {
 	 * 예약 조회
 	 */
 	@GetMapping("/{reservationId}")
-	public BaseResponse<Reservation> getReservation(@PathVariable("reservationId") Long id) {
+	public BaseResponse<Reservation> getReservation(@Valid @PathVariable("reservationId") Long id) {
 
 		// 유저 토큰 조회
 		String userId = JwtManager.getUserInfo().getUserId();
@@ -70,8 +70,8 @@ public class ReservationController {
 		// 유저 토큰 조회
 		String userId = JwtManager.getUserInfo().getUserId();
 
-		Long reservationId = reservationService.registerReservation(reqDto.getPaymentId(), reqDto.getShowId(),
-			reqDto.getSeatIds(), userId);
+		Long reservationId = reservationService.registerReservation(reqDto.getPaymentId(), reqDto.getReservationId(),
+			userId);
 		return ok(RegisterReservationResDto.construct(reservationId));
 	}
 

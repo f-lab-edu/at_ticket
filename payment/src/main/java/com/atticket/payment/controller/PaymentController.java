@@ -34,7 +34,7 @@ public class PaymentController {
 	public BaseResponse<ConfirmReceiptResDto> confirmReceipt(@RequestBody ConfirmReceiptReqDto reqDto) {
 
 		log.debug("confirmReceipt - confirmReceiptReqDto : " + reqDto);
-		return ok(paymentService.confirmReceipt(reqDto.getPaymentId()));
+		return ok(paymentService.confirmReceipt(reqDto.getPaymentId(), reqDto.getReservationId(), reqDto.getAmount()));
 	}
 
 	/**

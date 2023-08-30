@@ -14,17 +14,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.atticket.common.response.BaseException;
-import com.atticket.common.response.BaseResponse;
 import com.atticket.payment.Repository.PaymentRepository;
 import com.atticket.payment.client.client.IamPortFeignClient;
 import com.atticket.payment.client.client.ProductFeignClient;
-import com.atticket.payment.client.client.ReservationFeignClient;
 import com.atticket.payment.client.dto.reponse.GetIamPortAccessTokenResDto;
 import com.atticket.payment.client.dto.reponse.GetIamPortReceiptResDto;
-import com.atticket.payment.client.dto.reponse.GetReservationRes;
 import com.atticket.payment.client.dto.reponse.PostIamPortPaymentCancelResDto;
 import com.atticket.payment.client.dto.request.GetIamPortAccessTokenReqDto;
-import com.atticket.payment.client.dto.request.GetSeatsInfoReqDto;
 import com.atticket.payment.client.dto.request.PostIamPortPaymentCancelReqDto;
 import com.atticket.payment.domain.Payment;
 import com.atticket.payment.dto.request.PostCancelPaymentReqDto;
@@ -44,8 +40,6 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 	private final IamPortFeignClient iamPortFeignClient;
-
-	private final ReservationFeignClient reservationFeignClient;
 
 	private final ProductFeignClient productFeignClient;
 
@@ -106,7 +100,7 @@ public class PaymentService {
 
 	}
 
-	public ConfirmReceiptResDto confirmReceipt(String paymentId) {
+	public ConfirmReceiptResDto confirmReceipt(String paymentId, Long reservationId, Long amount) {
 
 		String userToken =
 			((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest()
@@ -121,25 +115,24 @@ public class PaymentService {
 			paymentId).getResponse();
 		log.debug("결제 내역 조회" + receiptRes.toString());
 
-		BaseResponse<GetReservationRes> reservationRes = reservationFeignClient.getReservation(userToken,
-			receiptRes.getCustom_data().getReservation_id());
-
-		BaseResponse<Integer> priceRes = productFeignClient.getSeatsPrice(reservationRes.getData().getShowId(),
-			GetSeatsInfoReqDto.builder().seatIds(reservationRes.getData().getSeatIds()).build());
+		// 예약 번호가 맞지 않다면 exception
+		if (!reservationId.equals(receiptRes.getCustom_data().getReservation_id())) {
+			log.debug("예약 id 불일치");
+			throw new BaseException(INVALID_RECEIPT);
+		}
 
 		// 금액이 맞지 않다면 exception
-		if (!priceRes.getData().equals(receiptRes.getAmount())) {
+		if (!amount.equals(receiptRes.getAmount())) {
 			log.debug("가격 불일치");
 			throw new BaseException(INVALID_RECEIPT);
 		}
 
-		// 같은 결제 ID의 정보가 저장되어 있으면 exception
-		if (!Objects.isNull(paymentRepository.findByPaymentId(receiptRes.getImp_uid()))) {
-			throw new BaseException(INVALID_RECEIPT);
-		} else {
+		Payment payment = paymentRepository.findByPaymentId(receiptRes.getImp_uid());
+		// 결제 정보가 DB 추가되어 있지 않으면 추가
+		if (Objects.isNull(payment)) {
 			LocalDateTime paidAt = LocalDateTime.ofInstant(Instant.ofEpochSecond(receiptRes.getPaid_at()),
 				TimeZone.getDefault().toZoneId());
-			Payment payment = Payment.builder()
+			payment = Payment.builder()
 				.paymentId(receiptRes.getImp_uid())
 				.orderId(receiptRes.getMerchant_uid())
 				.reservationId(receiptRes.getCustom_data().getReservation_id())
@@ -154,9 +147,9 @@ public class PaymentService {
 				.build();
 
 			paymentRepository.save(payment);
-
-			return new ConfirmReceiptResDto(paymentId, receiptRes.getMerchant_uid());
 		}
+
+		return new ConfirmReceiptResDto(paymentId, receiptRes.getMerchant_uid());
 	}
 
 	/**

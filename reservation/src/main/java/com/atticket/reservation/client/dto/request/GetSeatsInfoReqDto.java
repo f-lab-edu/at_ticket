@@ -1,4 +1,4 @@
-package com.atticket.payment.client.dto.request;
+package com.atticket.reservation.client.dto.request;
 
 import java.util.List;
 

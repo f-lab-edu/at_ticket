@@ -209,6 +209,10 @@ public class ShowSeatService {
 	}
 
 	public Integer getSeatsPrice(Long showId, List<Long> seatIds) {
+
+		System.out.println(showId);
+		System.out.println(seatIds);
+
 		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
 
 		Integer totalPrice = 0;

@@ -13,9 +13,12 @@ public class UserInfo {
 
 	String name;
 
+	String phone;
+
 	public UserInfo(Map claims) {
 		this.userId = (String)claims.get("sub");
 		this.email = (String)claims.get("email");
 		this.name = (String)claims.get("name");
+		this.phone = (String)claims.get("phone_number");
 	}
 }

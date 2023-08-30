@@ -2,6 +2,9 @@ server:
   port: 8100
 
 api:
+  product:
+    url: localhost
+    port: 8000
   payment:
     url: localhost
     port: 8200

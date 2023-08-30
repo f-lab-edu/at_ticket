@@ -53,4 +53,8 @@ public class Reservation {
 	//공연 id
 	private Long showId;
 
+	public void reserve() {
+		this.status = Status.RESERVED;
+	}
+
 }

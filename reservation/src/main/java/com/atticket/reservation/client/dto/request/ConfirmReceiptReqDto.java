@@ -8,4 +8,6 @@ import lombok.Getter;
 public class ConfirmReceiptReqDto {
 
 	private String paymentId;
+	private Long reservationId;
+	private int amount;
 }

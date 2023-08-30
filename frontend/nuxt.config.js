@@ -9,17 +9,6 @@ export default defineNuxtConfig({
                 },
                 {
                     src: 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js',
-                },
-                {
-                    hid: "kakaoSDK",
-                    src: "https://developers.kakao.com/sdk/js/kakao.min.js",
-                    defer: true
-                },
-                {
-                    hid: "google",
-                    src: "https://accounts.google.com/gsi/client",
-                    defer: true,
-                    sync: true
                 }
             ],
         }
@@ -35,7 +24,15 @@ export default defineNuxtConfig({
                 "/shows": {
                     target: "http://localhost:8000",
                     changeOrigin: true,
-                }
+                },
+                "/reservations": {
+                    target: "http://localhost:8100",
+                    changeOrigin: true,
+                },
+                "/users": {
+                    target: "http://localhost:9000",
+                    changeOrigin: true,
+                },
             },
         },
     },
