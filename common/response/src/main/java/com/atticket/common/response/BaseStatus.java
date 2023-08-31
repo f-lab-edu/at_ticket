@@ -24,6 +24,7 @@ public enum BaseStatus {
 	HALL_DOES_NOT_INCLUDE_SEAT(400, "홀에 속한 좌석이 아닙니다."),
 	EXIST_RESERVED(400, "예약 건이 존재하는 공연은 삭제할 수 없습니다."),
 	EXIST_RESERVED_SEAT(400, "이미 예약된 좌석이 포함되어 있습니다."),
+	ALREADY_RESERVED(400, "이미 예약되어 있습니다."),
 
 	/**
 	 * 401 - Unauthorized (인증 에러 관련)
@@ -31,6 +32,8 @@ public enum BaseStatus {
 	NO_TOKEN(401, "사용자 토큰이 존재하지 않습니다."),
 	INVALID_TOKEN(401, "사용자 토큰이 유효하지 않습니다."),
 	EXPIRED_TOKEN(401, "사용자 토큰이 만료되었습니다."),
+
+	INVALID_PAY_INFO(401, "유효하지 않은 결제정보입니다."),
 
 	/**
 	 * 403 - Forbidden (권한 에러 관련)
@@ -52,6 +55,8 @@ public enum BaseStatus {
 	INVALID_PRODUCT(404, "유효하지 않은 상품입니다."),
 	INVALID_HALL(404, "유효하지 않은 홀입니다."),
 	INVALID_RECEIPT(404, "유효하지 않은 결제 정보입니다."),
+
+	INVALID_RESERVATION(404, "유효하지 않은 예약정보입니다."),
 
 	/**
 	 * 500 - Server Error (서버 에러)

@@ -1,11 +1,6 @@
 server:
   port: 8200
 
-api:
-  reservation:
-    url: localhost
-    port: 8200
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,3 +19,8 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+
+iamport:
+  api:
+    key: ${IAMPORT_REST_API_KEY}
+    secret: ${IAMPORT_REST_API_SECRET}

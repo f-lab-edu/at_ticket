@@ -1,6 +1,7 @@
 package com.atticket.user.service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -69,7 +70,7 @@ public class UserService {
 			Object res = keycloakFeignClient.registerUser(
 				"bearer " + keycloakAccessToken.token,
 				new KeycloakRegisterUserReqDto(reqDto.getUsername(), reqDto.getPassword(),
-					reqDto.getEmail(), reqDto.getName())
+					reqDto.getEmail(), reqDto.getName(), Collections.singletonMap("phoneNumber", reqDto.getPhone()))
 			);
 
 			if (!Objects.isNull(res)) {

@@ -1,4 +1,4 @@
-package com.atticket.reservation.dto.service;
+package com.atticket.reservation.client.dto.request;
 
 import java.util.List;
 
@@ -7,10 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class RegisterReservationSvcDto {
-
-	private Long showId;
+public class GetSeatsInfoReqDto {
 
 	private List<Long> seatIds;
-
 }

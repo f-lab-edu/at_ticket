@@ -2,10 +2,12 @@ server:
   port: 9000
 keycloak:
   url: ${KEYCLOAK_URL}
-  realm: atticket
+  realm: ${KEYCLOAK_REALM}
   client:
-    id: atticket
+    id: ${KEYCLOAK_CLIENT_ID}
     secret: ${KEYCLOAK_CLIENT_SECRET}
   admin:
     username: ${KEYCLOAK_ADMIN_USERNAME}
     password: ${KEYCLOAK_ADMIN_PASSWORD}
+
+jwt-secret-key: ${JWT_SECRET_KEY}

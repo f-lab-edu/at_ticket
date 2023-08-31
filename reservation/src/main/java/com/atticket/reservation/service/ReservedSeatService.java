@@ -1,6 +1,7 @@
 package com.atticket.reservation.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class ReservedSeatService {
 
 	/**
 	 * 공연의 예매된 좌석 리스트 조회
+	 *
 	 * @param showId
 	 * @return
 	 */
@@ -33,13 +35,13 @@ public class ReservedSeatService {
 	/**
 	 * 공연 좌석 예약하기
 	 */
-	public void saveReservedSeat(Long showId, List<Long> seatIds) {
-		seatIds.forEach(seatId -> {
-			ReservedSeat reservedSeat = ReservedSeat.builder()
+	public void registerReservedSeat(Long showId, List<Long> seatIds) {
+		List<ReservedSeat> reservedSeats = seatIds.stream().map(seatId ->
+			ReservedSeat.builder()
 				.showId(showId)
 				.seatId(seatId)
-				.build();
-			reservedSeatRepository.save(reservedSeat);
-		});
+				.build()
+		).collect(Collectors.toList());
+		reservedSeatRepository.saveAll(reservedSeats);
 	}
 }

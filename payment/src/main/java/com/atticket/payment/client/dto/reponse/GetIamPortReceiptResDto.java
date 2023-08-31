@@ -1,13 +1,15 @@
 package com.atticket.payment.client.dto.reponse;
 
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class GetIamPortReceiptResDto {
 
 	public String code;
@@ -18,7 +20,6 @@ public class GetIamPortReceiptResDto {
 
 	@Getter
 	@RequiredArgsConstructor
-	@ToString
 	public static class ResponseDto {
 
 		//합계 금액
@@ -87,6 +88,29 @@ public class GetIamPortReceiptResDto {
 		private final String started_at;
 
 		private final String status;
+
+		private final CustomData custom_data;
+	}
+
+	@Getter
+	public static class CustomData {
+		private Long reservation_id;
+
+		private String buyer_id;
+
+		private String seller_id;
+
+		public CustomData(String customDataStr) throws JsonProcessingException {
+
+			// jackson object mapper 객체 생성
+			ObjectMapper objectMapper = new ObjectMapper();
+
+			// JSON String -> Student Object
+			this.reservation_id = Long.parseLong(
+				(String)objectMapper.readValue(customDataStr, Map.class).get("reservation_id"));
+			this.buyer_id = (String)objectMapper.readValue(customDataStr, Map.class).get("buyer_id");
+			this.seller_id = (String)objectMapper.readValue(customDataStr, Map.class).get("seller_id");
+		}
 
 	}
 

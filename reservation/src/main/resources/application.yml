@@ -1,6 +1,14 @@
 server:
   port: 8100
 
+api:
+  product:
+    url: localhost
+    port: 8000
+  payment:
+    url: localhost
+    port: 8200
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

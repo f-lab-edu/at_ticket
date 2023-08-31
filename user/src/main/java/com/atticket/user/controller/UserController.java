@@ -2,11 +2,14 @@ package com.atticket.user.controller;
 
 import static com.atticket.common.response.BaseResponse.*;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.atticket.common.jwtmanager.JwtManager;
+import com.atticket.common.jwtmanager.UserInfo;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.user.client.dto.response.GetAccessTokenResDto;
 import com.atticket.user.dto.request.LoginUserReqDto;
@@ -37,5 +40,13 @@ public class UserController {
 	@PostMapping("/token")
 	public BaseResponse<GetAccessTokenResDto> loginUser(@RequestBody LoginUserReqDto reqDto) {
 		return ok(userService.login(reqDto));
+	}
+
+	/**
+	 * 유저 정보 조회
+	 */
+	@GetMapping("")
+	public BaseResponse<UserInfo> getUser() {
+		return ok(JwtManager.getUserInfo());
 	}
 }
