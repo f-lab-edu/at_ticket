@@ -1,6 +1,8 @@
 package com.atticket.payment.service;
 
-import static com.atticket.common.response.BaseStatus.*;
+import static com.atticket.common.response.BaseStatus.INVALID_RECEIPT;
+import static com.atticket.common.response.BaseStatus.INVALID_TOKEN;
+import static com.atticket.common.response.BaseStatus.UNEXPECTED_ERROR;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,7 +18,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.atticket.common.response.BaseException;
 import com.atticket.payment.Repository.PaymentRepository;
 import com.atticket.payment.client.client.IamPortFeignClient;
-import com.atticket.payment.client.client.ProductFeignClient;
 import com.atticket.payment.client.dto.reponse.GetIamPortAccessTokenResDto;
 import com.atticket.payment.client.dto.reponse.GetIamPortReceiptResDto;
 import com.atticket.payment.client.dto.reponse.PostIamPortPaymentCancelResDto;
@@ -40,8 +41,6 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 	private final IamPortFeignClient iamPortFeignClient;
-
-	private final ProductFeignClient productFeignClient;
 
 	//(아임포트 판매자) API 키
 	@Value("${iamport.api.key}")
