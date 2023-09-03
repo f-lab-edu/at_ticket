@@ -4,14 +4,16 @@ import static com.atticket.common.response.BaseStatus.INVALID_RECEIPT;
 import static com.atticket.common.response.BaseStatus.INVALID_TOKEN;
 import static com.atticket.common.response.BaseStatus.UNEXPECTED_ERROR;
 
-
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Objects;
+import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.payment.Repository.PaymentRepository;
@@ -22,12 +24,11 @@ import com.atticket.payment.client.dto.reponse.PostIamPortPaymentCancelResDto;
 import com.atticket.payment.client.dto.request.GetIamPortAccessTokenReqDto;
 import com.atticket.payment.client.dto.request.PostIamPortPaymentCancelReqDto;
 import com.atticket.payment.domain.Payment;
-import com.atticket.payment.dto.request.ConfirmReceiptReqDto;
 import com.atticket.payment.dto.request.PostCancelPaymentReqDto;
 import com.atticket.payment.dto.response.ConfirmReceiptResDto;
 import com.atticket.payment.dto.response.PostCancelPaymentResDto;
-
 import com.atticket.payment.type.LinkedPlatformType;
+import com.atticket.payment.type.PgProviderType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,13 @@ public class PaymentService {
 	private final PaymentRepository paymentRepository;
 	private final IamPortFeignClient iamPortFeignClient;
 
+	//(아임포트 판매자) API 키
+	@Value("${iamport.api.key}")
+	private String impKey;
+
+	//(아임포트 판매자) 비밀 키
+	@Value("${iamport.api.secret}")
+	private String impSecret;
 
 	public PostCancelPaymentResDto cancelPayment(PostCancelPaymentReqDto postCancelPaymentReqDto) {
 
@@ -91,81 +99,56 @@ public class PaymentService {
 
 	}
 
+	public ConfirmReceiptResDto confirmReceipt(String paymentId, Long reservationId, Long amount) {
 
-	public ConfirmReceiptResDto confrimReceipt(ConfirmReceiptReqDto confirmReceiptReqDto) {
+		String userToken =
+			((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest()
+				.getHeader("Authorization");
 
-		String paymentId = ""; //결제 id
-		String orderId = ""; //주문 id
-		String buyerTel = ""; //구매자 번호
-		Long amount = null; //결제 금액
-		LocalDateTime paidAt = null; //결제 시간
+		//1.accessToken 발급
+		String accessToken = getIamPortAccessToken(this.impKey, this.impSecret);
+		log.debug("accessToken" + accessToken);
 
-		if (confirmReceiptReqDto.getLinkedPlatform() == LinkedPlatformType.I_AM_PORT) {
-			//결제 모듈에 조회 요청
+		//2.결제 내역 조회
+		GetIamPortReceiptResDto.ResponseDto receiptRes = getIamPortReceipt(accessToken,
+			paymentId).getResponse();
+		log.debug("결제 내역 조회" + receiptRes.toString());
 
-			//1.accessToken 발급
-			String accessToken = getIamPortAccessToken(confirmReceiptReqDto.getImpKey(),
-				confirmReceiptReqDto.getImpSecret());
-			log.debug("accessToken" + accessToken);
-
-			//2.결제 내역 조회
-			GetIamPortReceiptResDto.ResponseDto receiptResponse = getIamPortReceipt(accessToken,
-				confirmReceiptReqDto.getPaymentId()).getResponse();
-			log.debug("결제 내역 조회" + receiptResponse.toString());
-
-			//결제 상태가 paid가 아니면 exception
-			if (!receiptResponse.getStatus().equals("paid")) {
-				throw new BaseException(INVALID_RECEIPT);
-			}
-
-			paymentId = receiptResponse.getImp_uid();
-			orderId = receiptResponse.getMerchant_uid();
-			buyerTel = receiptResponse.getBuyer_tel();
-			amount = receiptResponse.getAmount();
-			paidAt = Instant.ofEpochSecond(receiptResponse.getPaid_at())
-				.atZone(ZoneId.systemDefault())
-				.toLocalDateTime();
-		}
-
-		//결제 정보와 결제 모듈 측의 영수증 정보 비교
-		//결제 Id 비교
-		if (!confirmReceiptReqDto.getPaymentId().equals(paymentId)) {
-			throw new BaseException(INVALID_RECEIPT);
-		}
-		//주문 Id 비교
-		if (!confirmReceiptReqDto.getOrderId().equals(orderId)) {
-			throw new BaseException(INVALID_RECEIPT);
-		}
-		//주문자 전화번호 비교
-		if (!confirmReceiptReqDto.getBuyerTel().equals(buyerTel)) {
-			throw new BaseException(INVALID_RECEIPT);
-		}
-		//합계금액 비교
-		if (confirmReceiptReqDto.getAmount() != amount) {
+		// 예약 번호가 맞지 않다면 exception
+		if (!reservationId.equals(receiptRes.getCustom_data().getReservation_id())) {
+			log.debug("예약 id 불일치");
 			throw new BaseException(INVALID_RECEIPT);
 		}
 
-		//같은 결제 ID의 정보가 저장되어 있으면 exception
-		if (!Objects.isNull(paymentRepository.findByPaymentId(confirmReceiptReqDto.getPaymentId()))) {
+		// 금액이 맞지 않다면 exception
+		if (!amount.equals(receiptRes.getAmount())) {
+			log.debug("가격 불일치");
 			throw new BaseException(INVALID_RECEIPT);
-		} else {
-			Payment payment = Payment.builder()
-				.paymentId(confirmReceiptReqDto.getPaymentId())
-				.orderId(confirmReceiptReqDto.getOrderId())
-				.sellerId(confirmReceiptReqDto.getSellerId())
-				.buyerId(confirmReceiptReqDto.getBuyerId())
-				.buyerName(confirmReceiptReqDto.getBuyerName())
-				.buyerTel(confirmReceiptReqDto.getBuyerTel())
-				.linkedPlatform(confirmReceiptReqDto.getLinkedPlatform())
-				.pgProvider(confirmReceiptReqDto.getPgProvider())
-				.amount(confirmReceiptReqDto.getAmount())
+		}
+
+		Payment payment = paymentRepository.findByPaymentId(receiptRes.getImp_uid());
+		// 결제 정보가 DB 추가되어 있지 않으면 추가
+		if (Objects.isNull(payment)) {
+			LocalDateTime paidAt = LocalDateTime.ofInstant(Instant.ofEpochSecond(receiptRes.getPaid_at()),
+				TimeZone.getDefault().toZoneId());
+			payment = Payment.builder()
+				.paymentId(receiptRes.getImp_uid())
+				.orderId(receiptRes.getMerchant_uid())
+				.reservationId(receiptRes.getCustom_data().getReservation_id())
+				.sellerId(receiptRes.getCustom_data().getSeller_id())
+				.buyerId(receiptRes.getCustom_data().getBuyer_id())
+				.buyerName(receiptRes.getBuyer_name())
+				.buyerTel(receiptRes.getBuyer_tel())
+				.linkedPlatform(LinkedPlatformType.I_AM_PORT)
+				.pgProvider(PgProviderType.findByValue(receiptRes.getPg_provider()))
+				.amount(receiptRes.getAmount())
 				.paidAt(paidAt)
 				.build();
 
 			paymentRepository.save(payment);
-
-			return new ConfirmReceiptResDto(paymentId, orderId);
 		}
+
+		return new ConfirmReceiptResDto(paymentId, receiptRes.getMerchant_uid());
 	}
 
 	/**

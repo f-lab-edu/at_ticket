@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
+import com.atticket.product.dto.request.GetSeatsInfoReqDto;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
@@ -79,4 +80,11 @@ public class ShowController {
 			.build());
 	}
 
+	// 공연 좌석 가격 조회
+	@PostMapping("/{showId}/seats/price")
+	public BaseResponse<Integer> getSeatsPrice(@PathVariable("showId") Long id,
+		@Valid @RequestBody GetSeatsInfoReqDto reqDto) {
+
+		return ok(showSeatService.getSeatsPrice(id, reqDto.getSeatIds()));
+	}
 }

@@ -1,6 +1,7 @@
 package com.atticket.common.jwtmanager;
 
 import java.util.Base64;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -22,13 +24,19 @@ public class JwtManager {
 
 	private static String JWT_SECRET_KEY;
 
+	private static ObjectMapper objectMapper = new ObjectMapper();
+
 	@Value("${jwt-secret-key}")
 	public void setKey(String value) {
-		System.out.println(value);
 		this.JWT_SECRET_KEY = value;
 	}
 
-	public static Object parseToClaims() {
+	public static UserInfo getUserInfo() {
+		Object claims = parseToClaims();
+		return new UserInfo(objectMapper.convertValue(claims, Map.class));
+	}
+
+	private static Object parseToClaims() {
 		String token = getJwt();
 		if (!StringUtils.hasText(token)) {
 			throw new BaseException(BaseStatus.NO_TOKEN);

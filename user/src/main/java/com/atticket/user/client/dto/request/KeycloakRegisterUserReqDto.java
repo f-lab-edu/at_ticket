@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class KeycloakRegisterUserReqDto {
+public class KeycloakRegisterUserReqDto<T> {
 
 	private String username;
 
@@ -21,12 +21,15 @@ public class KeycloakRegisterUserReqDto {
 
 	private List<Credential> credentials;
 
-	public KeycloakRegisterUserReqDto(String username, String password, String email, String name) {
+	private T attributes;
+
+	public KeycloakRegisterUserReqDto(String username, String password, String email, String name, T attributes) {
 		List<Credential> credentials = Arrays.asList(new Credential(password));
 		this.username = username;
 		this.email = email;
 		this.firstName = name;
 		this.credentials = credentials;
+		this.attributes = attributes;
 	}
 
 	@AllArgsConstructor

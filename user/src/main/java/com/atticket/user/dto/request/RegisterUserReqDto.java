@@ -8,4 +8,5 @@ public class RegisterUserReqDto {
 	private String password;
 	private String email;
 	private String name;
+	private String phone;
 }

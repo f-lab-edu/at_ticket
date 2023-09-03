@@ -1,5 +1,8 @@
 package com.atticket.reservation.domain;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -19,8 +22,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode
 @IdClass(ReservedSeatId.class)
-@Table(name = "RESERVED_SEAT")
-public class ReservedSeat {
+@Table(name = "PRE_RESERVED_SEAT")
+public class PreReservedSeat implements Serializable {
 
 	//공연 id
 	@Id
@@ -30,4 +33,9 @@ public class ReservedSeat {
 	@Id
 	private Long seatId;
 
+	//유저 id
+	private String userId;
+
+	//예약 시간
+	private LocalDateTime time;
 }
