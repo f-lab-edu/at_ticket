@@ -5,8 +5,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(force = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
 	private final int code;

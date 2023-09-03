@@ -26,7 +26,7 @@ public class WishProductService {
 	public void sendNotifyMail(Long productId, List<String> showData) {
 
 		//관심 상품 등록해논 유저 정보 조회
-		List<WishProduct> wishProduct = wishProductRepository.findByProduct_id(productId);
+		List<WishProduct> wishProduct = wishProductRepository.findByProductId(productId);
 
 		if (wishProduct.size() > 0) {
 			productProducer.sendNotifyMail(com.atticket.common.kafka.payload.WishProduct.builder()
