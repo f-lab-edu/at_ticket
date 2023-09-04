@@ -9,7 +9,5 @@ import com.atticket.product.domain.WishProduct;
 
 @Repository
 public interface WishProductRepository extends JpaRepository<WishProduct, Long> {
-
-	public List<WishProduct> findByProduct_id(Long productId);
-
+	public List<WishProduct> findByProductId(Long productId);
 }
