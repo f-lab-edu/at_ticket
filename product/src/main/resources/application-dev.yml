@@ -46,3 +46,8 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: kafka:9092
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
