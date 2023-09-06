@@ -19,3 +19,8 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
