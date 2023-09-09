@@ -50,6 +50,7 @@ public class ShowService {
 		return showRepository.findByProduct_id(productId)
 			.stream()
 			.map(Show::getDate)
+			.distinct()
 			.collect(Collectors.toList());
 	}
 
