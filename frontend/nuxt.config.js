@@ -63,7 +63,9 @@ export default {
 		"@/plugins/persisted-state.client.js",
 		"@/plugins/lodash.js",
 		"@/plugins/checkToken.js",
+		"@/plugins/date-picker.js",
 		"@/plugins/api/users.js",
 		"@/plugins/api/products.js",
+		"@/plugins/api/shows.js",
 	],
 };

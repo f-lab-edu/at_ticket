@@ -38,7 +38,8 @@ export const actions = {
 			return false;
 		}
 
-		const userRes = await this.$getUser(tokenRes.data.access_token);
+		const accessToken = tokenRes.data.access_token;
+		const userRes = await this.$getUser({ accessToken });
 
 		if (userRes.code !== 200) {
 			commit("setAuth", {
