@@ -1,0 +1,24 @@
+= Show API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 공연별 남은 좌석 조회
+
+=== Request
+
+include::{snippets}/getRemainSeatsCnt/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getRemainSeatsCnt/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getRemainSeatsCnt/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getRemainSeatsCnt/response-fields.adoc[]
