@@ -1,0 +1,86 @@
+= Show API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 공연별 남은 좌석 조회
+
+=== Request
+
+include::{snippets}/getRemainSeatsCnt/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getRemainSeatsCnt/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getRemainSeatsCnt/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getRemainSeatsCnt/response-fields.adoc[]
+
+== 공연 등록
+
+=== Request
+
+include::{snippets}/registerShow/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/registerShow/path-parameters.adoc[]
+
+=== Request Fields
+
+include::{snippets}/registerShow/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/registerShow/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/registerShow/response-fields.adoc[]
+
+== 공연의 남은 좌석 조회
+
+=== Request
+
+include::{snippets}/getRemainSeats/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getRemainSeats/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getRemainSeats/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getRemainSeats/response-fields.adoc[]
+
+== 공연 좌석 가격 조회
+
+=== Request
+
+include::{snippets}/getSeatsPrice/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getSeatsPrice/path-parameters.adoc[]
+
+=== Request Fields
+
+include::{snippets}/getSeatsPrice/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/getSeatsPrice/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getSeatsPrice/response-fields.adoc[]
