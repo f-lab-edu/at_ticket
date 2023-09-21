@@ -22,30 +22,16 @@ export default {
 		...mapGetters("auth", ["auth"]),
 	},
 	methods: {
-		async getUser() {
-			const res = await this.$axios.get(`/api/users`, {
-				headers: {
-					Authorization: this.userToken,
-				},
-			});
-			if (_.isEmpty(res) || res.data.code !== 200) return;
-			this.user = res.data.data;
-			console.log(this.user);
-		},
 		async getReservation() {
-			if (_.isEmpty(this.reservationId)) {
-				console.log("예약 번호 없음");
-				return;
-			}
+			if (_.isEmpty(this.reservationId)) return;
 			const res = await this.$axios.get(
 				`/api/reservations/${this.reservationId}`,
 				{
 					headers: {
-						Authorization: this.userToken,
+						Authorization: this.auth.token.access_token,
 					},
 				}
 			);
-			console.log("예약: ", res.data);
 			if (_.isEmpty(res) || res.data.code !== 200) return;
 			this.reservation = res.data.data;
 		},
@@ -82,14 +68,14 @@ export default {
 					merchant_uid: "IMP" + makeMerchantUid, // 상점에서 관리하는 주문 번호
 					name: "테스트1",
 					amount: this.price,
-					buyer_email: this.user.email,
-					buyer_name: this.user.name,
-					buyer_tel: this.user.phone,
+					buyer_email: this.auth.user.email,
+					buyer_name: this.auth.user.name,
+					buyer_tel: this.auth.user.phone,
 					buyer_addr: "서울특별시 강남구 삼성동",
 					buyer_postcode: "123-456",
 					custom_data: {
 						reservation_id: `${this.reservation.id}`,
-						buyer_id: this.user.userId,
+						buyer_id: this.auth.user.userId,
 						seller_id: "seller",
 					},
 				},
@@ -97,7 +83,7 @@ export default {
 					// callback
 					if (rsp.success) {
 						console.log(rsp);
-						await this.$axios
+						await me.$axios
 							.post(
 								`/api/reservations`,
 								{
@@ -106,7 +92,7 @@ export default {
 								},
 								{
 									headers: {
-										Authorization: me.userToken,
+										Authorization: me.auth.token.access_token,
 									},
 								}
 							)
@@ -125,7 +111,6 @@ export default {
 		this.IMP.init("imp05082280");
 		await this.getReservation();
 		if (!_.isEmpty(this.reservation)) await this.getPrice();
-		await this.getUser();
 	},
 };
 </script>

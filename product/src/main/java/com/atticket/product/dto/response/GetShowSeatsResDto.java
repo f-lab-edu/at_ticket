@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.CollectionUtils;
 
-import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
+import com.atticket.product.dto.service.GetShowSeatsSvcDto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,19 +15,19 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GetRemainSeatsResDto {
+public class GetShowSeatsResDto {
 
 	private final List<ShowSeatDto> seats;
 
-	public static GetRemainSeatsResDto construct(List<GetRemainSeatsSvcDto> getRemainSeatsSvcDtos) {
-		if (CollectionUtils.isEmpty(getRemainSeatsSvcDtos)) {
+	public static GetShowSeatsResDto construct(List<GetShowSeatsSvcDto> getShowSeatsSvcDtos) {
+		if (CollectionUtils.isEmpty(getShowSeatsSvcDtos)) {
 			return null;
 		}
 		List<ShowSeatDto> showSeatDtos = new ArrayList<>();
-		getRemainSeatsSvcDtos.forEach(getRemainSeatsSvcDto -> {
-			showSeatDtos.addAll(ShowSeatDto.construct(getRemainSeatsSvcDto));
+		getShowSeatsSvcDtos.forEach(getShowSeatsSvcDto -> {
+			showSeatDtos.addAll(ShowSeatDto.construct(getShowSeatsSvcDto));
 		});
-		return new GetRemainSeatsResDto(showSeatDtos);
+		return new GetShowSeatsResDto(showSeatDtos);
 	}
 
 	@Getter
@@ -57,8 +57,8 @@ public class GetRemainSeatsResDto {
 		//가격
 		private final int price;
 
-		private static List<ShowSeatDto> construct(GetRemainSeatsSvcDto getRemainSeatsSvcDto) {
-			return getRemainSeatsSvcDto.getSeats().stream().map(seat ->
+		private static List<ShowSeatDto> construct(GetShowSeatsSvcDto getShowSeatsSvcDto) {
+			return getShowSeatsSvcDto.getSeats().stream().map(seat ->
 				ShowSeatDto.builder()
 					.id(seat.getId())
 					.space(seat.getSpace())
@@ -66,8 +66,8 @@ public class GetRemainSeatsResDto {
 					.locY(seat.getLocY())
 					.row(seat.getSeatRow())
 					.rowNum(seat.getSeatRowNum())
-					.grade(getRemainSeatsSvcDto.getGrade().getType())
-					.price(getRemainSeatsSvcDto.getGrade().getPrice())
+					.grade(getShowSeatsSvcDto.getGrade().getType())
+					.price(getShowSeatsSvcDto.getGrade().getPrice())
 					.build()).collect(Collectors.toList());
 		}
 	}

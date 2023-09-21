@@ -39,7 +39,7 @@
 			<div class="seat_box">
 				<div v-html="seatCntInfo"></div>
 			</div>
-			<div class="booking_btn">예매하기</div>
+			<div class="reservation_btn" @click="goToReservationPage">예매하기</div>
 		</table>
 	</div>
 </template>
@@ -51,7 +51,7 @@ export default {
 	name: "_id",
 	data() {
 		return {
-			id: this.$route.params.id,
+			productId: this.$route.params.id,
 			product: {},
 			dates: [],
 			selectedDate: "",
@@ -77,7 +77,7 @@ export default {
 	},
 	methods: {
 		async setProduct() {
-			const id = this.id;
+			const id = this.productId;
 			const res = await this.$getProduct({ id });
 			if (_.isEmpty(res.data)) return;
 			this.product = res.data.product;
@@ -85,7 +85,7 @@ export default {
 		},
 		async setShows() {
 			const res = await this.$getShows({
-				productId: this.id,
+				productId: this.productId,
 				date: this.selectedDate,
 			});
 			if (_.isEmpty(res.data)) return;
@@ -95,7 +95,10 @@ export default {
 			const res = await this.$getShowRemainSeatCnt({
 				showId: this.selectedShow.id,
 			});
-			if (_.isEmpty(res.data)) return;
+			if (_.isEmpty(res.data)) {
+				this.seatCnts = [];
+				return;
+			}
 			this.seatCnts = res.data.remainSeats;
 		},
 		async clickShow(show) {
@@ -110,6 +113,9 @@ export default {
 		},
 		notShowDate(date) {
 			return !this.dates.includes(moment(date).format("YYYY-MM-DD"));
+		},
+		goToReservationPage() {
+			this.$router.push(`/reservation?showId=${this.selectedShow.id}`);
 		},
 	},
 	async mounted() {
@@ -151,7 +157,7 @@ export default {
 	gap: 5px;
 }
 
-.booking_btn {
+.reservation_btn {
 	margin-top: 10px;
 	width: max-content;
 	padding: 5px;

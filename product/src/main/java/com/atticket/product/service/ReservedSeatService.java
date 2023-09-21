@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.atticket.product.client.client.ReservationFeignClient;
+import com.atticket.product.client.dto.GetReservationSeatsResDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,14 +24,27 @@ public class ReservedSeatService {
 	 * @return
 	 */
 	public List<Long> getReservedSeatIdsByShowId(Long showId) {
-		if (Objects.isNull(reservationFeignClient.getReservationSeats(showId).getData())) {
-			return new ArrayList<>();
+		List<Long> result = new ArrayList<>();
+
+		// 예약 좌석
+		GetReservationSeatsResDto reservedSeatsRes = reservationFeignClient.getReservationSeats(showId).getData();
+
+		if (!Objects.isNull(reservedSeatsRes)) {
+			result.addAll(reservedSeatsRes.getReservedSeats().stream()
+				.map(seat -> seat.getSeatId())
+				.collect(Collectors.toList()));
 		}
 
-		return reservationFeignClient.getReservationSeats(showId)
-			.getData().getReservedSeats().stream()
-			.map(seat -> seat.getSeatId())
-			.collect(Collectors.toList());
+		// 선예약 좌석
+		GetReservationSeatsResDto preReservedSeatsRes = reservationFeignClient.getPreReservationSeats(showId).getData();
+
+		if (!Objects.isNull(preReservedSeatsRes)) {
+			result.addAll(preReservedSeatsRes.getReservedSeats().stream()
+				.map(seat -> seat.getSeatId())
+				.collect(Collectors.toList()));
+		}
+
+		return result.stream().distinct().collect(Collectors.toList());
 	}
 
 }

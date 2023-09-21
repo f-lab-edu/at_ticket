@@ -13,4 +13,6 @@ public interface PreReservedSeatRepository extends JpaRepository<PreReservedSeat
 	Boolean existsByShowIdAndSeatIdInAndUserIdNot(Long showId, List<Long> seatId, String userId);
 
 	List<PreReservedSeat> findByShowIdAndSeatIdIn(Long showId, List<Long> seatId);
+
+	List<PreReservedSeat> findByShowId(Long showId);
 }

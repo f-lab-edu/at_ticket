@@ -11,4 +11,15 @@ export default function ({ app }, inject) {
 			.catch((e) => e.response.data);
 	};
 	inject("getShowRemainSeatCnt", getShowRemainSeatCnt);
+
+	/**
+	 * 공연 전체 좌석 조회
+	 * */
+	const getShowSeats = ({ showId }) => {
+		return app.$axios
+			.get(`${SHOW_API_PREFIX}/${showId}/seats`)
+			.then((d) => d.data)
+			.catch((e) => e.response.data);
+	};
+	inject("getShowSeats", getShowSeats);
 }

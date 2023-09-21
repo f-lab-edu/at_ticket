@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.atticket.reservation.domain.PreReservedSeat;
 import com.atticket.reservation.domain.ReservedSeat;
+import com.atticket.reservation.repository.PreReservedSeatRepository;
 import com.atticket.reservation.repository.ReservedSeatRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 public class ReservedSeatService {
 	private final ReservedSeatRepository reservedSeatRepository;
 
+	private final PreReservedSeatRepository preReservedSeatRepository;
+
 	/**
 	 * 공연의 예매된 좌석 리스트 조회
 	 *
@@ -23,6 +27,10 @@ public class ReservedSeatService {
 	 */
 	public List<ReservedSeat> getReservedSeatsByShowId(Long showId) {
 		return reservedSeatRepository.findByShowId(showId);
+	}
+
+	public List<PreReservedSeat> getPreReservedSeatsByShowId(Long showId) {
+		return preReservedSeatRepository.findByShowId(showId);
 	}
 
 	/**

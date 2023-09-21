@@ -11,4 +11,7 @@ import com.atticket.product.client.dto.GetReservationSeatsResDto;
 public interface ReservationFeignClient {
 	@GetMapping(value = "/show/{showId}/seats")
 	BaseResponse<GetReservationSeatsResDto> getReservationSeats(@PathVariable("showId") Long showId);
+
+	@GetMapping(value = "/show/{showId}/seats/pre")
+	BaseResponse<GetReservationSeatsResDto> getPreReservationSeats(@PathVariable("showId") Long showId);
 }

@@ -64,8 +64,10 @@ export default {
 		"@/plugins/lodash.js",
 		"@/plugins/checkToken.js",
 		"@/plugins/date-picker.js",
+		"@/plugins/vue-js-modal.js",
 		"@/plugins/api/users.js",
 		"@/plugins/api/products.js",
 		"@/plugins/api/shows.js",
+		"@/plugins/api/reservations.js",
 	],
 };
