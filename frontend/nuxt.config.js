@@ -1,42 +1,73 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
+export default {
+	ssr: false,
 
-    app: {
-        head: {
-            script: [
-                {
-                    src: 'https://code.jquery.com/jquery-1.12.4.min.js',
-                },
-                {
-                    src: 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js',
-                }
-            ],
-        }
-    },
+	target: "static",
 
-    vite: {
-        server: {
-            proxy: {
-                "/products": {
-                    target: "http://localhost:8000",
-                    changeOrigin: true,
-                },
-                "/shows": {
-                    target: "http://localhost:8000",
-                    changeOrigin: true,
-                },
-                "/reservations": {
-                    target: "http://localhost:8100",
-                    changeOrigin: true,
-                },
-                "/users": {
-                    target: "http://localhost:9000",
-                    changeOrigin: true,
-                },
-            },
-        },
-    },
-    devtools: {enabled: true},
+	head: {
+		script: [
+			{
+				src: "https://code.jquery.com/jquery-1.12.4.min.js",
+			},
+			{
+				src: "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js",
+			},
+		],
+	},
 
+	modules: ["@nuxtjs/axios", "@nuxtjs/proxy"],
 
-})
+	proxy: [
+		[
+			"/api/products",
+			{
+				target: "http://localhost:8000",
+				changeOrigin: true,
+				pathRewrite: {
+					"/api": "",
+				},
+			},
+		],
+		[
+			"/api/shows",
+			{
+				target: "http://localhost:8000",
+				changeOrigin: true,
+				pathRewrite: {
+					"/api": "",
+				},
+			},
+		],
+		[
+			"/api/reservations",
+			{
+				target: "http://localhost:8100",
+				changeOrigin: true,
+				pathRewrite: {
+					"/api": "",
+				},
+			},
+		],
+		[
+			"/api/users",
+			{
+				target: "http://localhost:9000",
+				changeOrigin: true,
+				pathRewrite: {
+					"/api": "",
+				},
+			},
+		],
+	],
+
+	plugins: [
+		"@/plugins/persisted-state.client.js",
+		"@/plugins/lodash.js",
+		"@/plugins/checkToken.js",
+		"@/plugins/date-picker.js",
+		"@/plugins/vue-js-modal.js",
+		"@/plugins/api/users.js",
+		"@/plugins/api/products.js",
+		"@/plugins/api/shows.js",
+		"@/plugins/api/reservations.js",
+	],
+};

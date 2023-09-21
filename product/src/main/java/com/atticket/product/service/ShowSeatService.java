@@ -18,7 +18,7 @@ import com.atticket.product.domain.Seat;
 import com.atticket.product.domain.Show;
 import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
-import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
+import com.atticket.product.dto.service.GetShowSeatsSvcDto;
 import com.atticket.product.dto.service.RegisterShowServiceDto;
 import com.atticket.product.repository.ShowRepository;
 import com.atticket.product.repository.ShowSeatRepository;
@@ -43,22 +43,20 @@ public class ShowSeatService {
 	private final ShowRepository showRepository;
 
 	/**
-	 * 공연의 남은 좌석 조회
+	 * 공연의 전체 좌석 조회
 	 * */
-	public List<GetRemainSeatsSvcDto> getRemainSeatsByShowId(Long showId) {
+	public List<GetShowSeatsSvcDto> getShowSeats(Long showId) {
+
+		Show show = showService.getShowById(showId);
 		// ShowSeat(공연 등급별 좌석 리스트) 리스트
-		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
-		// 예약된 좌석 id 리스트
-		List<Long> reservedSeatIdList = reservedSeatService.getReservedSeatIdsByShowId(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByProduct_idAndHall_id(show.getProduct().getId(),
+			show.getHall().getId());
 		return showSeats.stream().map(showSeat -> {
+			// 등급별로 조회
+			// 전체 좌석 id 리스트
 			List<Long> seatIdList = convertToSeatIdList(showSeat.getSeats());
-			List<Long> remainSeatIdList = seatIdList.stream()
-				.filter(seatId -> !reservedSeatIdList.contains(seatId))
-				.collect(Collectors.toList());
-			List<Seat> remainSeats = remainSeatIdList.stream()
-				.map(seatService::getSeatById)
-				.collect(Collectors.toList());
-			return new GetRemainSeatsSvcDto(remainSeats, showSeat.getGrade());
+			List<Seat> seats = seatService.getSeatsBySeatIds(seatIdList);
+			return new GetShowSeatsSvcDto(seats, showSeat.getGrade());
 		}).collect(Collectors.toList());
 	}
 
@@ -69,8 +67,10 @@ public class ShowSeatService {
 	 */
 	public List<GetRemainSeatCntSvcDto> getRemainSeatCntByShowId(Long showId) {
 
+		Show show = showService.getShowById(showId);
 		//공연의 좌석 - 등급 매핑 정보 조회
-		List<ShowSeat> showSeats = showSeatRepository.findByShowId_id(showId);
+		List<ShowSeat> showSeats = showSeatRepository.findByProduct_idAndHall_id(show.getProduct().getId(),
+			show.getHall().getId());
 		//showId로 예매 좌석 리스트 조회
 		List<Long> reservedSeatIds = reservedSeatService.getReservedSeatIdsByShowId(showId);
 

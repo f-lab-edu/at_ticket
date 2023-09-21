@@ -44,4 +44,12 @@ public class ShowSeat {
 	@JoinColumn(name = "grade_id")
 	private Grade grade;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	private Product product;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hall_id")
+	private Hall hall;
+
 }

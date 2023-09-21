@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.jwtmanager.JwtManager;
 import com.atticket.common.response.BaseResponse;
+import com.atticket.reservation.domain.PreReservedSeat;
 import com.atticket.reservation.domain.Reservation;
 import com.atticket.reservation.domain.ReservedSeat;
 import com.atticket.reservation.dto.request.PreRegisterReservationReqDto;
 import com.atticket.reservation.dto.request.RegisterReservationReqDto;
+import com.atticket.reservation.dto.response.GetPreReservationSeatsResDto;
 import com.atticket.reservation.dto.response.GetReservationSeatsResDto;
 import com.atticket.reservation.dto.response.RegisterReservationResDto;
 import com.atticket.reservation.service.ReservationService;
@@ -88,6 +90,19 @@ public class ReservationController {
 
 		return ok(
 			GetReservationSeatsResDto.construct(seats)
+		);
+	}
+
+	/**
+	 *	선예약 좌석 리스트 조회
+	 */
+	@GetMapping("/show/{showId}/seats/pre")
+	public BaseResponse<GetPreReservationSeatsResDto> getPreReservationSeats(@PathVariable("showId") Long showId) {
+
+		List<PreReservedSeat> seats = reservedSeatService.getPreReservedSeatsByShowId(showId);
+
+		return ok(
+			GetPreReservationSeatsResDto.construct(seats)
 		);
 	}
 }
