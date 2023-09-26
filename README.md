@@ -27,6 +27,7 @@
   <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/></a>
   <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/></a> 
   <img src="https://img.shields.io/badge/KEYCLOCK-848484?style=for-the-badge&logo=KEYCLOCK&logoColor=white"/></a> 
+  <img src="https://img.shields.io/badge/RestDoc-007054?style=for-the-badge&logoColor=white"/></a> 
 </div>
 
 ## 🎫 기능 목록
@@ -46,9 +47,10 @@
     * 회원 가입 기능
     * 로그인 기능
 
-**Use case** 를 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)
+**Use case** 를 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)  
+**프로토 타입 화면**을 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/proto-type)
 
-## 🎫 협업을 중요시 합니다.
+## 🎫 협업을 중요시 하였습니다.
 
 ---
 
@@ -79,15 +81,6 @@
 * **Jenkins**를 사용하여 반복적으로 이루어야 하는 CI/CD 과정을 자동화하였습니다.
 * **docker compose**에 세팅을 작성해 놓아 빌드에 매번 걸리는 시간을 줄였습니다.
 
-**구체적인 CI/CD 과정은 다음과 같습니다.**
-
-```
-1. 개발자가 코드를 깃허브에 푸시한다.
-2. 깃허브가 webhook을 통해, Jenkins로 요청을 보낸다.
-3. Jenkins가 도커를 사용하여 빌드 및 배포를 한다 
-    (도커로 빌드시에는 설정이 미리 작성되어있는 docker compose 파일을 이용합니다.)
-```
-
 [//]: # (## 비동기 사용해봄)
 
 ## 🎫 프로젝트를 진행하면서 생각해본 고민들
@@ -98,11 +91,11 @@
 
 * 좌석-등급 **매핑 테이블 설계**에 관한 고민
   👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%231)
-* **JPA** 사용시 **entity의 관계**를 최대한 활용하는 것이 좋을까? 👉[자세히 보기]()
-* 어디까지 **Common 모듈**에 작성하면 좋을까? 👉[자세히 보기]()
+* **JPA** 사용시 **entity의 관계**를 최대한 활용하는 것이 좋을까? 👉[]()
+* 어디까지 **Common 모듈**에 작성하면 좋을까? 👉[]()
 * 예약하기 기능에 관한 고민
-    * 사용자가 **동시에 같은 표를 예약**하려고 하는 경우, 누구에게 **표 구매 우선권**을 주어야 하나? 👉[자세히 보기]()
-    * 예약하기 프로세스 중간에 **에러가 발생시** / 사용자가 **결제하다 말았을 경우**에는 어떻게해야 할까? 👉[자세히 보기]()
+    * 사용자가 **동시에 같은 표를 예약**하려고 하는 경우, 누구에게 **표 구매 우선권**을 주어야 하나? 👉[]()
+    * 예약하기 프로세스 중간에 **에러가 발생시** / 사용자가 **결제하다 말았을 경우**에는 어떻게해야 할까? 👉[]()
 * 비동기로 메일 알림 보내기 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%232)
 
 <!--
@@ -111,13 +104,19 @@
  * 상태코드는 어떻게 정할 것인가
 -->
 
-## 🎫To Do
+## 🎫 Done & In progress
 
 ---
 
-* 테스트 코드 작성
-* 성능 테스트
+* **문서화** 작업 (Rest Doc) 👉[]()
+* **테스트 코드** 작성
+* **성능 테스트**
+    * 환경 구축 👉[]()
+    * 성능 개선
 
+## 🎫To Do
+
+---
 
 * **대용량 트래픽 처리**를 위한 고민
     * 캐싱
