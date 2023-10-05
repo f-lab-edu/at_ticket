@@ -61,7 +61,7 @@ public class ProductService {
 
 		//해당 id 상품이 없으면 Exception
 		if (Objects.isNull(product)) {
-			throw new BaseException(BaseStatus.TEST_ERROR);
+			throw new BaseException(BaseStatus.INVALID_PRODUCT);
 		} else {
 
 			List<Show> shows = showService.getShowsByProductId(product.getId());

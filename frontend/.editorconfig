@@ -1,0 +1,13 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+# [encoding-utf8]
+charset = utf-8
+
+# [indentation-tab]
+indent_style = tab
+
+# [4-spaces-tab]
+indent_size = 2
+tab_width = 2

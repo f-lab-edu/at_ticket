@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class GetRemainSeatsSvcDto {
+public class GetShowSeatsSvcDto {
 
 	private List<Seat> seats;
 

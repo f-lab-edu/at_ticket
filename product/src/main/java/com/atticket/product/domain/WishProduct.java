@@ -1,12 +1,9 @@
 package com.atticket.product.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -29,9 +26,7 @@ public class WishProduct {
 	private Long id;
 
 	//물품 id
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id")
-	private Product product;
+	private Long productId;
 
 	//물품 이름
 	private String name;

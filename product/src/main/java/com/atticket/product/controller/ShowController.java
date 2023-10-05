@@ -1,6 +1,6 @@
 package com.atticket.product.controller;
 
-import static com.atticket.common.response.BaseResponse.ok;
+import static com.atticket.common.response.BaseResponse.*;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import com.atticket.common.response.BaseResponse;
 import com.atticket.product.dto.request.GetSeatsInfoReqDto;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
-import com.atticket.product.dto.response.GetRemainSeatsResDto;
+import com.atticket.product.dto.response.GetShowSeatsResDto;
 import com.atticket.product.dto.response.RegisterShowResDto;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
 import com.atticket.product.service.ShowSeatService;
@@ -34,11 +34,11 @@ public class ShowController {
 
 	private final ShowSeatService showSeatService;
 
-	//공연의 남은 좌석 조회
+	//공연의 전체 좌석 조회
 	@GetMapping("/{showId}/seats")
-	public BaseResponse<GetRemainSeatsResDto> getRemainSeats(@PathVariable("showId") Long id) {
+	public BaseResponse<GetShowSeatsResDto> getShowSeats(@PathVariable("showId") Long id) {
 
-		return ok(GetRemainSeatsResDto.construct(showSeatService.getRemainSeatsByShowId(id)));
+		return ok(GetShowSeatsResDto.construct(showSeatService.getShowSeats(id)));
 	}
 
 	/**

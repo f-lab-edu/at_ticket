@@ -24,3 +24,8 @@ iamport:
   api:
     key: ${IAMPORT_REST_API_KEY}
     secret: ${IAMPORT_REST_API_SECRET}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

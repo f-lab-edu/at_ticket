@@ -13,9 +13,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.atticket.common.utils.Constants;
 import com.atticket.product.dto.service.RegisterShowServiceDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Builder
 public class RegisterShowReqDto {
 
 	//공연 시간/좌석 정보 리스트
@@ -24,6 +30,9 @@ public class RegisterShowReqDto {
 
 	//공연 시간/좌석 정보
 	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	public static class ShowInfo {
 
 		//날짜
@@ -47,6 +56,9 @@ public class RegisterShowReqDto {
 	}
 
 	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	public static class SeatInfo {
 
 		//좌석 등급

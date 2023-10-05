@@ -25,6 +25,8 @@ public enum BaseStatus {
 	EXIST_RESERVED(400, "예약 건이 존재하는 공연은 삭제할 수 없습니다."),
 	EXIST_RESERVED_SEAT(400, "이미 예약된 좌석이 포함되어 있습니다."),
 	ALREADY_RESERVED(400, "이미 예약되어 있습니다."),
+	EXIST_SHOW_TIME(400, "이미 같은 시간에 공연이 등록되어 있기 때문에 공연을 등록할 수 없습니다"),
+	REQUIRED_PLACE(400, "장소가 등록되어 있어야 합니다"),
 
 	/**
 	 * 401 - Unauthorized (인증 에러 관련)

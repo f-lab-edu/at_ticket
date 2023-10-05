@@ -3,7 +3,7 @@ package com.atticket.product.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ShowService {
-	
+
 	// repository
 	private final ShowRepository showRepository;
 	private final ProductRepository productRepository;
@@ -50,6 +50,7 @@ public class ShowService {
 		return showRepository.findByProduct_id(productId)
 			.stream()
 			.map(Show::getDate)
+			.distinct()
 			.collect(Collectors.toList());
 	}
 
@@ -68,25 +69,37 @@ public class ShowService {
 
 	public Long saveShow(Long productId, LocalDate date, LocalTime time, Long hallId, int session) {
 
-		Product product = productRepository.getReferenceById(productId);
-		if (Objects.isNull(product)) {
+		Optional<Product> product = productRepository.findById(productId);
+		if (product.isEmpty()) {
 			throw new BaseException(BaseStatus.INVALID_PRODUCT);
 		}
 
-		Hall hall = hallRepository.getReferenceById(hallId);
-		if (Objects.isNull(hall)) {
+		Optional<Hall> hall = hallRepository.findById(hallId);
+		if (hall.isEmpty()) {
 			throw new BaseException(BaseStatus.INVALID_HALL);
 		}
 
-		if (!product.getPlace().equals(hall.getPlace())) {
-			throw new BaseException(BaseStatus.PRODUCT_PLACE_NOT_SAME_HALL_PLACE);
+		if (product.get().getPlace() == null || hall.get().getPlace() == null) {
+			throw new BaseException(BaseStatus.REQUIRED_PLACE);
+		} else {
+			if (!product.get().getPlace().equals(hall.get().getPlace())) {
+				throw new BaseException(BaseStatus.PRODUCT_PLACE_NOT_SAME_HALL_PLACE);
+			}
+		}
+
+		//같은 날짜의 같은 시간에 등록하려는 시간이 이미 등록되어 있다면  exception
+		List<Show> existShowTimeList = getShowDateByProductId(productId, date).stream()
+			.filter(show -> show.getTime().equals(time))
+			.collect(Collectors.toList());
+		if (existShowTimeList.size() > 0) {
+			throw new BaseException(BaseStatus.EXIST_SHOW_TIME);
 		}
 
 		Show show = Show.builder()
-			.product(product)
+			.product(product.get())
 			.date(date)
 			.time(time)
-			.hall(hall)
+			.hall(hall.get())
 			.session(session)
 			.build();
 

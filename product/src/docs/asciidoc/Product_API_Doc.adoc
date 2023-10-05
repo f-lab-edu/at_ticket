@@ -1,0 +1,79 @@
+= Product API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 상품 조회
+
+=== Request
+
+include::{snippets}/getProducts/http-request.adoc[]
+
+=== Request Parameters
+
+include::{snippets}/getProducts/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getProducts/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getProducts/response-fields.adoc[]
+
+== 상품 상세 조회
+
+=== Request
+
+include::{snippets}/getProduct/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getProduct/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getProduct/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getProduct/response-fields.adoc[]
+
+== 일자별 공연 조회
+
+=== Request
+
+include::{snippets}/getShows/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/getShows/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getShows/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getShows/response-fields.adoc[]
+
+== 상품 삭제
+
+=== Request
+
+include::{snippets}/deleteProduct/http-request.adoc[]
+
+=== Path Parameter
+
+include::{snippets}/deleteProduct/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/deleteProduct/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/deleteProduct/response-fields.adoc[]
+
