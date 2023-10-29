@@ -41,7 +41,7 @@ import com.atticket.product.domain.Seat;
 import com.atticket.product.dto.request.GetSeatsInfoReqDto;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.service.GetRemainSeatCntSvcDto;
-import com.atticket.product.dto.service.GetRemainSeatsSvcDto;
+import com.atticket.product.dto.service.GetShowSeatsSvcDto;
 import com.atticket.product.dto.service.RegisterShowServiceDto;
 import com.atticket.product.repository.HallRepository;
 import com.atticket.product.repository.ShowRepository;
@@ -103,12 +103,12 @@ class ShowControllerTest {
 	private KafkaTemplate kafkaTemplate;
 
 	@Test
-	@DisplayName("공연의 남은 좌석 조회")
+	@DisplayName("공연의 전체 좌석 조회")
 	void getRemainSeats() throws Exception {
 
 		Long showId = 1L;
 
-		GetRemainSeatsSvcDto getRemainSeatsSvcDto = new GetRemainSeatsSvcDto(
+		GetShowSeatsSvcDto getRemainSeatsSvcDto = new GetShowSeatsSvcDto(
 			Arrays.asList(Seat.builder()
 				.id(1L)
 				.space("1층")
@@ -122,7 +122,7 @@ class ShowControllerTest {
 			, Grade.builder().id(1L).type("A").price(1000).build()
 		);
 
-		when(showSeatService.getRemainSeatsByShowId(showId)).thenReturn(
+		when(showSeatService.getShowSeats(showId)).thenReturn(
 			Arrays.asList(
 				getRemainSeatsSvcDto
 			)

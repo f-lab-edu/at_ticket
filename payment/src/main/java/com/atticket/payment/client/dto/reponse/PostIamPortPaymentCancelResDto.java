@@ -2,12 +2,17 @@ package com.atticket.payment.client.dto.reponse;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostIamPortPaymentCancelResDto {
 
 	public String code;
@@ -21,6 +26,8 @@ public class PostIamPortPaymentCancelResDto {
 	@Getter
 	@RequiredArgsConstructor
 	@ToString
+	@Builder
+	@NoArgsConstructor(force = true)
 	public static class ResponseDto {
 
 		//거래 id
@@ -117,6 +124,7 @@ public class PostIamPortPaymentCancelResDto {
 
 	@Getter
 	@RequiredArgsConstructor
+	@NoArgsConstructor(force = true)
 	@ToString
 	public static class CancelHistory {
 		private final String pg_tid;
