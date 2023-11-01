@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 import javax.validation.Valid;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,8 +53,8 @@ public class ProductController {
 	/**
 	 * 상품 상세 조회
 	 */
+	@Cacheable(value = "getProduct", key = "#id")
 	@GetMapping("/{productId}")
-
 	public BaseResponse<GetProductResDto> getProduct(@PathVariable("productId") Long id) {
 
 		log.debug("getProduct - id : " + id);

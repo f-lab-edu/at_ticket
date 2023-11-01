@@ -5,12 +5,10 @@ logging:
   level:
     root: info
 
-
 api:
   reservation:
     url: localhost
     port: 8100
-
 
 spring:
   datasource:
@@ -30,6 +28,9 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+  redis:
+    host: localhost
+    port: 6379
 
   kafka:
     producer:

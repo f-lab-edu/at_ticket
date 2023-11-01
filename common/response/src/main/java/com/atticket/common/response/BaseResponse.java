@@ -1,5 +1,6 @@
 package com.atticket.common.response;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BaseResponse<T> {
+public class BaseResponse<T> implements Serializable {
 	private final int code;
 	private final String message;
 	private final T data;
