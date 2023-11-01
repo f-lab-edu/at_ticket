@@ -13,12 +13,6 @@ import com.atticket.product.type.AgeLimit;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SubCategory;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,16 +50,10 @@ public class GetProductResDto implements Serializable {
 		//하위 카테고리
 		private final SubCategory subCategory;
 		//러닝 타임
-		@JsonSerialize(using = LocalTimeSerializer.class)
-		@JsonDeserialize(using = LocalTimeDeserializer.class)
 		private final LocalTime runningTime;
 		//상연 시작 일자
-		@JsonSerialize(using = LocalDateSerializer.class)
-		@JsonDeserialize(using = LocalDateDeserializer.class)
 		private final LocalDate startDate;
 		//상연 종료 일자
-		@JsonSerialize(using = LocalDateSerializer.class)
-		@JsonDeserialize(using = LocalDateDeserializer.class)
 		private final LocalDate endDate;
 		//나이 제한
 		private final AgeLimit ageLimit;

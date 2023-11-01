@@ -1,11 +1,12 @@
 package com.atticket.common.jwtmanager;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import lombok.Getter;
 
 @Getter
-public class UserInfo {
+public class UserInfo implements Serializable {
 
 	String userId;
 

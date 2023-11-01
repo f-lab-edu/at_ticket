@@ -41,6 +41,7 @@ public class ProductController {
 	/**
 	 * 상품 검색
 	 */
+	@Cacheable(value = "getProducts", key = "#reqDto")
 	@GetMapping("")
 	public BaseResponse<GetProductsResDto> getProducts(@Valid GetProductsReqDto reqDto) {
 
@@ -64,6 +65,7 @@ public class ProductController {
 	}
 
 	//일자별 공연 조회
+	@Cacheable(value = "getShows", key = "#date")
 	@GetMapping("/{productId}/shows")
 	public BaseResponse<GetShowsResDto> getShows(
 		@PathVariable("productId") Long productId,

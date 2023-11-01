@@ -1,5 +1,6 @@
 package com.atticket.product.dto.response;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class GetShowsResDto {
+public class GetShowsResDto implements Serializable {
 	//일자별 공연 조회 ResponseDto
 
 	private final List<ShowDto> shows;
@@ -27,12 +28,13 @@ public class GetShowsResDto {
 
 	@Getter
 	@Builder
-	private static class ShowDto {
+	private static class ShowDto implements Serializable {
 
 		//공연 id
 		private final Long id;
 		//session
 		private final int session;
+
 		//공연 시간
 		private final LocalTime time;
 

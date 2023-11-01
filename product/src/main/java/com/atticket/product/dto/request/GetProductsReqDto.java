@@ -16,9 +16,11 @@ import com.atticket.product.type.SubCategory;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class GetProductsReqDto {
 
 	// 페이지 (default = 1)
