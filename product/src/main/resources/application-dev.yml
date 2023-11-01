@@ -24,6 +24,10 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+  redis:
+    host: redis
+    port: 6379
+    password: ${REDIS_PASSWORD}
 
 
   kafka:
