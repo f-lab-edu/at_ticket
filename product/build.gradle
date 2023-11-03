@@ -16,6 +16,7 @@ dependencies {
     implementation project(':common:response')
     implementation project(':common:utils')
     implementation project(':common:secret-config')
+    implementation project(':common:redis-config')
 
     ext {
         snippetsDir = file('build/generated-snippets')

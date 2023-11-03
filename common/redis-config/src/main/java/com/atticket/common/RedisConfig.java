@@ -1,4 +1,4 @@
-package com.atticket.cache;
+package com.atticket.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
@@ -48,5 +48,4 @@ public class RedisConfig {
 
 		return connectionFactory;
 	}
-
 }
