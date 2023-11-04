@@ -1,6 +1,6 @@
 package com.atticket.product.controller;
 
-import static com.atticket.common.response.BaseResponse.*;
+import static com.atticket.common.response.BaseResponse.ok;
 
 import java.util.List;
 

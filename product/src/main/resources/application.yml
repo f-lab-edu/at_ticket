@@ -23,7 +23,8 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: update
+      #      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
