@@ -1,0 +1,60 @@
+= User API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 회원가입
+
+=== Request
+
+include::{snippets}/registerUser/http-request.adoc[]
+
+=== Request Fields
+
+include::{snippets}/registerUser/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/registerUser/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/registerUser/response-fields.adoc[]
+
+== 로그인
+
+=== Request
+
+include::{snippets}/loginUser/http-request.adoc[]
+
+=== Request Fields
+
+include::{snippets}/loginUser/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/loginUser/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/loginUser/response-fields.adoc[]
+
+== 유저 정보 조회
+
+=== https://xxx[Request]
+
+include::{snippets}/getUser/http-request.adoc[]
+
+=== Request Fields
+
+include::{snippets}/getUser/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/getUser/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/getUser/response-fields.adoc[]
