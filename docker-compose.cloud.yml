@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  product:
+    build:
+      context: .
+      dockerfile: ./product/Dockerfile
+    container_name: at_ticket-product
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+  reservation:
+    build:
+      context: .
+      dockerfile: ./reservation/Dockerfile
+    container_name: at_ticket-reservation
+    ports:
+      - "8100:8100"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+  payment:
+    build:
+      context: .
+      dockerfile: ./payment/Dockerfile
+    container_name: at_ticket-payment
+    ports:
+      - "8200:8200"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  kafka-app:
+    build:
+      context: .
+      dockerfile: ./kafka/Dockerfile
+    container_name: at_ticket-kafka-app
+    ports:
+      - "9200:9200"
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+  user:
+    build:
+      context: .
+      dockerfile: ./user/Dockerfile
+    container_name: at_ticket-user
+    ports:
+      - "9000:9000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+
+volumes:
+  db_volume:
