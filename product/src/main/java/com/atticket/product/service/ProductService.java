@@ -1,28 +1,25 @@
 package com.atticket.product.service;
 
-import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Product;
 import com.atticket.product.domain.Show;
 import com.atticket.product.repository.ProductRepository;
+import com.atticket.product.repository.ProductRepositorySupport;
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SortOption;
 import com.atticket.product.type.SubCategory;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+
+import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
 
 @Slf4j
 @Service
@@ -38,8 +35,11 @@ public class ProductService {
 	//repository
 	private final ProductRepository productRepository;
 
+	private final ProductRepositorySupport productRepositorySupport;
+
 	/**
-	 *상품id로 상품 조회
+	 * 상품id로 상품 조회
+	 *
 	 * @param productId 상품 id
 	 * @return Product
 	 */
@@ -51,6 +51,7 @@ public class ProductService {
 
 	/**
 	 * 상품 삭제
+	 *
 	 * @param productId 상품 id
 	 */
 
@@ -83,35 +84,25 @@ public class ProductService {
 	}
 
 	/**
-	 * @param page 페이지
-	 * @param perPage 페이지당 상품 개수
-	 * @param keyword 검색어
-	 * @param category 도메인 카테고리 (e.g. 뮤지컬, 연극, 콘서트, 영화)
+	 * @param page        페이지
+	 * @param perPage     페이지당 상품 개수
+	 * @param keyword     검색어
+	 * @param category    도메인 카테고리 (e.g. 뮤지컬, 연극, 콘서트, 영화)
 	 * @param subCategory 도메인별 세부 장르 (e.g. 뮤지컬 - [라이선스, 창작 뮤지컬, ...], 콘서트 - [발라드, 내한공연, 페스티벌, ...])
-	 * @param region 지역 (e.g. 서울, 경기, 대전, 광주, ... )
-	 * @param startDate 시작일
-	 * @param endDate 종료일
-	 * @param sortOption 정렬 옵션 (e.g. 상품명순, 종료임박순, 판매량순, 최신순)
+	 * @param region      지역 (e.g. 서울, 경기, 대전, 광주, ... )
+	 * @param startDate   시작일
+	 * @param endDate     종료일
+	 * @param sortOption  정렬 옵션 (e.g. 상품명순, 종료임박순, 판매량순, 최신순)
 	 * @return 각 파라미터 필터를 적용한 상품 Entity 리스트를 리턴한다.
 	 */
 	public List<Product> getProducts(int page, int perPage, String keyword, Category category,
-		SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate,
-		SortOption sortOption) {
+									 SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate,
+									 SortOption sortOption) {
 
 		categoryHasSubCategory(category, subCategory);
 
-		List<Product> productDatas = productRepository.findAll();
-
-		return productDatas.stream()
-			.filter(product -> (!StringUtils.hasText(keyword) || (product.getName().contains(keyword)))
-				&& (Objects.isNull(category) || product.getCategory().equals(category))
-				&& (Objects.isNull(subCategory) || product.getSubCategory().equals(subCategory))
-				&& (Objects.isNull(region) || product.getPlace().getRegion().equals(region))
-				&& (Objects.isNull(startDate) || product.getEndDate().compareTo(startDate) >= 0)
-				&& (Objects.isNull(endDate) || product.getStartDate().compareTo(endDate) <= 0)
-			)
-			.skip((long)(page - 1) * perPage).limit(perPage)
-			.collect(Collectors.toList());
+		return productRepositorySupport.getProduct(page, perPage, keyword, category, subCategory,
+			region, startDate, endDate, sortOption);
 	}
 
 	private void categoryHasSubCategory(Category category, SubCategory subCategory) {
