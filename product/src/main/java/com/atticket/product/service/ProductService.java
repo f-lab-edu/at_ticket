@@ -31,6 +31,7 @@ public class ProductService {
 	private final GradeService gradeService;
 	private final ReservedSeatService reservedSeatService;
 	private final ShowSeatService showSeatService;
+	private final WishProductService wishProductService;
 
 	//repository
 	private final ProductRepository productRepository;
@@ -81,6 +82,22 @@ public class ProductService {
 		}
 
 		productRepository.deleteById(productId);
+	}
+
+	public void notifyProduct(Long productId) {
+
+		///상품의 공연(시간) 리스트 조회
+		List<Show> showList = showService.getShowsByProductId(productId);
+
+		List<String> mailDatas = showList.stream().map(x -> {
+				String mailData = " 날짜 : " + x.getDate() + " 시간 :" + x.getTime() + System.lineSeparator();
+				return mailData;
+			}
+		).collect(Collectors.toList());
+
+		//관심 공연 등록 알림 메일 발송 기능 호출
+		wishProductService.sendNotifyMail(productId, mailDatas);
+
 	}
 
 	/**

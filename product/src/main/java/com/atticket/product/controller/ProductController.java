@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,6 +85,15 @@ public class ProductController {
 	public BaseResponse deleteProduct(@PathVariable("productId") Long id) {
 
 		productService.deleteProduct(id);
+		return ok();
+	}
+
+	/**관심 상품 등록 유저들에게 메일 알림 송신
+	 * */
+	@PostMapping("/{productId}/notifyProduct")
+	public BaseResponse notifyProduct(@PathVariable("productId") Long id) {
+
+		productService.notifyProduct(id);
 		return ok();
 	}
 }

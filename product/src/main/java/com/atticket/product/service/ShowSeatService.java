@@ -155,9 +155,6 @@ public class ShowSeatService {
 			return showId;
 		}).collect(Collectors.toList());
 
-		//관심 공연 등록 알림 메일 발송
-		wishProductNotify(productId, result);
-
 		return result;
 	}
 
@@ -190,22 +187,6 @@ public class ShowSeatService {
 
 	public int deleteByShow(Show show) {
 		return showSeatRepository.deleteByShowId(show);
-	}
-
-	/**
-	 * 관심 공연 등록 알림 메일 발송 기능 호출
-	 * @param show
-	 */
-	public void wishProductNotify(Long productId, List<Long> show) {
-
-		List<Show> newShowList = showRepository.findAllById(show);
-		List<String> mailDatas = newShowList.stream().map(x -> {
-				String mailData = " 날짜 : " + x.getDate() + " 시간 :" + x.getTime();
-				return mailData;
-			}
-		).collect(Collectors.toList());
-
-		wishProductService.sendNotifyMail(productId, mailDatas);
 	}
 
 	public Integer getSeatsPrice(Long showId, List<Long> seatIds) {
