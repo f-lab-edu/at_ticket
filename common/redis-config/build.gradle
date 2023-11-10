@@ -1,0 +1,9 @@
+plugins {
+    id 'atticket-spring-boot-app'
+}
+
+bootJar.enabled = false
+
+dependencies {
+    implementation project(':common:secret-config')
+}
