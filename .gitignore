@@ -9,3 +9,4 @@ ssl
 
 .idea
 
+common/secret-config/src/main/resources/secret-config

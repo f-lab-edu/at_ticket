@@ -1,21 +1,18 @@
 package com.atticket.product.dto.request;
 
-import static com.atticket.common.response.BaseException.throwTypeMismatchIfNull;
-import static com.atticket.common.utils.Constants.DATE_PATTERN;
-
-import java.time.LocalDate;
-
-import javax.validation.constraints.Positive;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SortOption;
 import com.atticket.product.type.SubCategory;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.Positive;
+import java.time.LocalDate;
+
+import static com.atticket.common.response.BaseException.throwTypeMismatchIfNull;
+import static com.atticket.common.utils.Constants.DATE_PATTERN;
 
 @Getter
 @Setter
@@ -50,7 +47,7 @@ public class GetProductsReqDto {
 	private LocalDate endDate;
 
 	// 정렬 옵션  (default = SortOption.RECENT)  (e.g. 상품명순, 종료임박순, 판매량순, 최신순)
-	private SortOption sortOption = SortOption.RECENT;
+	private SortOption sortOption = SortOption.NAME;
 
 	public void setSortOption(SortOption sortOption) {
 		// sortOption은 null이면 안되기 때문에 typeMismatch 에러를 날린다
