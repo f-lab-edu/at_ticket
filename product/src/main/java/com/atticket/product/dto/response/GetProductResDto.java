@@ -1,5 +1,6 @@
 package com.atticket.product.dto.response;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -19,7 +20,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GetProductResDto {
+public class GetProductResDto implements Serializable {
 
 	//상품 세부 정보
 	private final ProductDto product;
@@ -29,6 +30,7 @@ public class GetProductResDto {
 	private final List<LocalDate> showDates;
 
 	public static GetProductResDto construct(Product product, List<Grade> grades, List<LocalDate> showDates) {
+
 		if (Objects.isNull(product)) {
 			return null;
 		}
@@ -38,7 +40,7 @@ public class GetProductResDto {
 
 	@Getter
 	@Builder
-	public static class ProductDto {
+	public static class ProductDto implements Serializable {
 
 		private final String name;
 		//상품 설명
@@ -79,7 +81,7 @@ public class GetProductResDto {
 	//좌석 등급
 	@Getter
 	@Builder
-	public static class GradeDto {
+	public static class GradeDto implements Serializable {
 
 		//좌석 타입
 		private final String type;

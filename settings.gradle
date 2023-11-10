@@ -17,3 +17,5 @@ include ':common:utils'
 include 'kafka'
 include ':common:jwt-manager'
 include ':common:secret-config'
+include ':common:redis-config'
+

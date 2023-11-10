@@ -1,5 +1,6 @@
 package com.atticket.product.dto.response;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -19,7 +20,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class GetProductsResDto {
+public class GetProductsResDto implements Serializable {
 
 	private final List<ProductDto> products;
 
@@ -32,7 +33,7 @@ public class GetProductsResDto {
 
 	@Builder
 	@Getter
-	public static class ProductDto {
+	public static class ProductDto implements Serializable {
 
 		private final Category category;
 
@@ -75,7 +76,7 @@ public class GetProductsResDto {
 
 	@AllArgsConstructor
 	@Getter
-	public static class PlaceDto {
+	public static class PlaceDto implements Serializable {
 
 		private final Long id;
 

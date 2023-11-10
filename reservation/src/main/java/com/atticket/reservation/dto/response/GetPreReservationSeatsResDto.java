@@ -1,5 +1,6 @@
 package com.atticket.reservation.dto.response;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GetPreReservationSeatsResDto {
+public class GetPreReservationSeatsResDto implements Serializable {
 
 	//예약된 좌석 리스트
 	private final List<ReservedSeatsDto> reservedSeats;
@@ -29,7 +30,7 @@ public class GetPreReservationSeatsResDto {
 
 	@Getter
 	@Builder
-	private static class ReservedSeatsDto {
+	private static class ReservedSeatsDto implements Serializable {
 
 		//예약좌석 id
 		private final Long id;

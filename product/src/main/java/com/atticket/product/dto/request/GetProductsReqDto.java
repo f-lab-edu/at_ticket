@@ -6,6 +6,8 @@ import com.atticket.product.type.SortOption;
 import com.atticket.product.type.SubCategory;
 import lombok.Getter;
 import lombok.Setter;
+
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Positive;
@@ -14,8 +16,10 @@ import java.time.LocalDate;
 import static com.atticket.common.response.BaseException.throwTypeMismatchIfNull;
 import static com.atticket.common.utils.Constants.DATE_PATTERN;
 
+
 @Getter
 @Setter
+@ToString
 public class GetProductsReqDto {
 
 	// 페이지 (default = 1)

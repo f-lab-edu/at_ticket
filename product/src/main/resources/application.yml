@@ -5,14 +5,16 @@ logging:
   level:
     root: info
 
-
 api:
   reservation:
     url: localhost
     port: 8100
 
-
 spring:
+  # commons
+  profiles:
+    include:
+      - redis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -30,6 +32,7 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
+
 
   kafka:
     producer:
