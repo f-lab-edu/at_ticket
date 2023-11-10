@@ -1,6 +1,7 @@
 plugins {
     id 'atticket-spring-boot-app'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id "query-dsl"
 }
 
 configurations {
