@@ -4,4 +4,11 @@ spring:
     port: 6379
     password: ${REDIS_PASSWORD}
 
+---
 
+spring.profiles: dev
+spring:
+  redis:
+    host: 223.130.147.210
+    port: 6379
+    password: ${REDIS_PASSWORD}
