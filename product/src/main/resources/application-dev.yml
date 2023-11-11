@@ -9,7 +9,7 @@ api:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://223.130.147.179:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   sql:
@@ -24,34 +24,29 @@ spring:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
-  redis:
-    host: redis
-    port: 6379
-    password: ${REDIS_PASSWORD}
 
-
-  kafka:
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      bootstrap-servers: kafka:9092
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        spring:
-          deserializer:
-            value:
-              delegate:
-                class: org.springframework.kafka.support.serializer.JsonDeserializer
-          json:
-            trusted:
-              packages: '*'
-      group-id: myGroup
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      bootstrap-servers: kafka:9092
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
+#  kafka:
+#    producer:
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      bootstrap-servers: kafka:9092
+#    consumer:
+#      auto-offset-reset: earliest
+#      properties:
+#        spring:
+#          deserializer:
+#            value:
+#              delegate:
+#                class: org.springframework.kafka.support.serializer.JsonDeserializer
+#          json:
+#            trusted:
+#              packages: '*'
+#      group-id: myGroup
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      bootstrap-servers: kafka:9092
+#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: prometheus

@@ -12,7 +12,7 @@ api:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database:3306/reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://223.130.147.179/:3306/reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
@@ -23,16 +23,11 @@ spring:
       hibernate:
         format_sql: true
     generate-ddl: true
-  redis:
-    host: redis
-    port: 6379
-    password: ${REDIS_PASSWORD}
-
 
 jwt-secret-key: ${JWT_SECRET_KEY}
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
+# management:
+#   endpoints:
+#     web:
+#       exposure:
+#         include: prometheus
