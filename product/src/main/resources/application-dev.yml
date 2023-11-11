@@ -7,6 +7,8 @@ api:
     port: 8100
 
 spring:
+  config:
+    import: classpath:application-redis.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://223.130.147.179:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
