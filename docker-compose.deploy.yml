@@ -10,7 +10,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-
   reservation:
     build:
       context: .
@@ -20,7 +19,6 @@ services:
       - "8100:8100"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-
 
   payment:
     build:
