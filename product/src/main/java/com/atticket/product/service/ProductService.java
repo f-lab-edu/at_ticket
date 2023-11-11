@@ -1,5 +1,15 @@
 package com.atticket.product.service;
 
+import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseStatus;
 import com.atticket.product.domain.Product;
@@ -10,16 +20,9 @@ import com.atticket.product.type.Category;
 import com.atticket.product.type.Region;
 import com.atticket.product.type.SortOption;
 import com.atticket.product.type.SubCategory;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
-import static com.atticket.common.response.BaseStatus.EXIST_RESERVED;
 
 @Slf4j
 @Service
@@ -113,8 +116,8 @@ public class ProductService {
 	 * @return 각 파라미터 필터를 적용한 상품 Entity 리스트를 리턴한다.
 	 */
 	public List<Product> getProducts(int page, int perPage, String keyword, Category category,
-									 SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate,
-									 SortOption sortOption) {
+		SubCategory subCategory, Region region, LocalDate startDate, LocalDate endDate,
+		SortOption sortOption) {
 
 		categoryHasSubCategory(category, subCategory);
 
