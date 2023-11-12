@@ -19,33 +19,33 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
-#  kafka:
-#    producer:
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      bootstrap-servers: kafka:9092
-#    consumer:
-#      auto-offset-reset: earliest
-#      properties:
-#        spring:
-#          deserializer:
-#            value:
-#              delegate:
-#                class: org.springframework.kafka.support.serializer.JsonDeserializer
-#          json:
-#            trusted:
-#              packages: '*'
-#      group-id: myGroup
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      bootstrap-servers: kafka:9092
-#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: 175.45.193.191:9092
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: '*'
+      group-id: myGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: 175.45.193.191:9092
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 #management:
 #  endpoints:
 #    web:
