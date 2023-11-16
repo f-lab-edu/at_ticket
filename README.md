@@ -64,12 +64,9 @@
   👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%231)
 * 확장성과 기능의 독립성을 고려한 **멀티 모듈 설계**
 
-### 🎫 코드 품질 관리
-
----
-
-* [네이버 코드 컨벤션](https://naver.github.io/hackday-conventions-java/)을 사용하여 코드 일관성 유지
-* **Pull Request**와 **코드 리뷰**를 사용하여 코드 품질 향상
+* 코드 품질 관리
+    * [네이버 코드 컨벤션](https://naver.github.io/hackday-conventions-java/)을 사용하여 코드 일관성 유지
+    * **Pull Request**와 **코드 리뷰**를 사용하여 코드 품질 향상
 
 ## 🎫 Dev ops
 
