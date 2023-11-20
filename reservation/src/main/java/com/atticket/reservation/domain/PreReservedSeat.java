@@ -1,19 +1,13 @@
 package com.atticket.reservation.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -22,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode
 @IdClass(ReservedSeatId.class)
-@Table(name = "PRE_RESERVED_SEAT")
+@Table(name = "PRE_RESERVED_SEAT_PK_TEST")
 public class PreReservedSeat implements Serializable {
 
 	//공연 id
