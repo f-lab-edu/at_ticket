@@ -1,33 +1,25 @@
 package com.atticket.reservation.controller;
 
-import static com.atticket.common.response.BaseResponse.ok;
-
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.atticket.common.jwtmanager.JwtManager;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.reservation.domain.PreReservedSeat;
 import com.atticket.reservation.domain.ReservedSeat;
 import com.atticket.reservation.dto.request.PreRegisterReservationReqDto;
 import com.atticket.reservation.dto.request.RegisterReservationReqDto;
-import com.atticket.reservation.dto.response.GetPreReservationSeatsResDto;
 import com.atticket.reservation.dto.response.GetReservationResDto;
-import com.atticket.reservation.dto.response.GetReservationSeatsResDto;
+import com.atticket.reservation.dto.response.GetReservationSeatIdsResDto;
 import com.atticket.reservation.dto.response.RegisterReservationResDto;
 import com.atticket.reservation.service.ReservationService;
 import com.atticket.reservation.service.ReservedSeatService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.atticket.common.response.BaseResponse.ok;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,33 +73,31 @@ public class ReservationController {
 	}
 
 	/**
-	 * 예약된 좌석 리스트 조회
+	 * 예약된 좌석 id 리스트 조회
 	 *
 	 * @param showId
 	 * @return
 	 */
 	@Cacheable(value = "getReservationSeats", key = "#showId")
 	@GetMapping("/show/{showId}/seats")
-	public BaseResponse<GetReservationSeatsResDto> getReservationSeats(@PathVariable("showId") Long showId) {
+	public BaseResponse<GetReservationSeatIdsResDto> getReservationSeatIds(@PathVariable("showId") Long showId) {
 
 		List<ReservedSeat> seats = reservedSeatService.getReservedSeatsByShowId(showId);
+		List<Long> seatIds = seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList());
 
-		return ok(
-			GetReservationSeatsResDto.construct(seats)
-		);
+		return ok(GetReservationSeatIdsResDto.construct(seatIds));
 	}
 
 	/**
-	 *	선예약 좌석 리스트 조회
+	 * 선예약 좌석 id 리스트 조회
 	 */
 	@Cacheable(value = "getPreReservationSeats", key = "#showId")
 	@GetMapping("/show/{showId}/seats/pre")
-	public BaseResponse<GetPreReservationSeatsResDto> getPreReservationSeats(@PathVariable("showId") Long showId) {
+	public BaseResponse<GetReservationSeatIdsResDto> getPreReservationSeatIds(@PathVariable("showId") Long showId) {
 
 		List<PreReservedSeat> seats = reservedSeatService.getPreReservedSeatsByShowId(showId);
+		List<Long> seatIds = seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList());
 
-		return ok(
-			GetPreReservationSeatsResDto.construct(seats)
-		);
+		return ok(GetReservationSeatIdsResDto.construct(seatIds));
 	}
 }
