@@ -5,6 +5,7 @@ import com.atticket.reservation.domain.Reservation;
 import com.atticket.reservation.dto.request.PreRegisterReservationReqDto;
 import com.atticket.reservation.dto.request.RegisterReservationReqDto;
 import com.atticket.reservation.dto.response.GetReservationResDto;
+import com.atticket.reservation.dto.response.GetReservationSeatIdsResDto;
 import com.atticket.reservation.dto.response.RegisterReservationResDto;
 import com.atticket.reservation.type.Status;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,22 +76,22 @@ public class ReservationControllerTest {
 					responseFields(
 						fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과코드"),
 						fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-						fieldWithPath("data.id")
+						fieldWithPath("data.reservation.id")
 							.type(JsonFieldType.NUMBER)
 							.description("예약 id").optional(),
-						fieldWithPath("data.userId")
+						fieldWithPath("data.reservation.userId")
 							.type(JsonFieldType.STRING)
 							.description("사용자 id").optional(),
-						fieldWithPath("data.seatIds")
+						fieldWithPath("data.reservation.seatIds")
 							.type(JsonFieldType.ARRAY)
 							.description("좌석 id 리스트").optional(),
-						fieldWithPath("data.status")
+						fieldWithPath("data.reservation.status")
 							.type(JsonFieldType.STRING)
 							.description("예약 상태").optional(),
-						fieldWithPath("data.time")
+						fieldWithPath("data.reservation.time")
 							.type(JsonFieldType.STRING)
 							.description("예약 시간").optional(),
-						fieldWithPath("data.showId")
+						fieldWithPath("data.reservation.showId")
 							.type(JsonFieldType.NUMBER)
 							.description("공연 id").optional()
 					)
@@ -191,7 +192,7 @@ public class ReservationControllerTest {
 		Long showId = 1L;
 		List<Long> seatIds = Arrays.asList(1L, 2L);
 
-		given(reservationController.getReservationSeatIds(showId)).willReturn(BaseResponse.ok(seatIds));
+		given(reservationController.getReservationSeatIds(showId)).willReturn(BaseResponse.ok(GetReservationSeatIdsResDto.construct(seatIds)));
 
 		ResultActions result = this.mockMvc.perform(
 			RestDocumentationRequestBuilders.get("/reservations//show/{showId}/seats", showId)
@@ -211,7 +212,7 @@ public class ReservationControllerTest {
 					responseFields(
 						fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과코드"),
 						fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-						fieldWithPath("data")
+						fieldWithPath("data.seatIds")
 							.type(JsonFieldType.ARRAY)
 							.description("좌석 id 리스트").optional()
 					)
@@ -225,7 +226,7 @@ public class ReservationControllerTest {
 		Long showId = 1L;
 		List<Long> seatIds = Arrays.asList(1L, 2L);
 
-		given(reservationController.getPreReservationSeatIds(showId)).willReturn(BaseResponse.ok(seatIds));
+		given(reservationController.getPreReservationSeatIds(showId)).willReturn(BaseResponse.ok(GetReservationSeatIdsResDto.construct(seatIds)));
 
 		ResultActions result = this.mockMvc.perform(
 			RestDocumentationRequestBuilders.get("/reservations//show/{showId}/seats/pre", showId)
@@ -245,7 +246,7 @@ public class ReservationControllerTest {
 					responseFields(
 						fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과코드"),
 						fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-						fieldWithPath("data")
+						fieldWithPath("data.seatIds")
 							.type(JsonFieldType.ARRAY)
 							.description("좌석 id 리스트").optional()
 					)

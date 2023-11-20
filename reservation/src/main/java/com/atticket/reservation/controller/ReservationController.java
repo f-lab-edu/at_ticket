@@ -7,6 +7,7 @@ import com.atticket.reservation.domain.ReservedSeat;
 import com.atticket.reservation.dto.request.PreRegisterReservationReqDto;
 import com.atticket.reservation.dto.request.RegisterReservationReqDto;
 import com.atticket.reservation.dto.response.GetReservationResDto;
+import com.atticket.reservation.dto.response.GetReservationSeatIdsResDto;
 import com.atticket.reservation.dto.response.RegisterReservationResDto;
 import com.atticket.reservation.service.ReservationService;
 import com.atticket.reservation.service.ReservedSeatService;
@@ -79,11 +80,12 @@ public class ReservationController {
 	 */
 	@Cacheable(value = "getReservationSeats", key = "#showId")
 	@GetMapping("/show/{showId}/seats")
-	public BaseResponse<List<Long>> getReservationSeatIds(@PathVariable("showId") Long showId) {
+	public BaseResponse<GetReservationSeatIdsResDto> getReservationSeatIds(@PathVariable("showId") Long showId) {
 
 		List<ReservedSeat> seats = reservedSeatService.getReservedSeatsByShowId(showId);
+		List<Long> seatIds = seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList());
 
-		return ok(seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList()));
+		return ok(GetReservationSeatIdsResDto.construct(seatIds));
 	}
 
 	/**
@@ -91,10 +93,11 @@ public class ReservationController {
 	 */
 	@Cacheable(value = "getPreReservationSeats", key = "#showId")
 	@GetMapping("/show/{showId}/seats/pre")
-	public BaseResponse<List<Long>> getPreReservationSeatIds(@PathVariable("showId") Long showId) {
+	public BaseResponse<GetReservationSeatIdsResDto> getPreReservationSeatIds(@PathVariable("showId") Long showId) {
 
 		List<PreReservedSeat> seats = reservedSeatService.getPreReservedSeatsByShowId(showId);
+		List<Long> seatIds = seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList());
 
-		return ok(seats.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList()));
+		return ok(GetReservationSeatIdsResDto.construct(seatIds));
 	}
 }

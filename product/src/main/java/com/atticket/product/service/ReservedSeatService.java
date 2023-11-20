@@ -1,6 +1,7 @@
 package com.atticket.product.service;
 
 import com.atticket.product.client.client.ReservationFeignClient;
+import com.atticket.product.client.dto.GetReservationSeatIdsResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +26,17 @@ public class ReservedSeatService {
 		List<Long> result = new ArrayList<>();
 
 		// 예약 좌석
-		List<Long> reservedSeatIdsRes = reservationFeignClient.getReservationSeatIds(showId).getData();
+		GetReservationSeatIdsResDto reservedSeatRes = reservationFeignClient.getReservationSeatIds(showId).getData();
 
-		if (!Objects.isNull(reservedSeatIdsRes)) {
-			result.addAll(reservedSeatIdsRes);
+		if (!Objects.isNull(reservedSeatRes)) {
+			result.addAll(reservedSeatRes.getSeatIds());
 		}
 
 		// 선예약 좌석
-		List<Long> preReservedSeatIdsRes = reservationFeignClient.getPreReservationSeatIds(showId).getData();
+		GetReservationSeatIdsResDto preReservedSeatRes = reservationFeignClient.getPreReservationSeatIds(showId).getData();
 
-		if (!Objects.isNull(preReservedSeatIdsRes)) {
-			result.addAll(preReservedSeatIdsRes);
+		if (!Objects.isNull(preReservedSeatRes)) {
+			result.addAll(preReservedSeatRes.getSeatIds());
 		}
 
 		return result.stream().distinct().collect(Collectors.toList());
