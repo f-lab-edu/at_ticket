@@ -1,12 +1,7 @@
 package com.atticket.user.service;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
+import com.atticket.common.jwtmanager.JwtManager;
+import com.atticket.common.jwtmanager.UserInfo;
 import com.atticket.common.response.BaseException;
 import com.atticket.user.client.client.KeycloakFeignClient;
 import com.atticket.user.client.dto.request.GetAccessTokenReqDto;
@@ -14,10 +9,15 @@ import com.atticket.user.client.dto.request.KeycloakRegisterUserReqDto;
 import com.atticket.user.client.dto.response.GetAccessTokenResDto;
 import com.atticket.user.dto.request.LoginUserReqDto;
 import com.atticket.user.dto.request.RegisterUserReqDto;
-
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -80,6 +80,10 @@ public class UserService {
 		} catch (FeignException e) {
 			throw new BaseException(400, e.getMessage());
 		}
+	}
+
+	public UserInfo getUserInfo(){
+		return JwtManager.getUserInfo();
 	}
 
 	/**

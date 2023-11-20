@@ -47,6 +47,6 @@ public class UserController {
 	 */
 	@GetMapping("")
 	public BaseResponse<UserInfo> getUser() {
-		return ok(JwtManager.getUserInfo());
+		return ok(userService.getUserInfo());
 	}
 }
