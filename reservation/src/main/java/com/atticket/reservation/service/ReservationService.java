@@ -1,13 +1,6 @@
 package com.atticket.reservation.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-
-import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
+import com.atticket.common.jwtmanager.JwtManager;
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
@@ -19,8 +12,13 @@ import com.atticket.reservation.client.dto.response.ConfirmReceiptResDto;
 import com.atticket.reservation.domain.Reservation;
 import com.atticket.reservation.repository.ReservationRepository;
 import com.atticket.reservation.type.Status;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
