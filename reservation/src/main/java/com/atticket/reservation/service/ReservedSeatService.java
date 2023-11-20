@@ -1,16 +1,14 @@
 package com.atticket.reservation.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.atticket.reservation.domain.PreReservedSeat;
 import com.atticket.reservation.domain.ReservedSeat;
 import com.atticket.reservation.repository.PreReservedSeatRepository;
 import com.atticket.reservation.repository.ReservedSeatRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
