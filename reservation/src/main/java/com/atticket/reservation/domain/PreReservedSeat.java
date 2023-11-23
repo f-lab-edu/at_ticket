@@ -22,7 +22,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode
 @IdClass(ReservedSeatId.class)
-@Table(name = "PRE_RESERVED_SEAT")
+//@Table(name = "PRE_RESERVED_SEAT")
+@Table(name = "PRE_RESERVED_SEAT_DISTRIBUTED_TEST")
 public class PreReservedSeat implements Serializable {
 
 	//공연 id
