@@ -1,5 +1,21 @@
 package com.atticket.reservation.controller;
 
+import static com.atticket.common.response.BaseResponse.ok;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.atticket.common.jwtmanager.JwtManager;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.reservation.domain.PreReservedSeat;
@@ -11,15 +27,8 @@ import com.atticket.reservation.dto.response.GetReservationSeatIdsResDto;
 import com.atticket.reservation.dto.response.RegisterReservationResDto;
 import com.atticket.reservation.service.ReservationService;
 import com.atticket.reservation.service.ReservedSeatService;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.atticket.common.response.BaseResponse.ok;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,7 +57,7 @@ public class ReservationController {
 	 */
 	@PostMapping("/pre")
 	public BaseResponse<RegisterReservationResDto> preRegisterReservation(
-		@Valid @RequestBody PreRegisterReservationReqDto reqDto) {
+		@Valid @RequestBody PreRegisterReservationReqDto reqDto) throws ExecutionException, InterruptedException {
 
 		// 유저 토큰 조회
 		String userId = JwtManager.getUserInfo().getUserId();

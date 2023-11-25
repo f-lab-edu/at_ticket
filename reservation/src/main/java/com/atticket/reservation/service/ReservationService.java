@@ -1,6 +1,14 @@
 package com.atticket.reservation.service;
 
-import com.atticket.common.jwtmanager.JwtManager;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.atticket.common.response.BaseException;
 import com.atticket.common.response.BaseResponse;
 import com.atticket.common.response.BaseStatus;
@@ -12,13 +20,8 @@ import com.atticket.reservation.client.dto.response.ConfirmReceiptResDto;
 import com.atticket.reservation.domain.Reservation;
 import com.atticket.reservation.repository.ReservationRepository;
 import com.atticket.reservation.type.Status;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +35,9 @@ public class ReservationService {
 	private final PaymentFeignClient paymentFeignClient;
 
 	@Transactional
-	public Long preRegisterReservation(Long showId, List<Long> seatIds, String userId) {
+	public Long preRegisterReservation(Long showId, List<Long> seatIds, String userId) throws
+		ExecutionException,
+		InterruptedException {
 		preReservedSeatService.registerPreReservedSeat(showId, seatIds, userId);
 		Reservation reservation = Reservation.builder()
 			.showId(showId)
