@@ -39,5 +39,5 @@ public class ReservationProducer {
 		log.info(metadata.toString());
 
 	}
-
 }
+

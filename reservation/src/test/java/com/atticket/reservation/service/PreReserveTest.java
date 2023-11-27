@@ -59,7 +59,7 @@ public class PreReserveTest {
 		List<Long> seatIds = List.of(1L, 2L, 3L);
 		String userId = "user";
 
-		final int people = 10;
+		final int people = 50;
 
 		//쓰레드 풀 생성
 		ExecutorService executorService = Executors.newFixedThreadPool(people);
