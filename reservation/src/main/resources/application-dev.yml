@@ -10,9 +10,11 @@ api:
     port: 8200
 
 spring:
+  config:
+    import: classpath:application-redis.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database:3306/reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://10.0.0.7:3306/reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
@@ -31,8 +33,8 @@ spring:
 
 jwt-secret-key: ${JWT_SECRET_KEY}
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
+# management:
+#   endpoints:
+#     web:
+#       exposure:
+#         include: prometheus
