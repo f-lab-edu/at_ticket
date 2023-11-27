@@ -26,6 +26,26 @@ spring:
       hibernate:
         format_sql: true
     generate-ddl: true
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: localhost:9092
+    consumer:
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: '*'
+      group-id: myGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: localhost:9092
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
 
 
 jwt-secret-key: ${JWT_SECRET_KEY}

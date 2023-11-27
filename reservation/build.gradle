@@ -17,6 +17,7 @@ dependencies {
     implementation project(':common:jwt-manager')
     implementation project(':common:secret-config')
     implementation project(':common:redis-config')
+    implementation project(':kafka')
 
     ext {
         snippetsDir = file('build/generated-snippets')

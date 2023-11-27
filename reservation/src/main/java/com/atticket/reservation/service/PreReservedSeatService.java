@@ -1,14 +1,13 @@
 package com.atticket.reservation.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
 
-import com.atticket.common.response.BaseException;
-import com.atticket.common.response.BaseStatus;
+import com.atticket.common.kafka.payload.CheckReservation;
 import com.atticket.reservation.domain.PreReservedSeat;
+import com.atticket.reservation.kafka.producer.ReservationProducer;
 import com.atticket.reservation.repository.PreReservedSeatRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,26 +18,18 @@ public class PreReservedSeatService {
 
 	private final ReservedSeatService reservedSeatService;
 	private final PreReservedSeatRepository preReservedSeatRepository;
+	private final ReservationProducer reservationProducer;
 
 	/**
 	 * 선예약좌석 등록하기
 	 */
-	public void registerPreReservedSeat(Long showId, List<Long> seatIds, String userId) {
+	public void registerPreReservedSeat(Long showId, List<Long> seatIds, String userId) throws
+		ExecutionException,
+		InterruptedException {
 
-		if (reservedSeatService.existsReservedSeat(showId, seatIds)
-			|| preReservedSeatRepository.existsByShowIdAndSeatIdIn(showId, seatIds)) {
-			throw new BaseException(BaseStatus.EXIST_RESERVED_SEAT);
-		}
+		//예약 가능 여부 이벤트 발행
+		checkReservation(showId, seatIds, userId);
 
-		List<PreReservedSeat> preReservedSeats = seatIds.stream().map(seatId ->
-			PreReservedSeat.builder()
-				.showId(showId)
-				.seatId(seatId)
-				.userId(userId)
-				.time(LocalDateTime.now())
-				.build()
-		).collect(Collectors.toList());
-		preReservedSeatRepository.saveAll(preReservedSeats);
 	}
 
 	/**
@@ -48,4 +39,17 @@ public class PreReservedSeatService {
 		List<PreReservedSeat> preReservedSeats = preReservedSeatRepository.findByShowIdAndSeatIdIn(showId, seatIds);
 		preReservedSeatRepository.deleteAll(preReservedSeats);
 	}
+
+	//예약 가능 여부 이벤트 발행
+	public void checkReservation(Long showId, List<Long> seatIds, String userId) throws
+		ExecutionException,
+		InterruptedException {
+
+		reservationProducer.checkReservation(CheckReservation.builder()
+			.seatIds(seatIds)
+			.showId(showId)
+			.userId(userId)
+			.build());
+	}
+
 }

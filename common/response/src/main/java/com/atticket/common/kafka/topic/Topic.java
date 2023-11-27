@@ -7,7 +7,10 @@ import lombok.Getter;
 @Getter
 public enum Topic {
 
-	NOTIFY_MAIL("메일 알림");
+	NOTIFY_MAIL("메일 알림"),
+	CHECK_RESERVATION("예약 여부 저장"),
+
+	CHECK_RESERVATION_RESULT("예약 여부 결과");
 
 	private final String explain;
 
