@@ -1,5 +1,8 @@
 package com.atticket.common;
 
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +31,9 @@ public class RedisConfig {
 	@Value("${spring.redis.port}")
 	private int port;
 
+	@Value("${spring.redis.password}")
+	private String password;
+
 	private final ObjectMapper objectMapper;
 
 	@Bean
@@ -44,8 +50,17 @@ public class RedisConfig {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 		redisStandaloneConfiguration.setHostName(host);
 		redisStandaloneConfiguration.setPort(port);
+		redisStandaloneConfiguration.setPassword(password);
 		LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
 
 		return connectionFactory;
 	}
+
+	@Bean
+	public RedissonClient redissonClient() {
+		Config config = new Config();
+		config.useSingleServer().setAddress("redis://" + host + ":" + port);
+		return Redisson.create(config);
+	}
+
 }
