@@ -7,9 +7,11 @@ api:
     port: 8100
 
 spring:
+  config:
+    import: classpath:application-redis.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://10.0.0.7:3306/product?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   sql:
@@ -17,24 +19,18 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     generate-ddl: true
     defer-datasource-initialization: true
-  redis:
-    host: redis
-    port: 6379
-    password: ${REDIS_PASSWORD}
-
-
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: 10.0.0.9:9092
     consumer:
       auto-offset-reset: earliest
       properties:
@@ -48,10 +44,10 @@ spring:
               packages: '*'
       group-id: myGroup
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: 10.0.0.9:9092
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: prometheus
