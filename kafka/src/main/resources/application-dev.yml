@@ -1,29 +1,30 @@
 spring:
-  #  kafka:
-  #    producer:
-  #      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-  #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-  #      bootstrap-servers: kafka:9093
-  #    consumer:
-  #      auto-offset-reset: earliest
-  #      properties:
-  #        spring:
-  #          deserializer:
-  #            value:
-  #              delegate:
-  #                class: org.springframework.kafka.support.serializer.JsonDeserializer
-  #          json:
-  #            trusted:
-  #              packages: '*'
-  #      group-id: myGroup
-  #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  #      bootstrap-servers: kafka:9093
-  #      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: 10.0.0.9:9092
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: '*'
+      group-id: myGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: 10.0.0.9:9092
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://223.130.147.179:3306?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://10.0.0.7:3306?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
 server:
   port: 9200
+
