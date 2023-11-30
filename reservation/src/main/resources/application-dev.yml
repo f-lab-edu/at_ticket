@@ -29,6 +29,26 @@ spring:
     host: redis
     port: 6379
     password: ${REDIS_PASSWORD}
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: 10.0.0.9:9092
+    consumer:
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: '*'
+      group-id: myGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: 10.0.0.9:9092
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
 
 
 jwt-secret-key: ${JWT_SECRET_KEY}
