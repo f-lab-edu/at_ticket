@@ -87,7 +87,7 @@ public class ReservationController {
 	 * @param showId
 	 * @return
 	 */
-	@Cacheable(value = "getReservationSeats", key = "#showId")
+
 	@GetMapping("/show/{showId}/seats")
 	public BaseResponse<GetReservationSeatIdsResDto> getReservationSeatIds(@PathVariable("showId") Long showId) {
 
@@ -100,7 +100,7 @@ public class ReservationController {
 	/**
 	 * 선예약 좌석 id 리스트 조회
 	 */
-	@Cacheable(value = "getPreReservationSeats", key = "#showId")
+
 	@GetMapping("/show/{showId}/seats/pre")
 	public BaseResponse<GetReservationSeatIdsResDto> getPreReservationSeatIds(@PathVariable("showId") Long showId) {
 
