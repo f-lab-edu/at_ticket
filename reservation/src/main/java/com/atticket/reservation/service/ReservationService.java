@@ -1,6 +1,5 @@
 package com.atticket.reservation.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -35,20 +34,11 @@ public class ReservationService {
 	private final PaymentFeignClient paymentFeignClient;
 
 	@Transactional
-	public Long preRegisterReservation(Long showId, List<Long> seatIds, String userId) throws
+	public void preRegisterReservation(Long showId, List<Long> seatIds, String userId) throws
 		ExecutionException,
 		InterruptedException {
 		preReservedSeatService.registerPreReservedSeat(showId, seatIds, userId);
-		Reservation reservation = Reservation.builder()
-			.showId(showId)
-			.seatIds(seatIds)
-			.userId(userId)
-			.status(Status.WAIT_PAY)
-			.time(LocalDateTime.now())
-			.build();
-		reservationRepository.save(reservation);
 
-		return reservation.getId();
 	}
 
 	@Transactional

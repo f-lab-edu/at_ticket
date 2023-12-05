@@ -61,9 +61,8 @@ public class ReservationController {
 
 		// 유저 토큰 조회
 		String userId = JwtManager.getUserInfo().getUserId();
-
-		Long reservationId = reservationService.preRegisterReservation(reqDto.getShowId(), reqDto.getSeatIds(), userId);
-		return ok(RegisterReservationResDto.construct(reservationId));
+		reservationService.preRegisterReservation(reqDto.getShowId(), reqDto.getSeatIds(), userId);
+		return ok();
 	}
 
 	/**
