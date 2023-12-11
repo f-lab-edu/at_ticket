@@ -48,7 +48,7 @@
 
 **API 문서**를 보시려면 👉  [API 문서](https://github.com/f-lab-edu/at_ticket/wiki/At_Ticket_API_doc)  
 **Use case** 를 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)
---- 
+
 
 ## 🎫프로젝트 중점 사항들
 
