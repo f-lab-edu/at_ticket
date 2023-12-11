@@ -59,15 +59,18 @@
 
 * **예약하기 기능**에 관한 고민
   👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EC%88%98%EC%A0%95)
-    * 여러 사용자가 **동시에 같은 표를 예약**하려고 하는 경우, 동시성 문제가 발생하지는 않을지
-    * 예약하기 프로세스 중간에 **에러가 발생시** / 사용자가 **결제하다 말았을 경우**에는 어떻게해야 할까?
-* kafka를 이용한 **비동기** 메일 발송 기능 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%232)
-* **캐시 서버** 도입을 통한 응답속도 향상 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue%E2%80%90redis)
+    * 프로세스 중간에 **에러가 발생 시** / 사용자가 **결제하다 말았을 경우**에 대해 고민해보았습니다..
+* **동시성 제어** 해결을 위한 고민
+    * `분산락`, `Kafka`등 여러 방식에 대한 고려해 보았습니다.
+      👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EA%B8%B0%EB%8A%A5-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4)
+* **캐시 서버** 도입을 통한 응답속도 향상
+    * `Redis`를 캐시서버로 사용하도록 구성 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue%E2%80%90redis)
+* `kafka`를 이용한 *비동기 메일 발송* 기능 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%232)
 * 좌석-등급 **매핑 테이블 설계**에 관한 고민
   👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%231)
 * 확장성과 기능의 독립성을 고려한 **멀티 모듈 설계**
 
-* 코드 품질 관리
+* **코드 품질** 관리
     * [네이버 코드 컨벤션](https://naver.github.io/hackday-conventions-java/)을 사용하여 코드 일관성 유지
     * **Pull Request**와 **코드 리뷰**를 사용하여 코드 품질 향상
 
@@ -75,15 +78,8 @@
 
 ---
 
-* **CI/CD 구축**  👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%233)
-
-![img](./readmeImage/배포 구조도.png)
-
-```
-1. 개발자가 코드를 깃허브에 푸시.
-2. 깃허브가 webhook을 통해, Jenkins로 요청을 보냄.
-3. Jenkins가 docker compose를 사용하여 빌드 및 배포
-```
+* **CI/CD 구축**  👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%233)  
+  <img width="70%" src="./readmeImage/배포 구조도.png">
 
 * **API 문서 자동화**
     * 문서 자동화 툴인 ``Rest Doc``을 이용하여, 코드와 일치하는 API문서가 생성되도록 자동화 하였습니다.
