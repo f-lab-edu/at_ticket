@@ -45,10 +45,8 @@
     * 회원 가입 기능
     * 로그인 기능
 
-
 **API 문서**를 보시려면 👉  [API 문서](https://github.com/f-lab-edu/at_ticket/wiki/At_Ticket_API_doc)  
 **Use case** 를 보시려면 👉  [Use Case (wiki)](https://github.com/f-lab-edu/at_ticket/wiki/Use-Case)
-
 
 ## 🎫프로젝트 중점 사항들
 
@@ -56,20 +54,24 @@
 
 > 단순히 기능을 만드는 것에 그치지 않고, 여러가지 방면으로 고민해보았습니다.
 
-* **예약하기 기능**에 관한 고민
+* **예약하기 기능에 관한 고민**
   👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EC%88%98%EC%A0%95)
     * 프로세스 중간에 **에러가 발생 시** / 사용자가 **결제하다 말았을 경우**에 대해 고민해보았습니다.
-* **동시성 제어** 해결을 위한 고민
-    * `분산락`, `Kafka`등 여러 방식에 대한 고려해 보았습니다.
-      👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EA%B8%B0%EB%8A%A5-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4)
-* **캐시 서버** 도입을 통한 응답속도 향상
-    * `Redis`를 캐시서버로 사용하도록 구성 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue%E2%80%90redis)
-* `kafka`를 이용한 *비동기 메일 발송* 기능 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%232)
-* 좌석-등급 **매핑 테이블 설계**에 관한 고민
-  👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%231)
-* 확장성과 기능의 독립성을 고려한 **멀티 모듈 설계**
+* **예약하기 기능의 `동시성 제어` 해결을 위한 고민**
+    * `분산락`, `Kafka`등 여러방식을 사용해보고 동시성 제어를 해결하였습니다.
+      👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EA%B8%B0%EB%8A%A5-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4)  
+      <img width="40%"  src="./readmeImage/concurrency_Issue.PNG">
 
-* **코드 품질** 관리
+
+* **`캐시 서버` 도입을 통한 응답속도 향상**
+    * `Redis`를 캐시서버로 사용하도록 구성 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue%E2%80%90redis)  
+      <img width="70%" src="./readmeImage/cacheServer.PNG">
+* **`kafka`를 이용한 *비동기 메일 발송* 기능** 👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%232)
+* **좌석-등급 **매핑 테이블 설계**에 관한 고민**
+  👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/Issue--%231)
+* **확장성과 기능의 독립성을 고려한 `멀티 모듈 설계`**
+
+* **`코드 품질` 관리**
     * [네이버 코드 컨벤션](https://naver.github.io/hackday-conventions-java/)을 사용하여 코드 일관성 유지
     * **Pull Request**와 **코드 리뷰**를 사용하여 코드 품질 향상
 
