@@ -60,7 +60,7 @@
 * **예약하기 기능의 `동시성 제어` 해결을 위한 고민**
     * `분산락`, `Kafka`등 여러방식을 사용해보고 동시성 제어를 해결하였습니다.
       👉[자세히 보기](https://github.com/f-lab-edu/at_ticket/wiki/%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0-%EA%B8%B0%EB%8A%A5-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4)  
-      <img width="40%"  src="./readmeImage/concurrency_Issue.png">
+      <img width="60%"  src="./readmeImage/concurrency_Issue.png">
 
 
 * **`캐시 서버` 도입을 통한 응답속도 향상**
